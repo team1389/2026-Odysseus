@@ -64,9 +64,9 @@ public class TurretSubsystem extends SubsystemBase {
 
   private final Pivot turret = new Pivot(turretConfig);
   //Variables based on teeth given by machanical.
-  private final int e1_teeth = 18;
-  private final int e2_teeth = 19;
-  private final int t_teeth = 140;
+  private final int t_teeth = 250;
+  private final double e1_teeth = 25*(0.1)*t_teeth;
+  private final double e2_teeth = 6*(3/125)*t_teeth;
   //offest until I find the actual one.
   private final double e1_offset = 0.0;
   private final double e2_offset = 0.0;
@@ -137,14 +137,15 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor.setControl(new VoltageOut(i));
   }
   public double calculateAbsoluteRotations(){
-    //need position of encoder to know the "zero" position of the turret.
-    //need raw data from bot encoders.
+    //Got Raw data from motors/encoders.
     double rawE1 = 0.0;
-    double rawE2 = 0.0;
+    double rawE2 = -0.088; 
     double e1_val = (rawE1-e1_offset)%360;
-    if(e1_val < 0) e1_val += 360; //To ensure the value is between 0 and 360
+    if(e1_val < -99.5) e1_val += 180; //To ensure the value is between 0 and 360
+    if(e1_val > 99.5) e1_val -= 180;
     double e2_val = (rawE2-e2_offset)%360;
-    if(e2_val < 0) e2_val += 360;
+    if(e2_val < -99.5) e2_val += 180;
+    if(e2_val > 99.5) e2_val -= 180;
     for(int n1 = 0; n1 < e2_teeth; n1++){
       double a1 = (n1+(e1_val/360)) * ((double)e1_teeth/t_teeth);
       for(int n2 = 0; n2 < e1_teeth; n2++){
