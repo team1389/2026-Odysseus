@@ -64,9 +64,9 @@ public class TurretSubsystem extends SubsystemBase {
 
   private final Pivot turret = new Pivot(turretConfig);
   //Variables based on teeth given by machanical.
-  private final int t_teeth = 250;
-  private final double e1_teeth = 25*(0.1)*t_teeth;
-  private final double e2_teeth = 6*(3/125)*t_teeth;
+  private final double t_teeth = 250;
+  private final double e1_teeth = (0.1)*t_teeth;
+  private final double e2_teeth = (3/125)*t_teeth;
   //offest until I find the actual one.
   private final double e1_offset = 0.0;
   private final double e2_offset = 0.0;
@@ -79,7 +79,12 @@ public class TurretSubsystem extends SubsystemBase {
     //In intialization, find abosolute position and set the motor internal state
     double initialRotations = calculateAbsoluteRotations();
     if(initialRotations != -1){
-      turretSMC.setPosition(Degrees.of(initialRotations*360));
+       double initialDegrees = initialRotations * 360.0;
+       // Shift the "top half" of the circle to negative values
+       if (initialDegrees > 180) {
+           initialDegrees -= 360;
+       }
+       turretSMC.setPosition(Degrees.of(initialDegrees));
     }
   }
 
@@ -141,16 +146,17 @@ public class TurretSubsystem extends SubsystemBase {
     double rawE1 = 0.0;
     double rawE2 = -0.088; 
     double e1_val = (rawE1-e1_offset)%360;
-    if(e1_val < -99.5) e1_val += 180; //To ensure the value is between 0 and 360
-    if(e1_val > 99.5) e1_val -= 180;
+    if(e1_val < 0) e1_val += 360;
     double e2_val = (rawE2-e2_offset)%360;
-    if(e2_val < -99.5) e2_val += 180;
-    if(e2_val > 99.5) e2_val -= 180;
+    if(e2_val < 0) e2_val += 360;
     for(int n1 = 0; n1 < e2_teeth; n1++){
-      double a1 = (n1+(e1_val/360)) * ((double)e1_teeth/t_teeth);
+      double a1 = (n1+(e1_val/360)) * (e1_teeth/t_teeth);
       for(int n2 = 0; n2 < e1_teeth; n2++){
-        double a2 = (n2+(e2_val/360))*((double)e2_teeth/t_teeth);
+        double a2 = (n2+(e2_val/360))*(e2_teeth/t_teeth);
         if(Math.abs(a1-a2) < 0.005){ //0.005 is the tolerance for larger gears. 
+          if(a1 > 0.5){
+            return a1-1.0;
+          }
           return a1; //turret position in rotations
         }
       }
