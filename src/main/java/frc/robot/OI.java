@@ -15,6 +15,8 @@ import frc.command.TestIntakeArm;
 import frc.command.TestSerializer;
 import frc.command.TestShooter;
 import frc.command.TestTurret;
+import frc.command.joystickHoodCommand;
+import frc.command.joystickTurretCommand;
 import frc.subsystems.FlywheelSubsystem;
 import frc.subsystems.HoodSubsystem;
 import frc.subsystems.IntakeSubsystem;
@@ -49,8 +51,11 @@ public class OI {
       // Turret
       // turretSubsystem.setDefaultCommand(
       //    new TestTurret(turretSubsystem, manipController.getLeftY()));
-      manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
-      manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
+      manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 5));
+      manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -5));
+      turretSubsystem.setDefaultCommand(
+          new joystickTurretCommand(turretSubsystem, () -> -manipController.getRightX() * 10));
+
       // Flywheel
       manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -16));
       manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 16));
@@ -60,6 +65,8 @@ public class OI {
       // Hood
       manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
       manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
+      hoodSubsystem.setDefaultCommand(
+          new joystickHoodCommand(hoodSubsystem, () -> -manipController.getRightY() * 10));
       // IntakeArm
       manipController.leftBumper().whileTrue(new TestIntakeArm(IntakeSubsystem, 16));
       manipController.leftTrigger().whileTrue(new TestIntakeArm(IntakeSubsystem, -16));

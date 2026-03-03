@@ -9,6 +9,8 @@ public class RobotMap {
   // Other CAN id's
   // Turret CAN id's
   public static final int TurretCanID = 25;
+  public static final int TurretEncoderCanID = 26;
+  public static final double turretOffset = 0.52734375;
 
   // Max Speeds
   public static final double MaxTurretSpeed = 1;

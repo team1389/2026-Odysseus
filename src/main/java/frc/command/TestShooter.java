@@ -1,6 +1,7 @@
 package frc.command;
 
 import static edu.wpi.first.units.Units.InchesPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,7 +23,7 @@ public class TestShooter extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    flywheelSubsystem.setSpeed(targetRPM);
+    flywheelSubsystem.setRPMDirect(LinearVelocity.ofBaseUnits(targetRPM, MetersPerSecond));
   }
 
   @Override

@@ -11,6 +11,7 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
@@ -31,6 +32,7 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class TurretSubsystem extends SubsystemBase {
   private final TalonFX turretMotor = new TalonFX(RobotMap.TurretCanID);
+  private final CANcoder turretEncoder = new CANcoder(RobotMap.TurretEncoderCanID);
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
@@ -80,6 +82,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   public Angle getAngle() {
     return turret.getAngle();
+  }
+
+  public double getEncoderAngle() {
+    return turretEncoder.getPosition().getValue().in(Degrees);
   }
 
   public Command sysId() {

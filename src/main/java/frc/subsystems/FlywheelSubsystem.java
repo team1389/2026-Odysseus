@@ -64,8 +64,8 @@ public class FlywheelSubsystem extends SubsystemBase {
   // Added correct values for diameter and mass
   private final FlyWheelConfig flywheelConfig =
       new FlyWheelConfig(motor)
-          .withDiameter(Inches.of(3.95))
-          .withMass(Pounds.of(6))
+          .withDiameter(Inches.of(4))
+          .withMass(Pounds.of(4))
           .withTelemetry("FlywheelMech", TelemetryVerbosity.HIGH)
           .withSoftLimit(RPM.of(-5000), RPM.of(5000))
           .withSpeedometerSimulation(RPM.of(7500));
