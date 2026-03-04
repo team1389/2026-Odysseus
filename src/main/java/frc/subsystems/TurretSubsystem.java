@@ -63,8 +63,30 @@ public class TurretSubsystem extends SubsystemBase {
           .withMOI(Meters.of(0.25), Pounds.of(4)); // MOI Calculation
 
   private final Pivot turret = new Pivot(turretConfig);
+  //Variables based on teeth given by machanical.
+  private final double t_teeth = 250;
+  private final double e1_teeth = (0.1)*t_teeth;
+  private final double e2_teeth = 0.024*t_teeth;
+  //offest until I find the actual one.
+  private final double e1_offset = 0.0;
+  private final double e2_offset = 0.0;
+  // n is the number of integer rotations and E is the encoders in degrees interms of data given.
 
-  public TurretSubsystem() {}
+  //private final EasyCRTConfig easyCRTConfig;
+
+
+  public TurretSubsystem() {
+    //In intialization, find abosolute position and set the motor internal state
+    double initialRotations = calculateAbsoluteRotations();
+    if(initialRotations != -1){
+       double initialDegrees = initialRotations * 360.0;
+       // Shift the "top half" of the circle to negative values
+       if (initialDegrees > 180) {
+           initialDegrees -= 360;
+       }
+       turretSMC.setPosition(Degrees.of(initialDegrees));
+    }
+  }
 
   public Command setAngle(Angle angle) {
     return turret.setAngle(angle);
@@ -89,7 +111,7 @@ public class TurretSubsystem extends SubsystemBase {
         Seconds.of(8.0) // duration
         );
   }
-
+  
   public double getAngleDegrees() {
     return turret.getAngle().in(Degrees);
   }
@@ -118,5 +140,27 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void setSpeed(double i) {
     turretMotor.setControl(new VoltageOut(i));
+  }
+  public double calculateAbsoluteRotations(){
+    //Got Raw data from motors/encoders.
+    double rawE1 = 0.0;
+    double rawE2 = -0.088; 
+    double e1_val = (rawE1-e1_offset)%360;
+    if(e1_val < 0) e1_val += 360;
+    double e2_val = (rawE2-e2_offset)%360;
+    if(e2_val < 0) e2_val += 360;
+    for(int n1 = 0; n1 < e2_teeth; n1++){
+      double a1 = (n1+(e1_val/360)) * (e1_teeth/t_teeth);
+      for(int n2 = 0; n2 < e1_teeth; n2++){
+        double a2 = (n2+(e2_val/360))*(e2_teeth/t_teeth);
+        if(Math.abs(a1-a2) < 0.005){ //0.005 is the tolerance for larger gears. 
+          if(a1 > 0.5){
+            return a1-1.0;
+          }
+          return a1; //turret position in rotations
+        }
+      }
+    }
+    return -1; // is no match is found
   }
 }
