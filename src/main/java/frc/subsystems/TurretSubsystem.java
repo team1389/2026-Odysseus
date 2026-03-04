@@ -66,7 +66,7 @@ public class TurretSubsystem extends SubsystemBase {
   //Variables based on teeth given by machanical.
   private final double t_teeth = 250;
   private final double e1_teeth = (0.1)*t_teeth;
-  private final double e2_teeth = (3/125)*t_teeth;
+  private final double e2_teeth = 0.024*t_teeth;
   //offest until I find the actual one.
   private final double e1_offset = 0.0;
   private final double e2_offset = 0.0;
