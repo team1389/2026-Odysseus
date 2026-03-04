@@ -1,15 +1,15 @@
-package frc.command;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.subsystems.SerializerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TestSerializer extends Command {
-  public SerializerSubsystem serializerSubsystem;
-  public double targetDutyCycle;
+public class TestIntakeArm extends Command {
+  public IntakeSubsystem intakeSubsystem;
+  public double targetRPM;
 
-  public TestSerializer(SerializerSubsystem serializerSubsystem, double targetDutyCycle) {
-    this.serializerSubsystem = serializerSubsystem;
-    this.targetDutyCycle = targetDutyCycle;
+  public TestIntakeArm(IntakeSubsystem intakeSubsystem, double targetRPM) {
+    this.intakeSubsystem = intakeSubsystem;
+    this.targetRPM = targetRPM;
   }
 
   public void initialize() {
@@ -19,13 +19,13 @@ public class TestSerializer extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    serializerSubsystem.setSpeed(targetDutyCycle);
+    intakeSubsystem.setArmVoltage(targetRPM);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    serializerSubsystem.setSpeed(0);
+    intakeSubsystem.stopArm();
   }
 
   @Override

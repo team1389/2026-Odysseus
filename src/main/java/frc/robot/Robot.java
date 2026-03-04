@@ -82,9 +82,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    SmartDashboard.putNumber("Hood Angle", RobotContainer.hoodSubsystem.getAngleDegrees());
-    SmartDashboard.putNumber("Turret Angle", RobotContainer.turretSubsystem.getAngleDegrees());
-    SmartDashboard.putNumber("Flywheel Speed", RobotContainer.flywheelSubsystem.getSpeedRPM());
+    SmartDashboard.putNumber("Hood Angle", m_robotContainer.hoodSubsystem.getAngleDegrees());
+    SmartDashboard.putNumber("Turret Angle", m_robotContainer.turretSubsystem.getAngleDegrees());
+    SmartDashboard.putNumber("Flywheel Speed", m_robotContainer.flywheelSubsystem.getSpeedRPM());
   }
 
   @Override

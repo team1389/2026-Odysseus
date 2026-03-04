@@ -1,14 +1,14 @@
-package frc.command;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.subsystems.HoodSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TestHood extends Command {
-  public HoodSubsystem hoodSubsystem;
+public class TestIntake extends Command {
+  public IntakeSubsystem intakeSubsystem;
   public double targetRPM;
 
-  public TestHood(HoodSubsystem hoodSubsystem, double targetRPM) {
-    this.hoodSubsystem = hoodSubsystem;
+  public TestIntake(IntakeSubsystem intakeSubsystem, double targetRPM) {
+    this.intakeSubsystem = intakeSubsystem;
     this.targetRPM = targetRPM;
   }
 
@@ -19,13 +19,13 @@ public class TestHood extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    hoodSubsystem.setHoodVoltage(targetRPM);
+    intakeSubsystem.setRollerVoltage(targetRPM);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    hoodSubsystem.stop();
+    intakeSubsystem.stopRoller();
   }
 
   @Override
