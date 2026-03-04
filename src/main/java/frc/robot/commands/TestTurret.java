@@ -1,16 +1,15 @@
-package frc.command;
+package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
-public class RunFlywheel extends Command {
-  public FlywheelSubsystem flywheelSubsystem;
+public class TestTurret extends Command {
+  public TurretSubsystem turretSubsystem;
+  public double targetRPM;
 
-  public RunFlywheel(FlywheelSubsystem flywheelSubsystem) {
-    this.flywheelSubsystem = flywheelSubsystem;
+  public TestTurret(TurretSubsystem turretSubsystem, double targetRPM) {
+    this.turretSubsystem = turretSubsystem;
+    this.targetRPM = targetRPM;
   }
 
   public void initialize() {
@@ -20,13 +19,13 @@ public class RunFlywheel extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    flywheelSubsystem.setVelocity(AngularVelocity.ofRelativeUnits(180, DegreesPerSecond));
+    turretSubsystem.setSpeed(-targetRPM);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    flywheelSubsystem.setVelocity(AngularVelocity.ofRelativeUnits(0, DegreesPerSecond));
+    turretSubsystem.stop();
   }
 
   @Override

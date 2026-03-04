@@ -12,20 +12,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-// import frc.command.RunFlywheel;
-// import frc.command.RunIntake;
-// import frc.command.RunTurret;
-import frc.command.TestHood;
-import frc.command.TestIntake;
-import frc.command.TestIntakeArm;
-import frc.command.TestShooter;
-import frc.command.TestTurret;
+import frc.robot.commands.TestHood;
+import frc.robot.commands.TestIntake;
+import frc.robot.commands.TestIntakeArm;
+import frc.robot.commands.TestShooter;
+import frc.robot.commands.TestTurret;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.subsystems.FlywheelSubsystem;
-import frc.subsystems.HoodSubsystem;
-import frc.subsystems.IntakeSubsystem;
-import frc.subsystems.TurretSubsystem;
+import frc.robot.subsystems.FlywheelSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 public class RobotContainer {
 
@@ -56,13 +53,18 @@ public class RobotContainer {
   // Mechanisms controls
   // Define controller ports | DO NOT TOUCH |
   final CommandXboxController manipController = new CommandXboxController(1);
-  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-  public static FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem();
-  public static IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
-  public static HoodSubsystem hoodSubsystem = new HoodSubsystem();
+
+  public TurretSubsystem turretSubsystem;
+  public FlywheelSubsystem flywheelSubsystem;
+  public IntakeSubsystem intakeSubsystem;
+  public HoodSubsystem hoodSubsystem;
 
   // Creates Bindings for controllers
   public RobotContainer() {
+    turretSubsystem = new TurretSubsystem();
+    flywheelSubsystem = new FlywheelSubsystem();
+    intakeSubsystem = new IntakeSubsystem();
+    hoodSubsystem = new HoodSubsystem();
     configureBindings();
   }
 
@@ -85,14 +87,14 @@ public class RobotContainer {
       manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -60));
       manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 60));
       // Intake
-      manipController.a().whileTrue(new TestIntake(IntakeSubsystem, 1));
-      manipController.b().whileTrue(new TestIntake(IntakeSubsystem, -1));
+      manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
+      manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
       // Hood
       manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
       manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
       // IntakeArm
-      manipController.leftBumper().whileTrue(new TestIntakeArm(IntakeSubsystem, 1));
-      manipController.leftTrigger().whileTrue(new TestIntakeArm(IntakeSubsystem, -1));
+      manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 1));
+      manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -1));
 
     } else {
       // Comp commands should be put here
