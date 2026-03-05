@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 //import edu.wpi.first.apriltag.AprilTagFieldLayout;
 //import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,6 +28,9 @@ public class VisionSubsystem extends SubsystemBase {
     private final String[] cameraNames = {"FrontRightCam", "FrontLeftCam"}; 
     private final List<PhotonCamera> cameras = new ArrayList<>();
     
+    // Photon pose estimators
+    private final List<PhotonPoseEstimator> photonPoseEstimators = new ArrayList<>();
+
     // Simulation objects
     private VisionSystemSim visionSim;
     private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -52,6 +57,7 @@ public class VisionSubsystem extends SubsystemBase {
         for (int i = 0; i < cameraNames.length; i++) {
             PhotonCamera cam = new PhotonCamera(cameraNames[i]);
             cameras.add(cam);
+            PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(null, robotToCamTransforms[i]);
 
             if (RobotBase.isSimulation()) {
                 PhotonCameraSim camSim = new PhotonCameraSim(cam, cameraProp);

@@ -4,7 +4,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.command.RunVision;
 import frc.subsystems.VisionSubsystem;
 
 
@@ -73,7 +72,7 @@ public class OI {
          */
         //PUT YOUR COMMANDS in here! Default commands go first.  
         //manipController.a().whileTrue(new Intake(IntakeSubsystem));
-        manipController.a().whileTrue(new RunVision(visionSubsystem));
+        //manipController.a().whileTrue(new RunVision(visionSubsystem));
     }
 
     public Command getAutonomousCommand() {
