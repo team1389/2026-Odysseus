@@ -57,8 +57,8 @@ public class OI {
           new joystickTurretCommand(turretSubsystem, () -> -manipController.getRightX() * 10));
 
       // Flywheel
-      manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -16));
-      manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 16));
+      manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -60));
+      manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 60));
       // Intake
       manipController.a().whileTrue(new TestIntake(IntakeSubsystem, 32));
       manipController.b().whileTrue(new TestIntake(IntakeSubsystem, -32));
