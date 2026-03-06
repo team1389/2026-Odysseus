@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveLeft7m"
+            "pathName": "MoveLeft3m"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveRight7m"
+            "pathName": "MoveRight3m"
           }
         }
       ]
