@@ -54,14 +54,14 @@ public class VisionSubsystem extends SubsystemBase {
     cameraProp.setLatencyStdDevMs(5);
 
     // Define physical mounting positions (Robot-to-Camera transforms)
-    Transform3d[] robotToCamTransforms = { // These values are from the pigeon, measurments should be in meters and they are currently in inches
-      new Transform3d(
-          new Translation3d(-9.4, -9.4, -6.5),
-          new Rotation3d(0, 0, Math.PI)), // Left (Not currently mounted on robot) 
-      new Transform3d(
-          new Translation3d(10, -9.5, -6.5),
+    Transform3d[] robotToCamTransforms = { // These values use the pigeon as center, measurments in meters from CAD
+      new Transform3d(                                // Back left (Not currently mounted on robot)
+          new Translation3d(-0.245, -0.240, 0.165),
+          new Rotation3d(0, 0, Math.PI)),  
+      new Transform3d(                                // Back right camera 
+          new Translation3d(0.275, -0.240, 0.165), 
           new Rotation3d(
-              0, 25, Math.PI)) // Back right camera 
+              0, (5 * Math.PI) / 36, Math.PI)) // 25º in radians
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
