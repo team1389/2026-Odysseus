@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -32,10 +31,11 @@ public class VisionSubsystem extends SubsystemBase {
   // Photon pose estimators
   private final List<PhotonPoseEstimator> photonPoseEstimators = new ArrayList<>();
 
-  public static final AprilTagFieldLayout tagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  public static final AprilTagFieldLayout tagLayout =
+      AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
-  
+
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -54,20 +54,21 @@ public class VisionSubsystem extends SubsystemBase {
     cameraProp.setLatencyStdDevMs(5);
 
     // Define physical mounting positions (Robot-to-Camera transforms)
-    Transform3d[] robotToCamTransforms = { // These values use the pigeon as center, measurments in meters from CAD
-      new Transform3d(                                // Back left (Not currently mounted on robot)
-          new Translation3d(-0.245, -0.240, 0.165),
-          new Rotation3d(0, 0, Math.PI)),  
-      new Transform3d(                                // Back right camera 
-          new Translation3d(0.275, -0.240, 0.165), 
-          new Rotation3d(
-              0, (5 * Math.PI) / 36, Math.PI)) // 25º in radians
+    Transform3d[]
+        robotToCamTransforms = { // These values use the pigeon as center, measurments in meters
+      // from CAD
+      new Transform3d( // Back left (Not currently mounted on robot)
+          new Translation3d(-0.245, -0.240, 0.165), new Rotation3d(0, 0, Math.PI)),
+      new Transform3d( // Back right camera
+          new Translation3d(0.275, -0.240, 0.165),
+          new Rotation3d(0, (5 * Math.PI) / 36, Math.PI)) // 25º in radians
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
       PhotonCamera cam = new PhotonCamera(cameraNames[i]);
       cameras.add(cam);
-      PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(tagLayout, robotToCamTransforms[i]);
+      PhotonPoseEstimator poseEstimator =
+          new PhotonPoseEstimator(tagLayout, robotToCamTransforms[i]);
       photonPoseEstimators.add(poseEstimator);
 
       if (RobotBase.isSimulation()) {
@@ -93,19 +94,17 @@ public class VisionSubsystem extends SubsystemBase {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
           SmartDashboard.putNumberArray(
-            cam.getName() + " Position Estimate", 
-            new Double[]{   
-              visionEstimates.get(i).get().estimatedPose.getX(),
-              visionEstimates.get(i).get().estimatedPose.getY()
-            });
+              cam.getName() + " Position Estimate",
+              new Double[] {
+                visionEstimates.get(i).get().estimatedPose.getX(),
+                visionEstimates.get(i).get().estimatedPose.getY()
+              });
         }
       }
     }
-    
-
   }
 
-  public List<Optional<EstimatedRobotPose>> getPoseEstimates(){
+  public List<Optional<EstimatedRobotPose>> getPoseEstimates() {
     return visionEstimates;
   }
 
