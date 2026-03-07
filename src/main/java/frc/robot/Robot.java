@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
      */
 
 
-    public static OI oi = new OI();
+    public static RobotContainer robotContainer = new RobotContainer();
 
 
     @Override

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
-public class OI {
+public class RobotContainer {
     //Define controller ports | DO NOT TOUCH |
     final CommandXboxController manipController = new CommandXboxController(1);
     final CommandXboxController driveController = new CommandXboxController(0);
@@ -50,7 +50,7 @@ public class OI {
     */
   
     //Creates Bindings for controllers
-    public OI() {
+    public RobotContainer() {
         configureBindings();
     }
 
