@@ -9,8 +9,10 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,12 +41,16 @@ public class HoodSubsystem extends SubsystemBase {
               RPM.of(RobotMap.HoodMaxVel),
               RotationsPerSecondPerSecond.of(RobotMap.HoodMaxAcc))
           .withGearing(
-              new MechanismGearing(GearBox.fromReductionStages(4, 4))) // gear ratio after reduction
+              new MechanismGearing(
+                  GearBox.fromReductionStages(144.9, 1))) // gear ratio after reduction
           .withIdleMode(MotorMode.COAST)
           .withTelemetry("HoodMotor", TelemetryVerbosity.HIGH)
           .withStatorCurrentLimit(Amps.of(RobotMap.HoodMaxAmp))
           .withMotorInverted(RobotMap.HoodMoterInvert)
           .withClosedLoopRampRate(Seconds.of(RobotMap.HoodRampRatePID))
+          .withClosedLoopController(
+              new ProfiledPIDController(
+                  1.0, 0.0, 0.0, new Constraints(Math.toRadians(0), Math.toRadians(0))))
           .withOpenLoopRampRate(Seconds.of(RobotMap.HoodRampRateMan))
           .withFeedforward(
               new SimpleMotorFeedforward(

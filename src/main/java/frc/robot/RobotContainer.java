@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
+import frc.robot.commands.TestSerializer;
 import frc.robot.commands.TestShooter;
 import frc.robot.commands.TestTurret;
 import frc.robot.generated.TunerConstants;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.SerializerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class RobotContainer {
@@ -58,6 +60,7 @@ public class RobotContainer {
   public FlywheelSubsystem flywheelSubsystem;
   public IntakeSubsystem intakeSubsystem;
   public HoodSubsystem hoodSubsystem;
+  public SerializerSubsystem serializerSubsystem;
 
   // Creates Bindings for controllers
   public RobotContainer() {
@@ -65,6 +68,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     hoodSubsystem = new HoodSubsystem();
+    serializerSubsystem = new SerializerSubsystem();
     configureBindings();
   }
 
@@ -93,8 +97,11 @@ public class RobotContainer {
       manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
       manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
       // IntakeArm
-      manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 1));
-      manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -1));
+      manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
+      manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));
+      // Serializer
+      manipController.start().whileTrue(new TestSerializer(serializerSubsystem, -5));
+      manipController.back().whileTrue(new TestSerializer(serializerSubsystem, 5));
 
     } else {
       // Comp commands should be put here
