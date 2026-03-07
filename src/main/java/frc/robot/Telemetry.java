@@ -138,5 +138,7 @@ public class Telemetry {
       m_moduleDirections[i].setAngle(state.ModuleStates[i].angle);
       m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * MaxSpeed));
     }
+
+    SmartDashboard.putNumberArray("Vision Position Estimate", new Double[]{state.Pose.getX(), state.Pose.getY()});
   }
 }
