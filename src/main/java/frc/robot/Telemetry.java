@@ -139,6 +139,6 @@ public class Telemetry {
       m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * MaxSpeed));
     }
 
-    SmartDashboard.putNumberArray("Vision Position Estimate", new Double[]{state.Pose.getX(), state.Pose.getY()});
+    SmartDashboard.putNumberArray("Drivetrain Position Estimate", new Double[]{state.Pose.getX(), state.Pose.getY()});
   }
 }

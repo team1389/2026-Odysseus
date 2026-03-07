@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,7 +35,7 @@ public class VisionSubsystem extends SubsystemBase {
   public static final AprilTagFieldLayout tagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
-
+  
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -91,9 +92,17 @@ public class VisionSubsystem extends SubsystemBase {
       for (PhotonPipelineResult result : results) {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+          SmartDashboard.putNumberArray(
+            cam.getName() + " Position Estimate", 
+            new Double[]{   
+              visionEstimates.get(i).get().estimatedPose.getX(),
+              visionEstimates.get(i).get().estimatedPose.getY()
+            });
         }
       }
     }
+    
+
   }
 
   public List<Optional<EstimatedRobotPose>> getPoseEstimates(){
