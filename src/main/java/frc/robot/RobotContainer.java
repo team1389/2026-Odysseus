@@ -10,7 +10,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -86,52 +85,100 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-    configureBindings();
+    // configureBindings();
 
     // Warmup PathPlanner to avoid Java pauses
     CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
   }
 
-  private void configureBindings() {
+  public void configureBindings() {
 
-    // double targetAngle = 45; // Set target angle for the turret
+    // Drivetrain commands
+    // Note that X is defined as forward according to WPILib convention,
+    // and Y is defined as to the left according to WPILib convention.
+    drivetrain.setDefaultCommand(
+        // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(
+            () ->
+                drive
+                    .withVelocityX(
+                        -driverController.getLeftY()
+                            * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(
+                        -driverController.getLeftX()
+                            * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(
+                        -driverController.getRightX()
+                            * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            ));
 
-    // double armIntakeTargetAngle = 46;
-    // double intakeTargetAngle = 90;
-    // double outtakeTargetAngle = 0;
+    // Idle while the robot is disabled. This ensures the configured
+    // neutral mode is applied to the drive motors while disabled.
+    final var idle = new SwerveRequest.Idle();
+    RobotModeTriggers.disabled()
+        .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    if (DriverStation.isTest()) {
-      // Testing subsytem commands
-      // Turret
-      // turretSubsystem.setDefaultCommand(
-      //    new TestTurret(turretSubsystem, manipController.getLeftY()));
-      manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
-      manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
-      // Flywheel
-      manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -60));
-      manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 60));
-      // Intake
-      manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
-      manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
-      // Hood
-      manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
-      manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
-      // IntakeArm
-      manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 1));
-      manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -1));
+    driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    driverController
+        .b()
+        .whileTrue(
+            drivetrain.applyRequest(
+                () ->
+                    point.withModuleDirection(
+                        new Rotation2d(
+                            -driverController.getLeftY(), -driverController.getLeftX()))));
 
-    } else {
-      // Comp commands should be put here
-      /*
-      manipController.a().whileTrue(new RunIntake(intakeSubsystem, armIntakeTargetAngle));
-      manipController.b().whileTrue(intakeSubsystem.intake(Degrees.of(intakeTargetAngle)));
-      manipController.y().whileTrue(intakeSubsystem.outtake(Degrees.of(outtakeTargetAngle)));
+    driverController
+        .povUp()
+        .whileTrue(
+            drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+    driverController
+        .povDown()
+        .whileTrue(
+            drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-      manipController.x().whileTrue(new RunTurret(turretSubsystem, targetAngle));
+    // Run SysId routines when holding back/start and X/Y.
+    // Note that each routine should be run exactly once in a single log.
+    driverController
+        .back()
+        .and(driverController.y())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    driverController
+        .back()
+        .and(driverController.x())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    driverController
+        .start()
+        .and(driverController.y())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    driverController
+        .start()
+        .and(driverController.x())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-      manipController.rightBumper().whileTrue(new RunFlywheel(flywheelSubsystem));
-       */
-    }
+    // Reset the field-centric heading on left bumper press.
+    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+    drivetrain.registerTelemetry(logger::telemeterize);
+  }
+
+  public void configureTestBindings() {
+
+    // Mechanism commands
+    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
+    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
+    // Flywheel
+    manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -60));
+    manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 60));
+    // Intake
+    manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
+    manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
+    // Hood
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
+    // IntakeArm
+    manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 1));
+    manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -1));
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
