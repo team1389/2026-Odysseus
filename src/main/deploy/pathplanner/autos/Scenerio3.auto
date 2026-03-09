@@ -1,5 +1,5 @@
 {
-  "version": "2026.0",
+  "version": "2025.0",
   "command": {
     "type": "sequential",
     "data": {
@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 5.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              }
+            ]
           }
         }
       ]

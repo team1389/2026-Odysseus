@@ -30,6 +30,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.commands.AutoCommands.MoveIntakeArm;
 
 public class RobotContainer {
 
@@ -79,7 +80,10 @@ public class RobotContainer {
     hoodSubsystem = new HoodSubsystem();
 
     // Pathplanner Auto commands
+    MoveIntakeArm moveIntakeArm = new MoveIntakeArm(intakeSubsystem);
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
+    NamedCommands.registerCommand("moveIntakeArm", moveIntakeArm);
+
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));
 
