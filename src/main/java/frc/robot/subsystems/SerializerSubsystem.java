@@ -51,6 +51,10 @@ public class SerializerSubsystem extends SubsystemBase {
     indexerMotor.setControl(new DutyCycleOut(dutyCycleSpeed));
   }
 
+  public void SetVoltage(double voltage) {
+    indexerMotor.setVoltage(voltage);
+  }
+
   public void stop() {
     indexerMotor.setControl(new VoltageOut(0));
   }

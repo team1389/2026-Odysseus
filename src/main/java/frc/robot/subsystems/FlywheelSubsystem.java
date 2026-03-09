@@ -39,14 +39,14 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class FlywheelSubsystem extends SubsystemBase {
 
-  private final Distance flywheelDiameter = Inches.of(3.95);
+  private final Distance flywheelDiameter = Inches.of(4);
   // Changed the motor type to TalonFX, added second motor
   private final TalonFX flywheelMotor1 = new TalonFX(RobotMap.FlywheelCanID);
 
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
           .withClosedLoopController(
-              0.00016541, 0, 0, RPM.of(5000), RotationsPerSecondPerSecond.of(2500))
+              0.08, 0, 0.17, RPM.of(500000), RotationsPerSecondPerSecond.of(2500))
           .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
           .withIdleMode(MotorMode.COAST)
           .withTelemetry("FlywheelMotor", TelemetryVerbosity.HIGH)
@@ -64,8 +64,8 @@ public class FlywheelSubsystem extends SubsystemBase {
   // Added correct values for diameter and mass
   private final FlyWheelConfig flywheelConfig =
       new FlyWheelConfig(motor)
-          .withDiameter(Inches.of(3.95))
-          .withMass(Pounds.of(6))
+          .withDiameter(Inches.of(4))
+          .withMass(Pounds.of(5))
           .withTelemetry("FlywheelMech", TelemetryVerbosity.HIGH)
           .withSoftLimit(RPM.of(-5000), RPM.of(5000))
           .withSpeedometerSimulation(RPM.of(7500));
@@ -128,5 +128,9 @@ public class FlywheelSubsystem extends SubsystemBase {
     motor.setVelocity(
         RotationsPerSecond.of(
             speed.in(MetersPerSecond) / flywheelDiameter.times(Math.PI).in(Meters)));
+  }
+
+  public void setRPM(AngularVelocity speed) {
+    motor.setVelocity(speed);
   }
 }
