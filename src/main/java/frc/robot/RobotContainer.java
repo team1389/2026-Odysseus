@@ -30,6 +30,7 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
 
@@ -67,6 +68,7 @@ public class RobotContainer {
   public FlywheelSubsystem flywheelSubsystem;
   public IntakeSubsystem intakeSubsystem;
   public HoodSubsystem hoodSubsystem;
+  public VisionSubsystem visionSubsystem;
 
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
@@ -77,6 +79,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     hoodSubsystem = new HoodSubsystem();
+    visionSubsystem = new VisionSubsystem();
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
