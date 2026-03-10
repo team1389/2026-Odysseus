@@ -25,6 +25,12 @@
                 "data": {
                   "name": "MoveIntakeArm"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntake"
+                }
               }
             ]
           }
