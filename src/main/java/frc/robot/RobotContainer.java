@@ -11,12 +11,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
 import frc.robot.commands.TestShooter;
 import frc.robot.commands.TestTurret;
+import frc.robot.commands.tuneHood;
+import frc.robot.commands.tuneTurret;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -142,25 +143,28 @@ public class RobotContainer {
     // Testing subsytem commands
 
     // Turret
+    /*
     manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
     manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
-
+     */
+    manipController.povLeft().onTrue(new tuneTurret(turretSubsystem, 0));
+    manipController.povRight().onTrue(new tuneTurret(turretSubsystem, 25));
     // Flywheel
-    manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, (-150)));
-    manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, (150)));
+    manipController.rightTrigger().whileTrue(new TestShooter(flywheelSubsystem, -150));
+    manipController.rightBumper().whileTrue(new TestShooter(flywheelSubsystem, 150));
 
     // Intake
     manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
     manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
     // Hood
-    
+
     /*
     manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
     */
 
     manipController.povUp().onTrue(new tuneHood(hoodSubsystem, 15));
-    manipController.povDown().onTrue(new tuneHood(hoodSubsystem,25));
+    manipController.povDown().onTrue(new tuneHood(hoodSubsystem, 25));
     // IntakeArm
     manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
     manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));

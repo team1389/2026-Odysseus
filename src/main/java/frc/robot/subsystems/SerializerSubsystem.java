@@ -16,31 +16,9 @@ public class SerializerSubsystem extends SubsystemBase {
   private final TalonFX indexerMotor = new TalonFX(RobotMap.IndexerCanID);
 
   private final TalonFX kickerTopMotor = new TalonFX(RobotMap.KickerTopCanID);
-  /*
-  private final SmartMotorControllerConfig kickerTopMotorConfig =
-      new SmartMotorControllerConfig(this)
-          // Configure Motor and Mechanism properties
-          .withIdleMode(MotorMode.BRAKE)
-          .withMotorInverted(false);
 
-  @SuppressWarnings("unused")
-
-  private final SmartMotorController KickerTopSMC =
-      new TalonFXWrapper(kickerTopMotor, DCMotor.getKrakenX44Foc(1), kickerTopMotorConfig);
-  */
   private final TalonFX kickerBottomMotor = new TalonFX(RobotMap.KickerBottomCanID);
 
-  /*
-    private final SmartMotorControllerConfig kickerBottomMotorConfig =
-        new SmartMotorControllerConfig(this)
-            // Configure Motor and Mechanism properties
-            .withIdleMode(MotorMode.BRAKE)
-            .withMotorInverted(true);
-
-    @SuppressWarnings("unused")
-    private final SmartMotorController KickerBottomSMC =
-        new TalonFXWrapper(kickerBottomMotor, DCMotor.getKrakenX44Foc(1), kickerBottomMotorConfig);
-  */
   public SerializerSubsystem() {
     // Check motor allignment
     kickerTopMotor.setControl(new Follower(RobotMap.IndexerCanID, MotorAlignmentValue.Aligned));

@@ -4,14 +4,14 @@ import static edu.wpi.first.units.Units.Degrees;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
-public class tuneHood extends Command {
-  public HoodSubsystem hoodSubsystem;
+public class tuneTurret extends Command {
+  public TurretSubsystem turretSubsystem;
   public double targetAngle;
 
-  public tuneHood(HoodSubsystem hoodSubsystem, double targetAngle) {
-    this.hoodSubsystem = hoodSubsystem;
+  public tuneTurret(TurretSubsystem turretSubsystem, double targetAngle) {
+    this.turretSubsystem = turretSubsystem;
     this.targetAngle = targetAngle;
   }
 
@@ -22,13 +22,13 @@ public class tuneHood extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    hoodSubsystem.setAngle(Angle.ofBaseUnits(targetAngle, Degrees));
+    turretSubsystem.setAngle(Angle.ofBaseUnits(targetAngle, Degrees));
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    hoodSubsystem.stop();
+    turretSubsystem.stop();
   }
 
   @Override

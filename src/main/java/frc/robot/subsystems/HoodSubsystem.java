@@ -34,12 +34,6 @@ public class HoodSubsystem extends SubsystemBase {
 
   private final SmartMotorControllerConfig hoodMotorConfig =
       new SmartMotorControllerConfig(this)
-          .withClosedLoopController(
-              RobotMap.HoodIntegralCorr,
-              0,
-              0,
-              RPM.of(RobotMap.HoodMaxVel),
-              RotationsPerSecondPerSecond.of(RobotMap.HoodMaxAcc))
           .withGearing(
               new MechanismGearing(
                   GearBox.fromReductionStages(144.9, 1))) // gear ratio after reduction
