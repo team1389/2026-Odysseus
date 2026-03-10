@@ -1,13 +1,14 @@
 **Context**: 
-- GitHub Issue number
+
+*GitHub Issue number or motivation for the change*
 
 **Description**: 
 
 
 **Tests**: 
-- build success
-- test in simulation
-- test on robot 
+- *Did build succeed?* 
+- *Was it tested in simulation?*  
+- *Was it tested on the robot?*
 
 
 **Issues**: 
