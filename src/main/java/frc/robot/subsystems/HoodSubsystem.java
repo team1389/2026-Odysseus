@@ -50,7 +50,7 @@ public class HoodSubsystem extends SubsystemBase {
           .withClosedLoopRampRate(Seconds.of(RobotMap.HoodRampRatePID))
           .withClosedLoopController(
               new ProfiledPIDController(
-                  1.0, 0.0, 0.0, new Constraints(Math.toRadians(0), Math.toRadians(0))))
+                  1.0, 0.0, 0.0, new Constraints(Math.toRadians(5), Math.toRadians(25))))
           .withOpenLoopRampRate(Seconds.of(RobotMap.HoodRampRateMan))
           .withFeedforward(
               new SimpleMotorFeedforward(

@@ -162,9 +162,6 @@ public class RobotContainer {
     manipController.start().whileTrue(new TestSerializer(serializerSubsystem, -32));
     manipController.back().whileTrue(new TestSerializer(serializerSubsystem, 32));
 
-    // Tuning
-    // manipController.a().whileTrue(new tuneShooter(flywheelSubsystem, 500));
-    // manipController.b().whileTrue(new tuneShooter(flywheelSubsystem, 3000));
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
