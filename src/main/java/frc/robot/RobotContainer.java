@@ -153,8 +153,14 @@ public class RobotContainer {
     manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
     manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
     // Hood
+    
+    /*
     manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
+    */
+
+    manipController.povUp().onTrue(new tuneHood(hoodSubsystem, 15));
+    manipController.povDown().onTrue(new tuneHood(hoodSubsystem,25));
     // IntakeArm
     manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
     manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));
