@@ -3,10 +3,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,6 +40,12 @@ public class VisionSubsystem extends SubsystemBase {
 
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
+  // Pose3ds for atvantageScope
+  List<Pose3d> visionPose3ds= new ArrayList<>();
+
+  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault()
+  .getStructArrayTopic("VisionPoseArray", Pose3d.struct).publish();
+ 
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -86,6 +96,7 @@ public class VisionSubsystem extends SubsystemBase {
       visionSim.update(new Pose2d());
     }
     visionEstimates.clear();
+    visionPose3ds.clear();
     // Process results from all cameras
     for (int i = 0; i < photonPoseEstimators.size(); i++) {
       PhotonCamera cam = cameras.get(i);
@@ -93,6 +104,7 @@ public class VisionSubsystem extends SubsystemBase {
       for (PhotonPipelineResult result : results) {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+          visionPose3ds.add(visionEstimates.get(i).get().estimatedPose);
           SmartDashboard.putNumberArray(
               cam.getName() + " Position Estimate",
               new Double[] {
@@ -101,6 +113,9 @@ public class VisionSubsystem extends SubsystemBase {
               });
         }
       }
+    }
+    if(!visionPose3ds.isEmpty()){
+      arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
     }
   }
 
