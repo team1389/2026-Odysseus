@@ -142,10 +142,14 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor.setControl(new VoltageOut(i));
   }
 
+  public double getMotorAngle() {
+    return turretMotor.getPosition().getValueAsDouble();
+  }
+
   public double calculateAbsoluteRotations() {
     // Got Raw data from motors/encoders.
-    double rawE1 = 0.0;
-    double rawE2 = -0.088;
+    double rawE1 = getAngleDegrees();
+    double rawE2 = getMotorAngle();
     double e1_val = (rawE1 - e1_offset) % 360;
     if (e1_val < 0) e1_val += 360;
     double e2_val = (rawE2 - e2_offset) % 360;
