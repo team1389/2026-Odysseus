@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
@@ -34,10 +34,9 @@ public class TurretSubsystem extends SubsystemBase {
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
-          .withClosedLoopController(
-              4, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
+          .withClosedLoopController(75, 0, 0.25, RPM.of(2000), RotationsPerSecondPerSecond.of(20))
           // Configure Motor and Mechanism properties
-          .withGearing(new MechanismGearing(GearBox.fromReductionStages(41.45, 1)))
+          .withGearing(new MechanismGearing(GearBox.fromReductionStages(45.45, 1)))
           .withIdleMode(MotorMode.BRAKE)
           .withMotorInverted(false)
           // Setup Telemetry
@@ -84,7 +83,8 @@ public class TurretSubsystem extends SubsystemBase {
       if (initialDegrees > 180) {
         initialDegrees -= 360;
       }
-      turretSMC.setPosition(Degrees.of(initialDegrees));
+      // turretSMC.setPosition(Degrees.of(initialDegrees));
+      // System.out.print(initialDegrees);
     }
   }
 
