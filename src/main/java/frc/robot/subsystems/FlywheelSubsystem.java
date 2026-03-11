@@ -45,7 +45,7 @@ public class FlywheelSubsystem extends SubsystemBase {
 
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
-          .withClosedLoopController(1, 0, 0.2, RPM.of(6000), RotationsPerSecondPerSecond.of(3500))
+          .withClosedLoopController(0.9, 0, 0.4, RPM.of(6000), RotationsPerSecondPerSecond.of(3500))
           .withGearing(new MechanismGearing(GearBox.fromReductionStages(1, 1)))
           .withIdleMode(MotorMode.COAST)
           .withTelemetry("FlywheelMotor", TelemetryVerbosity.HIGH)
@@ -53,8 +53,8 @@ public class FlywheelSubsystem extends SubsystemBase {
           .withMotorInverted(true)
           .withClosedLoopRampRate(Seconds.of(0.125))
           .withOpenLoopRampRate(Seconds.of(0.125))
-          .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.1265, 0.014557))
-          .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
+          .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.1264, 0.014557))
+          .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.1265, 0.014557))
           .withControlMode(ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController motor =

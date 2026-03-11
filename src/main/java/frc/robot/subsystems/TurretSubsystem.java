@@ -12,6 +12,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,7 +35,8 @@ public class TurretSubsystem extends SubsystemBase {
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
-          .withClosedLoopController(75, 0, 0.25, RPM.of(2000), RotationsPerSecondPerSecond.of(20))
+          .withClosedLoopController(4, 0, 0, RPM.of(2000), RotationsPerSecondPerSecond.of(20))
+          .withFeedforward(new SimpleMotorFeedforward(0.42, 5.5, 0))
           // Configure Motor and Mechanism properties
           .withGearing(new MechanismGearing(GearBox.fromReductionStages(45.45, 1)))
           .withIdleMode(MotorMode.BRAKE)
