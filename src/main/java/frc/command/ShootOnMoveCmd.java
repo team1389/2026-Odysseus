@@ -27,25 +27,27 @@ public class ShootOnMoveCmd extends Command {
     private final FlywheelSubsystem flywheelSubsystem;
 
     private final Supplier<Pose2d> robotPose;
-    private final Supplier<ChassisSpeeds> fieldOrientedChassisSpeeds;
+    private final Supplier<ChassisSpeeds> robotOrientedChassisSpeeds;
     private final Pose2d goalPose;
     double totalExitVelocity = 15.0; // m/s
     private final double latency = 0.15;
-    private final InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
-    private final InterpolatingDoubleTreeMap hoodTable = new InterpolatingDoubleTreeMap(); // degrees
+    private final InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap(); // Meters: RPM
+    private final InterpolatingDoubleTreeMap hoodTable = new InterpolatingDoubleTreeMap(); // Meters: degrees (double)
+    private final InterpolatingDoubleTreeMap horizontalVelTable = new InterpolatingDoubleTreeMap(); // Meters: m/s
+    private final InterpolatingDoubleTreeMap invHorizontalVelTable = new InterpolatingDoubleTreeMap(); //m/s: Meters
 
 
     public ShootOnMoveCmd(TurretSubsystem turretSubsystem, 
                             FlywheelSubsystem flywheelSubsystem,
                             HoodSubsystem hoodSubsystem,
                             Supplier<Pose2d> robotPose,
-                            Supplier<ChassisSpeeds> fieldOrientedChassisSpeeds,
+                            Supplier<ChassisSpeeds> robotOrientedChassisSpeeds,
                             Pose2d goalPose) {
         this.turretSubsystem = turretSubsystem;
         this.flywheelSubsystem = flywheelSubsystem;
         this.hoodSubsystem = hoodSubsystem;
         this.robotPose = robotPose;
-        this.fieldOrientedChassisSpeeds = fieldOrientedChassisSpeeds;
+        this.robotOrientedChassisSpeeds = robotOrientedChassisSpeeds;
         this.goalPose = goalPose;
 
         for (Pair<Distance, AngularVelocity> entry : List.of(Pair.of(Meters.of(1), RPM.of((1000))),
@@ -58,6 +60,12 @@ public class ShootOnMoveCmd extends Command {
                                     Pair.of(Meters.of(3), 1.0))) {
             hoodTable.put(entry.getFirst().in(Meters), entry.getSecond());
         }
+        for (Pair<Distance, Double> entry : List.of(Pair.of(Meters.of(1), 1.0),
+                Pair.of(Meters.of(2), 1.0),
+                Pair.of(Meters.of(3), 1.0))) {
+                horizontalVelTable.put(entry.getFirst().in(Meters), entry.getSecond());
+                invHorizontalVelTable.put(entry.getSecond(), entry.getFirst().in(Meters));
+        }
     }
 
     public void initialize(){
@@ -66,7 +74,9 @@ public class ShootOnMoveCmd extends Command {
 
     @Override
     public void execute() {
-        var robotSpeed = fieldOrientedChassisSpeeds.get();
+        var robotRelative = robotOrientedChassisSpeeds.get();
+        var robotSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(robotRelative, robotPose.get().getRotation());
+
         Translation2d futurePos = robotPose.get().getTranslation().plus(
             new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond).times(latency)
                                                                     );
@@ -78,7 +88,7 @@ public class ShootOnMoveCmd extends Command {
 
         // 3. CALCULATE IDEAL SHOT (Stationary)
         // Note: This returns HORIZONTAL velocity component
-        double idealHorizontalSpeed = shooterTable.get(dist);
+        double idealHorizontalSpeed = horizontalVelTable.get(dist);
 
         // 4. VECTOR SUBTRACTION
         Translation2d robotVelVec = new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond);
@@ -88,16 +98,19 @@ public class ShootOnMoveCmd extends Command {
         double turretAngle        = shotVec.getAngle().getDegrees();
         double newHorizontalSpeed = shotVec.getNorm();
 
+        double shotDist = invHorizontalVelTable.get(newHorizontalSpeed);
+        double exitRPM = shooterTable.get(shotDist);
+
         // 6. SOLVE FOR NEW PITCH/RPM
         // Assuming constant total exit velocity, variable hood:
         // Clamp to avoid domain errors if we need more speed than possible
-        double ratio    = Math.min(newHorizontalSpeed / totalExitVelocity, 1.0);
-        double newPitch = Math.acos(ratio);
+        // double ratio    = Math.min(newHorizontalSpeed / totalExitVelocity, 1.0);
+        // double newPitch = Math.acos(ratio);
 
         // 7. SET OUTPUTS
         turretSubsystem.setAngleDirect(Degrees.of(turretAngle));
-        hoodSubsystem.setAngleDirect(Radians.of(newPitch));
-        flywheelSubsystem.setRPMDirect(MetersPerSecond.of(totalExitVelocity));
+        // hoodSubsystem.setAngleDirect(Radians.of(newPitch));
+        flywheelSubsystem.setVelocity(RPM.of(exitRPM));
     }
 
     @Override
