@@ -61,7 +61,7 @@ public class VisionSubsystem extends SubsystemBase {
           new Translation3d(-0.245, -0.240, 0.165), new Rotation3d(0, 0, Math.PI)),
       new Transform3d( // Back right camera
           new Translation3d(0.209, -0.271, 0.165),
-          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI*3)/2)) // -90º in radians
+          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI * 3) / 2)) // -90º in radians
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
