@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,11 +40,13 @@ public class VisionSubsystem extends SubsystemBase {
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
   // Pose3ds for atvantageScope
-  List<Pose3d> visionPose3ds= new ArrayList<>();
+  List<Pose3d> visionPose3ds = new ArrayList<>();
 
-  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault()
-  .getStructArrayTopic("VisionPoseArray", Pose3d.struct).publish();
- 
+  StructArrayPublisher<Pose3d> arrayPublisher =
+      NetworkTableInstance.getDefault()
+          .getStructArrayTopic("VisionPoseArray", Pose3d.struct)
+          .publish();
+
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -71,7 +72,7 @@ public class VisionSubsystem extends SubsystemBase {
           new Translation3d(-0.245, -0.240, 0.165), new Rotation3d(0, 0, Math.PI)),
       new Transform3d( // Back right camera
           new Translation3d(0.209, -0.271, 0.165),
-          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI*3)/2)) // -90º in radians
+          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI * 3) / 2)) // -90º in radians
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
@@ -114,7 +115,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
       }
     }
-    if(!visionPose3ds.isEmpty()){
+    if (!visionPose3ds.isEmpty()) {
       arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
     }
   }
