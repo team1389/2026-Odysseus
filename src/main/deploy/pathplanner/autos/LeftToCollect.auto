@@ -1,5 +1,5 @@
 {
-  "version": "2025.0",
+  "version": "2026.0",
   "command": {
     "type": "sequential",
     "data": {
@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartPath6"
+            "pathName": "LeftToCollect"
           }
         },
         {
@@ -25,24 +25,24 @@
                 "data": {
                   "name": "shootOnTheMove"
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collecting"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "MoveIntake"
-                      }
-                    }
-                  ]
+                  "name": "MoveIntake"
                 }
               }
             ]
@@ -52,6 +52,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "CompAutos",
   "choreoAuto": false
 }

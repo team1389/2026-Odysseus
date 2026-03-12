@@ -8,7 +8,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
-// import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,8 +29,6 @@ import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.commands.AutoCommands.MoveIntake;
-import frc.robot.commands.AutoCommands.MoveIntakeArm;
 
 public class RobotContainer {
 
@@ -81,11 +78,9 @@ public class RobotContainer {
     hoodSubsystem = new HoodSubsystem();
 
     // Pathplanner Auto commands
-    MoveIntakeArm moveIntakeArm = new MoveIntakeArm(intakeSubsystem);
-    MoveIntake moveIntake = new MoveIntake(intakeSubsystem, 70);
-    NamedCommands.registerCommand("moveIntake", moveIntake);
+    NamedCommands.registerCommand("moveIntake", intakeSubsystem.runRollers(70));
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    NamedCommands.registerCommand("MoveIntakeArm", moveIntakeArm);
+    NamedCommands.registerCommand("MoveIntakeArm", intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle)));
 
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));

@@ -1,5 +1,5 @@
 {
-  "version": "2025.0",
+  "version": "2026.0",
   "waypoints": [
     {
       "anchor": {
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "CompPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

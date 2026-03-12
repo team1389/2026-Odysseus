@@ -3,9 +3,11 @@
   "robotLength": 0.895,
   "holonomicMode": true,
   "pathFolders": [
+    "CompPaths",
     "TestPaths"
   ],
   "autoFolders": [
+    "CompAutos",
     "TestAutos"
   ],
   "defaultMaxVel": 3.0,

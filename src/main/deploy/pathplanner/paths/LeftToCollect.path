@@ -1,27 +1,27 @@
 {
-  "version": "2025.0",
+  "version": "2026.0",
   "waypoints": [
     {
       "anchor": {
-        "x": 3.25,
-        "y": 4.1
+        "x": 3.299,
+        "y": 6.036361502347417
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5614222913687588,
-        "y": 4.08787298380737
+        "x": 3.049507265313622,
+        "y": 6.020443734328234
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 4.1
+        "x": 1.2120070422535218,
+        "y": 5.898
       },
       "prevControl": {
-        "x": 1.7502011511364668,
-        "y": 4.110026719625765
+        "x": 1.5554028327839493,
+        "y": 5.91752719330754
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Start",
+  "folder": "CompPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

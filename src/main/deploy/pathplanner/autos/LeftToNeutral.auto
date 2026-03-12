@@ -1,5 +1,5 @@
 {
-  "version": "2025.0",
+  "version": "2026.0",
   "command": {
     "type": "sequential",
     "data": {
@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StartPath5"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
+            "pathName": "OverBumpLeft"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -29,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "shootOnTheMove"
+                  "name": "MoveIntake"
                 }
               }
             ]
@@ -39,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "CompAutos",
   "choreoAuto": false
 }
