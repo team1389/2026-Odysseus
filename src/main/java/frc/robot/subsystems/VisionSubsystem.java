@@ -28,7 +28,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSubsystem extends SubsystemBase {
   // Define camera names as they appear in the PhotonVision dashboard
-  private final String[] cameraNames = {"FrontRightCam", "FrontLeftCam"};
+  private final String[] cameraNames = {"Limelight3-BackLeftSwerve", "Limelight4-BackRightSwerve"};
   private final List<PhotonCamera> cameras = new ArrayList<>();
 
   // Photon pose estimators
