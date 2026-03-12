@@ -91,8 +91,13 @@ public class VisionSubsystem extends SubsystemBase {
     for (int i = 0; i < photonPoseEstimators.size(); i++) {
       PhotonCamera cam = cameras.get(i);
       List<PhotonPipelineResult> results = cam.getAllUnreadResults();
+      for (PhotonPipelineResult result : results) {
+        if (result.hasTargets()) {
+          visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+        }
       }
     }
+  }
 
   public List<Optional<EstimatedRobotPose>> getPoseEstimates() {
     return visionEstimates;
