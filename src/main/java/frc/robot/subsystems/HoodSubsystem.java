@@ -42,14 +42,9 @@ public class HoodSubsystem extends SubsystemBase {
           .withClosedLoopRampRate(Seconds.of(RobotMap.HoodRampRatePID))
           .withClosedLoopController(
               new ProfiledPIDController(
-                  1.0, 0.0, 0.0, new Constraints(Math.toRadians(5), Math.toRadians(25))))
+                  120.0, 0.0, 0.0, new Constraints(Math.toRadians(10), Math.toRadians(30))))
           .withOpenLoopRampRate(Seconds.of(RobotMap.HoodRampRateMan))
-          .withFeedforward(
-              new SimpleMotorFeedforward(
-                  RobotMap.HoodStaticVolts, RobotMap.HoodVelVolts, RobotMap.HoodAccVolts))
-          .withSimFeedforward(
-              new SimpleMotorFeedforward(
-                  RobotMap.HoodStaticVolts, RobotMap.HoodVelVolts, RobotMap.HoodAccVolts))
+          .withFeedforward(new SimpleMotorFeedforward(0.6, 8.0, 0.07))
           .withControlMode(ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController hoodSMC =
@@ -58,7 +53,7 @@ public class HoodSubsystem extends SubsystemBase {
   private final ArmConfig hoodConfig =
       new ArmConfig(hoodSMC)
           .withTelemetry("HoodMech", TelemetryVerbosity.HIGH)
-          .withSoftLimits(Degrees.of(5), Degrees.of(100))
+          .withSoftLimits(Degrees.of(2), Degrees.of(100))
           .withHardLimit(
               Degrees.of(0), Degrees.of(120)); // The Hood can be modeled as an arm since it has a
   // gravitational force acted upon based on the angle its in
@@ -71,8 +66,8 @@ public class HoodSubsystem extends SubsystemBase {
     return hood.setAngle(angle);
   }
 
-  public void setAngleDirect(Angle angle) {
-    hoodSMC.setPosition(angle);
+  public void setAngleDirect(Supplier<Angle> angle) {
+    hoodSMC.setPosition(angle.get());
   }
 
   public Command setAngle(Supplier<Angle> angleSupplier) {

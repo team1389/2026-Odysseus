@@ -104,7 +104,7 @@ public class FlywheelSubsystem extends SubsystemBase {
   }
 
   public double getSpeedRPM() {
-    return flywheel.getSpeed().in(RPM) * 10;
+    return flywheel.getSpeed().in(RPM);
   }
 
   @Override

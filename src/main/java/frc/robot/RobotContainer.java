@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
+import frc.robot.commands.TestTurret;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.FlywheelSubsystem;
@@ -65,6 +66,7 @@ public class RobotContainer {
     hoodSubsystem = new HoodSubsystem();
     serializerSubsystem = new SerializerSubsystem();
     SmartDashboard.putNumber("targetSpeed", 0);
+    SmartDashboard.putNumber("setHoodAngle", 0);
   }
 
   public void configureBindings() {
@@ -141,13 +143,13 @@ public class RobotContainer {
     // Testing subsytem commands
 
     // Turret
-    /*
+
     manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
     manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
-     */
+    /*
     manipController.povLeft().onTrue(turretSubsystem.setAngle(Degrees.of(45)));
     manipController.povRight().onTrue(turretSubsystem.setAngle(Degrees.of(-90)));
-
+     */
     // Flywheel
     manipController
         .rightBumper()
@@ -171,6 +173,10 @@ public class RobotContainer {
     // manipController.leftBumper().onTrue(hoodSubsystem.setAngle(Degrees.of(15)));
     // manipController.leftTrigger().onTrue(hoodSubsystem.setAngle(Degrees.of(25)));
 
+    manipController
+        .x()
+        .onTrue(
+            hoodSubsystem.setAngle(() -> Degrees.of(SmartDashboard.getNumber("setHoodAngle", 0))));
     // IntakeArm
     manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
     manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));
