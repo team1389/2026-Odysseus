@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,7 +28,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSubsystem extends SubsystemBase {
   // Define camera names as they appear in the PhotonVision dashboard
-  private final String[] cameraNames = {"FrontRightCam", "FrontLeftCam"};
+  private final String[] cameraNames = {"Limelight3-BackLeftSwerve", "Limelight4-BackRightSwerve"};
   private final List<PhotonCamera> cameras = new ArrayList<>();
 
   // Photon pose estimators
@@ -41,11 +40,13 @@ public class VisionSubsystem extends SubsystemBase {
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
   // Pose3ds for atvantageScope
-  List<Pose3d> visionPose3ds= new ArrayList<>();
+  List<Pose3d> visionPose3ds = new ArrayList<>();
 
-  StructArrayPublisher<Pose3d> arrayPublisher = NetworkTableInstance.getDefault()
-  .getStructArrayTopic("VisionPoseArray", Pose3d.struct).publish();
- 
+  StructArrayPublisher<Pose3d> arrayPublisher =
+      NetworkTableInstance.getDefault()
+          .getStructArrayTopic("VisionPoseArray", Pose3d.struct)
+          .publish();
+
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
@@ -114,7 +115,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
       }
     }
-    if(!visionPose3ds.isEmpty()){
+    if (!visionPose3ds.isEmpty()) {
       arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
     }
   }
