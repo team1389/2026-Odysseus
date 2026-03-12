@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,6 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
   public VisionSubsystem() {
     if (RobotBase.isSimulation()) {
       visionSim = new VisionSystemSim("main");
+      visionSim.addAprilTags(tagLayout);
     }
 
     // Define shared properties for the cameras
@@ -106,12 +106,12 @@ public class VisionSubsystem extends SubsystemBase {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
           visionPose3ds.add(visionEstimates.get(i).get().estimatedPose);
-          SmartDashboard.putNumberArray(
-              cam.getName() + " Position Estimate",
-              new Double[] {
-                visionEstimates.get(i).get().estimatedPose.getX(),
-                visionEstimates.get(i).get().estimatedPose.getY()
-              });
+          /*SmartDashboard.putNumberArray(
+          cam.getName() + " Position Estimate",
+          new Double[] {
+            visionEstimates.get(i).get().estimatedPose.getX(),
+            visionEstimates.get(i).get().estimatedPose.getY()
+          });*/
         }
       }
     }
