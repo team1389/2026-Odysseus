@@ -57,11 +57,12 @@ public class VisionSubsystem extends SubsystemBase {
     Transform3d[]
         robotToCamTransforms = { // These values use the pigeon as center, measurments in meters
       // from CAD
-      new Transform3d( // Back left (Not currently mounted on robot)
-          new Translation3d(-0.245, -0.240, 0.165), new Rotation3d(0, 0, Math.PI)),
-      new Transform3d( // Back right camera
-          new Translation3d(0.209, -0.271, 0.165),
-          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI * 3) / 2)) // -90º in radians
+      new Transform3d( // Back left camera (limelight3)
+          new Translation3d(-0.28734, -0.22538, 0.1782),
+          new Rotation3d(0, -0.436332, 1.570796)),
+      new Transform3d( // Back right camera (limelight4)
+          new Translation3d(-0.2259, 0.26194, 0.1797),
+          new Rotation3d(0, -0.436332 / 36, -1.570796)) 
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
