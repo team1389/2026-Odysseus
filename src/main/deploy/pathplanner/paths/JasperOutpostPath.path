@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.5605769230769244,
+        "y": 1.6628461538461545
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.5865175114530903,
+        "y": 1.290112191265983
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.1303076923076936,
+        "y": 1.1046923076923076
+      },
+      "prevControl": {
+        "x": 3.144784537426604,
+        "y": 1.4649324499778658
+      },
+      "nextControl": {
+        "x": 1.0818368876691622,
+        "y": 0.7323809299979587
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.7000384615384627,
+        "y": 0.6511923076923085
+      },
+      "prevControl": {
+        "x": 1.7934006489060128,
+        "y": 1.0038878522143442
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "JasperPaths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

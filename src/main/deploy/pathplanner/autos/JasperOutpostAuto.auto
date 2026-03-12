@@ -1,0 +1,82 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "JasperOutpostPath"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RampFlywheel"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RampFlywheel"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "TurretTrackHub"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootBalls"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmUp&Down"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "JasperAutos",
+  "choreoAuto": false
+}

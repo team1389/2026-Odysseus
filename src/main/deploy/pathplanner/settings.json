@@ -4,10 +4,12 @@
   "holonomicMode": true,
   "pathFolders": [
     "Spencer",
+    "JasperPaths",
     "TestPaths"
   ],
   "autoFolders": [
     "Spencer",
+    "JasperAutos",    
     "TestAutos"
   ],
   "defaultMaxVel": 3.0,
