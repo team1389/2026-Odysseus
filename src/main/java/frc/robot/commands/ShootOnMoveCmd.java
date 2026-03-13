@@ -99,36 +99,32 @@ public class ShootOnMoveCmd extends Command {
 
         // 5. CONVERT TO CONTROLS
         double turretAngleDeg        = shotVec.getAngle().getDegrees();
-        turretAngleDeg = Math.min(Math.max(turretAngleDeg, -99), 99); // Clamp turret degree
         Rotation2d turretAngle = Rotation2d.fromDegrees(turretAngleDeg); // New Rotation2d object using clamped angle
         double newHorizontalSpeed = shotVec.getNorm();
 
         double shotDist = invHorizontalVelTable.get(newHorizontalSpeed);
-        if (shotDist < 4 * 0.3048){ // Can't shoot <4 ft
+        if (shotDist < 4 * 0.3048){ // Can't shoot <4ft
+            SmartDashboard.putBoolean("Target/canShoot", false);
             return;
         }
 
         double exitRPM = shooterTable.get(shotDist);
-
-        // 6. SOLVE FOR NEW PITCH/RPM
-        // Assuming constant total exit velocity, variable hood:
-        // Clamp to avoid domain errors if we need more speed than possible
-        // double ratio    = Math.min(newHorizontalSpeed / totalExitVelocity, 1.0);
-        // double newPitch = Math.acos(ratio);
-
         
-        // 6.5. Correct field relative turret angle to robot relative (WITH 180 OFFSET)
+        // Correct field relative turret angle to robot relative (WITH 180 OFFSET)
         Rotation2d robotRelativeAngle = turretAngle
                                                     .minus(robotPoseSupplier.get().getRotation())
                                                     .minus(Rotation2d.fromDegrees(180));
 
-        // 7. SET OUTPUTS
+        double hoodAngle = hoodTable.get(shotDist);
+        
+        // SET OUTPUTS
         turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
-        // hoodSubsystem.setAngleDirect(Radians.of(newPitch));
+        hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
         flywheelSubsystem.setVelocity(RPM.of(exitRPM));
 
         SmartDashboard.putBoolean("Target/canShoot", true);
         SmartDashboard.putNumber("Target/Turret Angle", robotRelativeAngle.getDegrees());
+        SmartDashboard.putNumber("Target/Hood Angle", hoodAngle);
         SmartDashboard.putNumber("Target/RPM", exitRPM);
     }
 
