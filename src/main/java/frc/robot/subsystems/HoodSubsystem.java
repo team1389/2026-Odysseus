@@ -29,13 +29,13 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class HoodSubsystem extends SubsystemBase {
   private final TalonFX hoodMotor = new TalonFX(RobotMap.HoodCanID);
-
+  private double targetAngle;
   private final SmartMotorControllerConfig hoodMotorConfig =
       new SmartMotorControllerConfig(this)
           .withGearing(
               new MechanismGearing(
                   GearBox.fromReductionStages(144.9, 1))) // gear ratio after reduction
-          .withIdleMode(MotorMode.COAST)
+          .withIdleMode(MotorMode.BRAKE)
           .withTelemetry("HoodMotor", TelemetryVerbosity.HIGH)
           .withStatorCurrentLimit(Amps.of(RobotMap.HoodMaxAmp))
           .withMotorInverted(RobotMap.HoodMoterInvert)
@@ -63,6 +63,7 @@ public class HoodSubsystem extends SubsystemBase {
   public HoodSubsystem() {}
 
   public Command setAngle(Angle angle) {
+    targetAngle = angle.in(Degrees);
     return hood.setAngle(angle);
   }
 
@@ -106,9 +107,17 @@ public class HoodSubsystem extends SubsystemBase {
     return hood.getAngle().in(Degrees);
   }
 
+
   @Override
   public void periodic() {
     hood.updateTelemetry();
+    if(hood.getAngle().in(Degrees) < targetAngle+0.2){
+      hoodMotor.setVoltage(0.7);
+    } else if(hood.getAngle().in(Degrees) > targetAngle-0.2){
+      hoodMotor.setVoltage(-0.7);
+    } else {
+      hoodMotor.setVoltage(0);
+    }
   }
 
   @Override

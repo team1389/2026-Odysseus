@@ -176,7 +176,8 @@ public class RobotContainer {
     manipController
         .x()
         .onTrue(
-            hoodSubsystem.setAngle(() -> Degrees.of(SmartDashboard.getNumber("setHoodAngle", 0))));
+            hoodSubsystem.setAngle(() -> Degrees.of(SmartDashboard.getNumber("setHoodAngle", 0))))
+        .onFalse(hoodSubsystem.setDutyCycle(0));
     // IntakeArm
     manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
     manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));
