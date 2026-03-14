@@ -12,6 +12,8 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
@@ -95,7 +97,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setAngleDirect(Angle angle) {
-    turretSMC.setPosition(angle);
+    Angle clamped = Degrees.of(MathUtil.clamp(angle.in(Degrees), -90, 90));
+    turretSMC.setPosition(clamped);
   }
 
   public Command setAngle(Supplier<Angle> angleSupplier) {
