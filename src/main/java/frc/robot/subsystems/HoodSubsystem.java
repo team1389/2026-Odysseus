@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
@@ -51,6 +53,9 @@ public class HoodSubsystem extends SubsystemBase {
 
   private final ArmConfig hoodConfig =
       new ArmConfig(hoodSMC)
+          .withMass(Pounds.of(2))
+          .withStartingPosition(Degrees.of(25))
+          .withLength(Inches.of(9.3))
           .withTelemetry("HoodMech", TelemetryVerbosity.HIGH)
           .withSoftLimits(Degrees.of(2), Degrees.of(66))
           .withHardLimit(
