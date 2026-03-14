@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,6 +47,9 @@ public class VisionSubsystem extends SubsystemBase {
       NetworkTableInstance.getDefault()
           .getStructArrayTopic("VisionPoseArray", Pose3d.struct)
           .publish();
+
+  // Field2d for pose visualization
+  private List<Field2d> field2ds = new ArrayList<>();
 
   // Simulation objects
   private VisionSystemSim visionSim;
@@ -88,6 +93,9 @@ public class VisionSubsystem extends SubsystemBase {
         cameraSims.add(camSim);
       }
     }
+    for (int i = 0; i < cameraNames.length; i++) {
+      SmartDashboard.putData("VisionField" + i, field2ds.get(i));
+    }
   }
 
   @Override
@@ -117,6 +125,9 @@ public class VisionSubsystem extends SubsystemBase {
     }
     if (!visionPose3ds.isEmpty()) {
       arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
+      for (int i = 0; i < cameraNames.length; i++) {
+        field2ds.get(i).setRobotPose(visionPose3ds.get(i).toPose2d());
+      }
     }
   }
 
