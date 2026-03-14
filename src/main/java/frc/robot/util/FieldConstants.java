@@ -10,7 +10,6 @@ package frc.robot.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -25,8 +24,7 @@ public class FieldConstants
   public static final double fieldLength   = Units.inchesToMeters(690.876);
   public static final double fieldWidth    = Units.inchesToMeters(317);
 
-  public static final Pose2d blueHub = new Pose2d(new Translation2d(Units.inchesToMeters(181.56), Units.inchesToMeters(158.32)), new Rotation2d(0, 0));
-
+  public static final Pose2d blueHub = new Pose2d(new Translation2d(Units.inchesToMeters(158.34), Units.inchesToMeters(158.84)), new Rotation2d(Units.degreesToRadians(180)));
 
 
 }
