@@ -39,23 +39,22 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class FlywheelSubsystem extends SubsystemBase {
 
-  private final Distance flywheelDiameter = Inches.of(3.95);
+  private final Distance flywheelDiameter = Inches.of(4);
   // Changed the motor type to TalonFX, added second motor
   private final TalonFX flywheelMotor1 = new TalonFX(RobotMap.FlywheelCanID);
 
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
-          .withClosedLoopController(
-              0.00016541, 0, 0, RPM.of(5000), RotationsPerSecondPerSecond.of(2500))
-          .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 4)))
+          .withClosedLoopController(0.9, 0, 0.4, RPM.of(6000), RotationsPerSecondPerSecond.of(3500))
+          .withGearing(new MechanismGearing(GearBox.fromReductionStages(1, 1)))
           .withIdleMode(MotorMode.COAST)
           .withTelemetry("FlywheelMotor", TelemetryVerbosity.HIGH)
           .withStatorCurrentLimit(Amps.of(40))
-          .withMotorInverted(false)
-          .withClosedLoopRampRate(Seconds.of(0.25))
-          .withOpenLoopRampRate(Seconds.of(0.25))
-          .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
-          .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.089836, 0.014557))
+          .withMotorInverted(true)
+          .withClosedLoopRampRate(Seconds.of(0.125))
+          .withOpenLoopRampRate(Seconds.of(0.125))
+          .withFeedforward(new SimpleMotorFeedforward(0.27937, 0.1264, 0.014557))
+          .withSimFeedforward(new SimpleMotorFeedforward(0.27937, 0.1265, 0.014557))
           .withControlMode(ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController motor =
@@ -64,8 +63,8 @@ public class FlywheelSubsystem extends SubsystemBase {
   // Added correct values for diameter and mass
   private final FlyWheelConfig flywheelConfig =
       new FlyWheelConfig(motor)
-          .withDiameter(Inches.of(3.95))
-          .withMass(Pounds.of(6))
+          .withDiameter(Inches.of(4))
+          .withMass(Pounds.of(5))
           .withTelemetry("FlywheelMech", TelemetryVerbosity.HIGH)
           .withSoftLimit(RPM.of(-5000), RPM.of(5000))
           .withSpeedometerSimulation(RPM.of(7500));
@@ -128,5 +127,9 @@ public class FlywheelSubsystem extends SubsystemBase {
     motor.setVelocity(
         RotationsPerSecond.of(
             speed.in(MetersPerSecond) / flywheelDiameter.times(Math.PI).in(Meters)));
+  }
+
+  public void setRPM(AngularVelocity speed) {
+    motor.setVelocity(speed);
   }
 }
