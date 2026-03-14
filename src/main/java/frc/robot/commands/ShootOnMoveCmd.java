@@ -53,7 +53,8 @@ public class ShootOnMoveCmd extends Command {
         this.robotOrientedChassisSpeeds = robotOrientedChassisSpeeds;
         this.goalPoseSupplier = goalPoseSupplier;
 
-        for (Pair<Distance, AngularVelocity> entry : List.of(Pair.of(Meters.of(4*0.3048), RPM.of((1600))),
+        for (Pair<Distance, AngularVelocity> entry : List.of(Pair.of(Meters.of(0.0), RPM.of((0))),
+                                    Pair.of(Meters.of(4*0.3048), RPM.of((1600))),
                                     Pair.of(Meters.of(5*0.3048), RPM.of(1700)),
                                     Pair.of(Meters.of(6*0.3048), RPM.of(1775)),
                                     Pair.of(Meters.of(7*0.3048), RPM.of(1850)),
@@ -93,7 +94,8 @@ public class ShootOnMoveCmd extends Command {
                                     )) {
             hoodTable.put(entry.getFirst().in(Meters), entry.getSecond());
         }
-        for (Pair<Distance, Double> entry : List.of(Pair.of(Meters.of(4*0.3048), 5.0),
+        for (Pair<Distance, Double> entry : List.of(Pair.of(Meters.of(0.0), 0.0),
+                Pair.of(Meters.of(4*0.3048), 5.0),
                 Pair.of(Meters.of(5*0.3048), 5.53097),
                 Pair.of(Meters.of(6*0.3048), 6.60793),
                 Pair.of(Meters.of(7*0.3048), 6.73077),
