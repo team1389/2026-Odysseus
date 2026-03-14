@@ -175,7 +175,7 @@ public class ShootOnMoveCmd extends Command {
     // SET OUTPUTS
     turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
     hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
-    flywheelSubsystem.setVelocity(RPM.of(exitRPM));
+    flywheelSubsystem.setRPM(RPM.of(exitRPM));
 
     SmartDashboard.putBoolean("Target/canShoot", true);
     SmartDashboard.putNumber("Target/Turret Angle", robotRelativeAngle.getDegrees());
@@ -188,6 +188,7 @@ public class ShootOnMoveCmd extends Command {
     // this gets called when the input stops being given.
     turretSubsystem.stop();
     hoodSubsystem.stop();
+    flywheelSubsystem.setSpeed(0);
   }
 
   @Override

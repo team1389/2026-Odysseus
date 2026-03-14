@@ -96,7 +96,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setAngleDirect(Angle angle) {
-    Angle clamped = Degrees.of(MathUtil.clamp(angle.in(Degrees), -90, 90));
+    Angle clamped = Degrees.of(MathUtil.clamp(angle.in(Degrees), -95, 95));
     turretSMC.setPosition(clamped);
   }
 

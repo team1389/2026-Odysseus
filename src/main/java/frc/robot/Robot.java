@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,6 +40,10 @@ public class Robot extends TimedRobot {
     for (Optional<EstimatedRobotPose> poseEstimate :
         m_robotContainer.visionSubsystem.getPoseEstimates()) {
       if (!poseEstimate.isEmpty()) {
+        Pose2d newPose2d =
+            new Pose2d(
+                poseEstimate.get().estimatedPose.getTranslation().toTranslation2d(),
+                m_robotContainer.drivetrain.getRotation3d().toRotation2d());
         m_robotContainer.drivetrain.addVisionMeasurement(
             poseEstimate.get().estimatedPose.toPose2d(), poseEstimate.get().timestampSeconds);
       }
