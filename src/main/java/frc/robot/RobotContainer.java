@@ -10,7 +10,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -103,8 +102,6 @@ public class RobotContainer {
     // double armIntakeTargetAngle = 46;
     // double intakeTargetAngle = 90;
     // double outtakeTargetAngle = 0;
-
-
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,

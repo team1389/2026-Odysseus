@@ -74,6 +74,10 @@ public class HoodSubsystem extends SubsystemBase {
     hoodSMC.setPosition(angle.get());
   }
 
+  public void setAngleDirect(Angle angle) {
+    hoodSMC.setPosition(angle);
+  }
+
   public Command setAngle(Supplier<Angle> angleSupplier) {
     return hood.setAngle(angleSupplier);
   }
