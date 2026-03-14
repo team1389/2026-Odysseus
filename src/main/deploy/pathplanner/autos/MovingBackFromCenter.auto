@@ -1,0 +1,44 @@
+{
+  "version": "2026.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterMovingBack"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shootOnTheMove"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "CompAutos",
+  "choreoAuto": false
+}

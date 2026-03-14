@@ -1,0 +1,44 @@
+{
+  "version": "2026.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OverBumpRight"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntake"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "CompAutos",
+  "choreoAuto": false
+}

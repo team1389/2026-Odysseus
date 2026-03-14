@@ -8,7 +8,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
-// import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -80,7 +79,10 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
 
     // Pathplanner Auto commands
+    NamedCommands.registerCommand("moveIntake", intakeSubsystem.runRollers(70));
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
+    NamedCommands.registerCommand("MoveIntakeArm", intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle)));
+
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));
 
