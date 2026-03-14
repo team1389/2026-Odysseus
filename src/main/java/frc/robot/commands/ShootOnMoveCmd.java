@@ -29,6 +29,10 @@ public class ShootOnMoveCmd extends Command {
   private final Supplier<ChassisSpeeds> robotOrientedChassisSpeeds;
   private final Supplier<Pose2d> goalPoseSupplier;
   private final double latency = 0.15; //      <---------------NEED TO TUNE
+  private final double offset =
+      0.25; //      <---------------NEED TO TUNE (in feet, added to distance to target for
+  // interpolation tables to account for the fact that the robot is moving towards the target
+  // while shooting)
   private final InterpolatingDoubleTreeMap shooterTable =
       new InterpolatingDoubleTreeMap(); // Meters: RPM
   private final InterpolatingDoubleTreeMap hoodTable =
@@ -55,66 +59,66 @@ public class ShootOnMoveCmd extends Command {
     for (Pair<Distance, AngularVelocity> entry :
         List.of(
             Pair.of(Meters.of(0.0), RPM.of((0))),
-            Pair.of(Meters.of((4 + 1.95833) * 0.3048), RPM.of((1600))),
-            Pair.of(Meters.of((5 + 1.95833) * 0.3048), RPM.of(1700)),
-            Pair.of(Meters.of((6 + 1.95833) * 0.3048), RPM.of(1775)),
-            Pair.of(Meters.of((7 + 1.95833) * 0.3048), RPM.of(1850)),
-            Pair.of(Meters.of((8 + 1.95833) * 0.3048), RPM.of(1890)),
-            Pair.of(Meters.of((9 + 1.95833) * 0.3048), RPM.of(2000)),
-            Pair.of(Meters.of((10 + 1.95833) * 0.3048), RPM.of(2025)),
-            Pair.of(Meters.of((11 + 1.95833) * 0.3048), RPM.of(2100)),
-            Pair.of(Meters.of((12 + 1.95833) * 0.3048), RPM.of(2050)),
-            Pair.of(Meters.of((13 + 1.95833) * 0.3048), RPM.of(2100)),
-            Pair.of(Meters.of((14 + 1.95833) * 0.3048), RPM.of(2150)),
-            Pair.of(Meters.of((15 + 1.95833) * 0.3048), RPM.of(2150)),
-            Pair.of(Meters.of((16 + 1.95833) * 0.3048), RPM.of(2175)),
-            Pair.of(Meters.of((17 + 1.95833) * 0.3048), RPM.of(2270)),
-            Pair.of(Meters.of((18 + 1.95833) * 0.3048), RPM.of(2375)),
-            Pair.of(Meters.of((19 + 1.95833) * 0.3048), RPM.of(2400)),
-            Pair.of(Meters.of((20 + 1.95833) * 0.3048), RPM.of(2400)))) {
+            Pair.of(Meters.of((4 + offset) * 0.3048), RPM.of((1600))),
+            Pair.of(Meters.of((5 + offset) * 0.3048), RPM.of(1700)),
+            Pair.of(Meters.of((6 + offset) * 0.3048), RPM.of(1775)),
+            Pair.of(Meters.of((7 + offset) * 0.3048), RPM.of(1850)),
+            Pair.of(Meters.of((8 + offset) * 0.3048), RPM.of(1890)),
+            Pair.of(Meters.of((9 + offset) * 0.3048), RPM.of(2000)),
+            Pair.of(Meters.of((10 + offset) * 0.3048), RPM.of(2025)),
+            Pair.of(Meters.of((11 + offset) * 0.3048), RPM.of(2100)),
+            Pair.of(Meters.of((12 + offset) * 0.3048), RPM.of(2050)),
+            Pair.of(Meters.of((13 + offset) * 0.3048), RPM.of(2100)),
+            Pair.of(Meters.of((14 + offset) * 0.3048), RPM.of(2150)),
+            Pair.of(Meters.of((15 + offset) * 0.3048), RPM.of(2150)),
+            Pair.of(Meters.of((16 + offset) * 0.3048), RPM.of(2175)),
+            Pair.of(Meters.of((17 + offset) * 0.3048), RPM.of(2270)),
+            Pair.of(Meters.of((18 + offset) * 0.3048), RPM.of(2375)),
+            Pair.of(Meters.of((19 + offset) * 0.3048), RPM.of(2400)),
+            Pair.of(Meters.of((20 + offset) * 0.3048), RPM.of(2400)))) {
       shooterTable.put(entry.getFirst().in(Meters), entry.getSecond().in(RPM));
     }
     for (Pair<Distance, Double> entry :
         List.of(
-            Pair.of(Meters.of((4 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((5 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((6 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((7 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((8 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((9 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((10 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((11 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((12 + 1.95833) * 0.3048), 0.0),
-            Pair.of(Meters.of((13 + 1.95833) * 0.3048), 5.0),
-            Pair.of(Meters.of((14 + 1.95833) * 0.3048), 5.0),
-            Pair.of(Meters.of((15 + 1.95833) * 0.3048), 5.5),
-            Pair.of(Meters.of((16 + 1.95833) * 0.3048), 5.5),
-            Pair.of(Meters.of((17 + 1.95833) * 0.3048), 6.0),
-            Pair.of(Meters.of((18 + 1.95833) * 0.3048), 6.0),
-            Pair.of(Meters.of((19 + 1.95833) * 0.3048), 8.0),
-            Pair.of(Meters.of((20 + 1.95833) * 0.3048), 10.0))) {
+            Pair.of(Meters.of((4 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((5 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((6 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((7 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((8 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((9 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((10 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((11 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((12 + offset) * 0.3048), 0.0),
+            Pair.of(Meters.of((13 + offset) * 0.3048), 5.0),
+            Pair.of(Meters.of((14 + offset) * 0.3048), 5.0),
+            Pair.of(Meters.of((15 + offset) * 0.3048), 5.5),
+            Pair.of(Meters.of((16 + offset) * 0.3048), 5.5),
+            Pair.of(Meters.of((17 + offset) * 0.3048), 6.0),
+            Pair.of(Meters.of((18 + offset) * 0.3048), 6.0),
+            Pair.of(Meters.of((19 + offset) * 0.3048), 8.0),
+            Pair.of(Meters.of((20 + offset) * 0.3048), 10.0))) {
       hoodTable.put(entry.getFirst().in(Meters), entry.getSecond());
     }
     for (Pair<Distance, Double> entry :
         List.of(
             Pair.of(Meters.of(0.0), 0.0),
-            Pair.of(Meters.of((4 + 1.95833) * 0.3048), 5.0),
-            Pair.of(Meters.of((5 + 1.95833) * 0.3048), 5.53097),
-            Pair.of(Meters.of((6 + 1.95833) * 0.3048), 6.60793),
-            Pair.of(Meters.of((7 + 1.95833) * 0.3048), 6.73077),
-            Pair.of(Meters.of((8 + 1.95833) * 0.3048), 7.25953),
-            Pair.of(Meters.of((9 + 1.95833) * 0.3048), 8.09353),
-            Pair.of(Meters.of((10 + 1.95833) * 0.3048), 8.15661),
-            Pair.of(Meters.of((11 + 1.95833) * 0.3048), 8.94309),
-            Pair.of(Meters.of((12 + 1.95833) * 0.3048), 10.27397),
-            Pair.of(Meters.of((13 + 1.95833) * 0.3048), 10.14041),
-            Pair.of(Meters.of((14 + 1.95833) * 0.3048), 10.63830),
-            Pair.of(Meters.of((15 + 1.95833) * 0.3048), 12.11632),
-            Pair.of(Meters.of((16 + 1.95833) * 0.3048), 12.08459),
-            Pair.of(Meters.of((17 + 1.95833) * 0.3048), 12.33672),
-            Pair.of(Meters.of((18 + 1.95833) * 0.3048), 13.45291),
-            Pair.of(Meters.of((19 + 1.95833) * 0.3048), 12.59947),
-            Pair.of(Meters.of((20 + 1.95833) * 0.3048), 13.58696))) {
+            Pair.of(Meters.of((4 + offset) * 0.3048), 5.0),
+            Pair.of(Meters.of((5 + offset) * 0.3048), 5.53097),
+            Pair.of(Meters.of((6 + offset) * 0.3048), 6.60793),
+            Pair.of(Meters.of((7 + offset) * 0.3048), 6.73077),
+            Pair.of(Meters.of((8 + offset) * 0.3048), 7.25953),
+            Pair.of(Meters.of((9 + offset) * 0.3048), 8.09353),
+            Pair.of(Meters.of((10 + offset) * 0.3048), 8.15661),
+            Pair.of(Meters.of((11 + offset) * 0.3048), 8.94309),
+            Pair.of(Meters.of((12 + offset) * 0.3048), 10.27397),
+            Pair.of(Meters.of((13 + offset) * 0.3048), 10.14041),
+            Pair.of(Meters.of((14 + offset) * 0.3048), 10.63830),
+            Pair.of(Meters.of((15 + offset) * 0.3048), 12.11632),
+            Pair.of(Meters.of((16 + offset) * 0.3048), 12.08459),
+            Pair.of(Meters.of((17 + offset) * 0.3048), 12.33672),
+            Pair.of(Meters.of((18 + offset) * 0.3048), 13.45291),
+            Pair.of(Meters.of((19 + offset) * 0.3048), 12.59947),
+            Pair.of(Meters.of((20 + offset) * 0.3048), 13.58696))) {
       horizontalVelTable.put(entry.getFirst().in(Meters), entry.getSecond());
       invHorizontalVelTable.put(entry.getSecond(), entry.getFirst().in(Meters));
     }
@@ -159,7 +163,7 @@ public class ShootOnMoveCmd extends Command {
     double newHorizontalSpeed = shotVec.getNorm();
 
     double shotDist = invHorizontalVelTable.get(newHorizontalSpeed);
-    if (shotDist < (4 + 1.95833) * 0.3048) { // Can't shoot <4ft
+    if (shotDist < (4 + offset) * 0.3048) { // Can't shoot <4ft
       SmartDashboard.putBoolean("Target/canShoot", false);
       return;
     }
