@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
 
 /** Don't change the name of this class since the VM is set up to run this */
 public class Robot extends TimedRobot {
@@ -34,6 +36,13 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     m_timeAndJoystickReplay.update();
     CommandScheduler.getInstance().run();
+    for (Optional<EstimatedRobotPose> poseEstimate :
+        m_robotContainer.visionSubsystem.getPoseEstimates()) {
+      if (!poseEstimate.isEmpty()) {
+        m_robotContainer.drivetrain.addVisionMeasurement(
+            poseEstimate.get().estimatedPose.toPose2d(), poseEstimate.get().timestampSeconds);
+      }
+    }
   }
 
   @Override
@@ -65,6 +74,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().cancel(m_autonomousCommand);
     }
+    CommandScheduler.getInstance().getActiveButtonLoop().clear();
+    m_robotContainer.configureBindings();
   }
 
   /** This function is called periodically during operator control. */
@@ -77,6 +88,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+    CommandScheduler.getInstance().getActiveButtonLoop().clear();
+    m_robotContainer.configureTestBindings();
   }
 
   /** This function is called periodically during test mode. */
