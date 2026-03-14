@@ -29,7 +29,6 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class HoodSubsystem extends SubsystemBase {
   private final TalonFX hoodMotor = new TalonFX(RobotMap.HoodCanID);
-  private double targetAngle;
   private final SmartMotorControllerConfig hoodMotorConfig =
       new SmartMotorControllerConfig(this)
           .withGearing(
@@ -55,7 +54,7 @@ public class HoodSubsystem extends SubsystemBase {
           .withTelemetry("HoodMech", TelemetryVerbosity.HIGH)
           .withSoftLimits(Degrees.of(2), Degrees.of(100))
           .withHardLimit(
-              Degrees.of(0), Degrees.of(120)); // The Hood can be modeled as an arm since it has a
+              Degrees.of(0), Degrees.of(68)); // The Hood can be modeled as an arm since it has a
   // gravitational force acted upon based on the angle its in
 
   private final Arm hood = new Arm(hoodConfig);
@@ -63,7 +62,6 @@ public class HoodSubsystem extends SubsystemBase {
   public HoodSubsystem() {}
 
   public Command setAngle(Angle angle) {
-    targetAngle = angle.in(Degrees);
     return hood.setAngle(angle);
   }
 
@@ -111,13 +109,6 @@ public class HoodSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     hood.updateTelemetry();
-    if(hood.getAngle().in(Degrees) < targetAngle+0.2){
-      hoodMotor.setVoltage(0.7);
-    } else if(hood.getAngle().in(Degrees) > targetAngle-0.2){
-      hoodMotor.setVoltage(-0.7);
-    } else {
-      hoodMotor.setVoltage(0);
-    }
   }
 
   @Override
