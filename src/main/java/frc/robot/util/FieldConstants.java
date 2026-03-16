@@ -23,6 +23,6 @@ public class FieldConstants {
 
   public static final Pose2d blueHub =
       new Pose2d(
-          new Translation2d(Units.inchesToMeters(158.34), Units.inchesToMeters(158.84)),
+          new Translation2d(Units.inchesToMeters(182.11), Units.inchesToMeters(158.845)),
           new Rotation2d(Units.degreesToRadians(180)));
 }
