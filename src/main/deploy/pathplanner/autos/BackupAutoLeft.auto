@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterMovingBack"
+            "pathName": "BackupPathLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collecting"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftToCenter"
           }
         },
         {
@@ -29,6 +41,18 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "MoveIntake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "shootOnTheMove"
                 }
               }
@@ -39,6 +63,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "CompAutos",
+  "folder": "BackupCompAutos",
   "choreoAuto": false
 }

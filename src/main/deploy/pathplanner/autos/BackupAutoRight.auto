@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OverBumpRight"
+            "pathName": "BackupPathRight"
           }
         },
         {
@@ -15,30 +15,30 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "MoveIntakeArm"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "MoveIntake"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightToCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "CompAutos",
+  "folder": "BackupCompAutos",
   "choreoAuto": false
 }

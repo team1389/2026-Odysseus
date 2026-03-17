@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveFwd5m"
+            "pathName": "BackupPathMiddle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "TestAutos",
+  "folder": "BackupCompAutos",
   "choreoAuto": false
 }
