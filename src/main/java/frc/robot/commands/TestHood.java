@@ -1,15 +1,13 @@
 package frc.robot.commands;
 
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HoodSubsystem;
-import java.util.function.Supplier;
-
+import static edu.wpi.first.units.Units.Degrees;;
 public class TestHood extends Command {
   public HoodSubsystem hoodSubsystem;
-  public Supplier<Angle> angle;
+  public double angle;
 
-  public TestHood(HoodSubsystem hoodSubsystem, Supplier<Angle> angle) {
+  public TestHood(HoodSubsystem hoodSubsystem, double angle) {
     this.hoodSubsystem = hoodSubsystem;
     this.angle = angle;
   }
@@ -21,7 +19,7 @@ public class TestHood extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    hoodSubsystem.setAngleDirect(angle);
+    hoodSubsystem.setAngle(Degrees.of(angle));
   }
 
   @Override

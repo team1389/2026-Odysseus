@@ -2,14 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import java.util.function.Supplier;
 
 public class TestIntakeArm extends Command {
   public IntakeSubsystem intakeSubsystem;
-  public double targetRPM;
+  public Supplier<Double> angle;
 
-  public TestIntakeArm(IntakeSubsystem intakeSubsystem, double targetRPM) {
+  public TestIntakeArm(IntakeSubsystem intakeSubsystem, Supplier<Double> angle) {
     this.intakeSubsystem = intakeSubsystem;
-    this.targetRPM = targetRPM;
+    this.angle = angle;
   }
 
   public void initialize() {
@@ -19,7 +20,7 @@ public class TestIntakeArm extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    intakeSubsystem.setArmVoltage(targetRPM);
+    intakeSubsystem.setArmVoltage(() -> angle.get() * 16);
   }
 
   @Override
