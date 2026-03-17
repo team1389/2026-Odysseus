@@ -108,16 +108,14 @@ public class RobotContainer {
                 drive
                     .withVelocityX(
                         -(driverController.rightBumper().getAsBoolean() // slow mode
-                                ? Math.signum(driverController.getLeftY())
-                                    * Math.pow(driverController.getLeftY(), 2)
-                                    * slowModeScale // scaling and square smoothing in slow mode
+                                ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
+                                // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -(driverController.rightBumper().getAsBoolean() // slow mode
-                                ? Math.signum(driverController.getLeftX())
-                                    * Math.pow(driverController.getLeftX(), 2)
-                                    * slowModeScale // scaling and square smoothing in slow mode
+                                ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
+                                // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
@@ -231,16 +229,14 @@ public class RobotContainer {
                 drive
                     .withVelocityX(
                         -(driverController.rightBumper().getAsBoolean() // slow mode
-                                ? Math.signum(driverController.getLeftY())
-                                    * Math.pow(driverController.getLeftY(), 2)
-                                    * slowModeScale // scaling and square smoothing in slow mode
+                                ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
+                                // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -(driverController.rightBumper().getAsBoolean() // slow mode
-                                ? Math.signum(driverController.getLeftX())
-                                    * Math.pow(driverController.getLeftX(), 2)
-                                    * slowModeScale // scaling and square smoothing in slow mode
+                                ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
+                                // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
@@ -301,5 +297,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     /* Run the path selected from the auto chooser */
     return autoChooser.getSelected();
+  }
+
+  private double scaleAndSmooth(double inputValue, double scaleFactor) {
+    return inputValue * Math.abs(inputValue) * scaleFactor;
   }
 }
