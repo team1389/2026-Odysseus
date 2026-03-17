@@ -8,7 +8,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
-
 import edu.wpi.first.math.geometry.Pose2d;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -186,24 +185,31 @@ public class RobotContainer {
     // Flywheel
     manipController
         .a()
-        .onTrue(
-            flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .onTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
         .onFalse(flywheelSubsystem.setDutyCycle(0));
-         manipController
+    manipController
         .b()
-        .onTrue(
-            flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .onTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
         .onFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
     manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 32));
     manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -32));
     // Hood
-    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
-    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
-    
-    //Shoot on the move
-    manipController.x().whileTrue(new ShootOnMoveCmd(turretSubsystem, flywheelSubsystem, hoodSubsystem, () -> drivetrain.getState().Pose, () -> drivetrain.getState().Speeds, () -> getHubPose()));
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(1)));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(1)));
+
+    // Shoot on the move
+    manipController
+        .x()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getHubPose()));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(new TestIntakeArm(intakeSubsystem, ()-> manipController.getLeftY()));
     // Serializer
@@ -283,6 +289,7 @@ public class RobotContainer {
     /* Run the path selected from the auto chooser */
     return autoChooser.getSelected();
   }
+
   public Pose2d getHubPose() {
     return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
   }

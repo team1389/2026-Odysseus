@@ -6,11 +6,11 @@ import java.util.function.Supplier;
 
 public class TestIntakeArm extends Command {
   public IntakeSubsystem intakeSubsystem;
-  public Supplier<Double> angle;
+  public Supplier<Double> volts;
 
-  public TestIntakeArm(IntakeSubsystem intakeSubsystem, Supplier<Double> angle) {
+  public TestIntakeArm(IntakeSubsystem intakeSubsystem, Supplier<Double> volts) {
     this.intakeSubsystem = intakeSubsystem;
-    this.angle = angle;
+    this.volts = volts;
   }
 
   public void initialize() {
@@ -20,7 +20,7 @@ public class TestIntakeArm extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    intakeSubsystem.setArmVoltage(() -> angle.get() * 16);
+    intakeSubsystem.setArmVoltage(() -> volts.get() * 16);
   }
 
   @Override
