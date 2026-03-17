@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,7 +24,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSubsystem extends SubsystemBase {
   // Define camera names as they appear in the PhotonVision dashboard
-  private final String[] cameraNames = {"FrontRightCam", "FrontLeftCam"};
+  private final String[] cameraNames = {"Limelight4-BackRightSwerve", "Limelight3-BackLeftSwerve"};
   private final List<PhotonCamera> cameras = new ArrayList<>();
 
   // Photon pose estimators
@@ -57,11 +56,10 @@ public class VisionSubsystem extends SubsystemBase {
     Transform3d[]
         robotToCamTransforms = { // These values use the pigeon as center, measurments in meters
       // from CAD
-      new Transform3d( // Back left (Not currently mounted on robot)
-          new Translation3d(-0.245, -0.240, 0.165), new Rotation3d(0, 0, Math.PI)),
-      new Transform3d( // Back right camera
-          new Translation3d(0.209, -0.271, 0.165),
-          new Rotation3d(0, (5 * Math.PI) / 36, (Math.PI * 3) / 2)) // -90º in radians
+      new Transform3d( // Back left camera (limelight3)
+          new Translation3d(-0.28734, -0.22538, 0.1782), new Rotation3d(0, -0.436332, 1.570796)),
+      new Transform3d( // Back right camera (limelight4)
+          new Translation3d(-0.2259, 0.26194, 0.1797), new Rotation3d(0, -0.436332, 3.14159))
     };
 
     for (int i = 0; i < cameraNames.length; i++) {
@@ -93,12 +91,6 @@ public class VisionSubsystem extends SubsystemBase {
       for (PhotonPipelineResult result : results) {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
-          SmartDashboard.putNumberArray(
-              cam.getName() + " Position Estimate",
-              new Double[] {
-                visionEstimates.get(i).get().estimatedPose.getX(),
-                visionEstimates.get(i).get().estimatedPose.getY()
-              });
         }
       }
     }

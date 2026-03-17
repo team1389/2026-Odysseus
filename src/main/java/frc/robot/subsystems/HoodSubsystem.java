@@ -4,15 +4,15 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,29 +31,21 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class HoodSubsystem extends SubsystemBase {
   private final TalonFX hoodMotor = new TalonFX(RobotMap.HoodCanID);
-
   private final SmartMotorControllerConfig hoodMotorConfig =
       new SmartMotorControllerConfig(this)
-          .withClosedLoopController(
-              RobotMap.HoodIntegralCorr,
-              0,
-              0,
-              RPM.of(RobotMap.HoodMaxVel),
-              RotationsPerSecondPerSecond.of(RobotMap.HoodMaxAcc))
           .withGearing(
-              new MechanismGearing(GearBox.fromReductionStages(4, 4))) // gear ratio after reduction
-          .withIdleMode(MotorMode.COAST)
+              new MechanismGearing(
+                  GearBox.fromReductionStages(144.9, 1))) // gear ratio after reduction
+          .withIdleMode(MotorMode.BRAKE)
           .withTelemetry("HoodMotor", TelemetryVerbosity.HIGH)
           .withStatorCurrentLimit(Amps.of(RobotMap.HoodMaxAmp))
           .withMotorInverted(RobotMap.HoodMoterInvert)
           .withClosedLoopRampRate(Seconds.of(RobotMap.HoodRampRatePID))
+          .withClosedLoopController(
+              new ProfiledPIDController(
+                  120.0, 0.0, 0.0, new Constraints(Math.toRadians(10), Math.toRadians(30))))
           .withOpenLoopRampRate(Seconds.of(RobotMap.HoodRampRateMan))
-          .withFeedforward(
-              new SimpleMotorFeedforward(
-                  RobotMap.HoodStaticVolts, RobotMap.HoodVelVolts, RobotMap.HoodAccVolts))
-          .withSimFeedforward(
-              new SimpleMotorFeedforward(
-                  RobotMap.HoodStaticVolts, RobotMap.HoodVelVolts, RobotMap.HoodAccVolts))
+          .withFeedforward(new SimpleMotorFeedforward(0.6, 8.0, 0.07))
           .withControlMode(ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController hoodSMC =
@@ -65,9 +57,9 @@ public class HoodSubsystem extends SubsystemBase {
           .withStartingPosition(Degrees.of(25))
           .withLength(Inches.of(9.3))
           .withTelemetry("HoodMech", TelemetryVerbosity.HIGH)
-          .withSoftLimits(Degrees.of(5), Degrees.of(100))
+          .withSoftLimits(Degrees.of(2), Degrees.of(66))
           .withHardLimit(
-              Degrees.of(0), Degrees.of(120)); // The Hood can be modeled as an arm since it has a
+              Degrees.of(0), Degrees.of(68)); // The Hood can be modeled as an arm since it has a
   // gravitational force acted upon based on the angle its in
 
   private final Arm hood = new Arm(hoodConfig);
@@ -76,6 +68,10 @@ public class HoodSubsystem extends SubsystemBase {
 
   public Command setAngle(Angle angle) {
     return hood.setAngle(angle);
+  }
+
+  public void setAngleDirect(Supplier<Angle> angle) {
+    hoodSMC.setPosition(angle.get());
   }
 
   public void setAngleDirect(Angle angle) {

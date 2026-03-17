@@ -2,16 +2,18 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,10 +36,10 @@ public class TurretSubsystem extends SubsystemBase {
   private final SmartMotorControllerConfig motorConfig =
       new SmartMotorControllerConfig(this)
           .withControlMode(ControlMode.CLOSED_LOOP)
-          .withClosedLoopController(
-              4, 0, 0, DegreesPerSecond.of(180), DegreesPerSecondPerSecond.of(90))
+          .withClosedLoopController(4, 0, 0, RPM.of(2000), RotationsPerSecondPerSecond.of(20))
+          .withFeedforward(new SimpleMotorFeedforward(0.42, 5.5, 0))
           // Configure Motor and Mechanism properties
-          .withGearing(new MechanismGearing(GearBox.fromReductionStages(1, 50)))
+          .withGearing(new MechanismGearing(GearBox.fromReductionStages(45.45, 1)))
           .withIdleMode(MotorMode.BRAKE)
           .withMotorInverted(false)
           // Setup Telemetry
@@ -84,7 +86,8 @@ public class TurretSubsystem extends SubsystemBase {
       if (initialDegrees > 180) {
         initialDegrees -= 360;
       }
-      turretSMC.setPosition(Degrees.of(initialDegrees));
+      // turretSMC.setPosition(Degrees.of(initialDegrees));
+      // System.out.print(initialDegrees);
     }
   }
 
@@ -93,7 +96,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setAngleDirect(Angle angle) {
-    turretSMC.setPosition(angle);
+    Angle clamped = Degrees.of(MathUtil.clamp(angle.in(Degrees), -90, 90));
+    turretSMC.setPosition(clamped);
   }
 
   public Command setAngle(Supplier<Angle> angleSupplier) {
