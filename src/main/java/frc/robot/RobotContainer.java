@@ -33,6 +33,7 @@ import frc.robot.subsystems.SerializerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.AllianceFlipUtil;
+import frc.robot.util.FieldConstants;
 
 public class RobotContainer {
 
@@ -236,7 +237,14 @@ public class RobotContainer {
                 hoodSubsystem,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> getHubPose()));
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
+    // IntakeArm
+    intakeSubsystem.setDefaultCommand(
+        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
+
+    // Serializer
+    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
@@ -318,11 +326,6 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public Pose2d getHubPose() {
-    return AllianceFlipUtil.flip(
-        new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero));
-    }
-    
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
     return inputValue * Math.abs(inputValue) * scaleFactor;
   }
