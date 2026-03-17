@@ -217,7 +217,7 @@ public class RobotContainer {
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
-    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
