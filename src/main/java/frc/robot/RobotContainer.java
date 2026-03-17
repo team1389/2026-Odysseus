@@ -39,6 +39,7 @@ public class RobotContainer {
   private double MaxAngularRate =
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double slowModeScale = 0.45; // scaling factor of drive speed in slow mode
 
   /* Setting up bindings for necessary control of the swer
   ve drive platform */
@@ -59,8 +60,8 @@ public class RobotContainer {
 
   // Mechanisms controls
   // Define controller ports | DO NOT TOUCH |
-  final CommandXboxController manipController = new CommandXboxController(1);
   private final CommandXboxController driverController = new CommandXboxController(0);
+  final CommandXboxController manipController = new CommandXboxController(1);
   public TurretSubsystem turretSubsystem;
   public FlywheelSubsystem flywheelSubsystem;
   public IntakeSubsystem intakeSubsystem;
@@ -78,6 +79,7 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem();
     hoodSubsystem = new HoodSubsystem();
     visionSubsystem = new VisionSubsystem();
+    serializerSubsystem = new SerializerSubsystem();
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
@@ -87,7 +89,6 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
-    serializerSubsystem = new SerializerSubsystem();
     SmartDashboard.putNumber("targetSpeed", 0);
     SmartDashboard.putNumber("setHoodAngle", 0);
 
@@ -96,12 +97,6 @@ public class RobotContainer {
   }
 
   public void configureBindings() {
-
-    // double targetAngle = 45; // Set target angle for the turret
-
-    // double armIntakeTargetAngle = 46;
-    // double intakeTargetAngle = 90;
-    // double outtakeTargetAngle = 0;
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
@@ -112,10 +107,16 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -driverController.getLeftY()
+                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                                ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
+                                // scaling and square smoothing in slow mode
+                                : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -driverController.getLeftX()
+                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                                ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
+                                // scaling and square smoothing in slow mode
+                                : driverController.getLeftX())
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -driverController.getRightX()
@@ -147,6 +148,9 @@ public class RobotContainer {
         .whileTrue(
             drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
+    // Reset the field-centric heading on left bumper press.
+    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
     driverController
@@ -165,9 +169,6 @@ public class RobotContainer {
         .start()
         .and(driverController.x())
         .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-    // Reset the field-centric heading on left bumper press.
-    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -227,10 +228,16 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -driverController.getLeftY()
+                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                                ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
+                                // scaling and square smoothing in slow mode
+                                : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -driverController.getLeftX()
+                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                                ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
+                                // scaling and square smoothing in slow mode
+                                : driverController.getLeftX())
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -driverController.getRightX()
@@ -262,6 +269,9 @@ public class RobotContainer {
         .whileTrue(
             drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
+    // Reset the field-centric heading on left bumper press.
+    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
     driverController
@@ -281,14 +291,15 @@ public class RobotContainer {
         .and(driverController.x())
         .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-    // Reset the field-centric heading on left bumper press.
-    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public Command getAutonomousCommand() {
     /* Run the path selected from the auto chooser */
     return autoChooser.getSelected();
+  }
+
+  private double scaleAndSmooth(double inputValue, double scaleFactor) {
+    return inputValue * Math.abs(inputValue) * scaleFactor;
   }
 }
