@@ -197,7 +197,7 @@ public class RobotContainer {
     manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 32));
     manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -32));
     // Hood
-    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(1)));
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(-1)));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(1)));
 
     // Shoot on the move
