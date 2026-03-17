@@ -63,11 +63,11 @@ public class TunerConstants {
       new TalonFXConfiguration()
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(80))
+                  .withStatorCurrentLimit(Amps.of(60))
                   .withStatorCurrentLimitEnable(true)
-                  .withSupplyCurrentLimit(Amps.of(60))
+                  .withSupplyCurrentLimit(Amps.of(40))
                   .withSupplyCurrentLimitEnable(true)
-                  .withSupplyCurrentLowerLimit(Amps.of(40))
+                  .withSupplyCurrentLowerLimit(Amps.of(25))
                   .withSupplyCurrentLowerTime(Seconds.of(0.1)));
 
   private static final TalonFXConfiguration steerInitialConfigs =
@@ -81,7 +81,7 @@ public class TunerConstants {
                   .withStatorCurrentLimitEnable(true)
                   .withSupplyCurrentLimit(Amps.of(30))
                   .withSupplyCurrentLimitEnable(true)
-                  .withSupplyCurrentLowerLimit(Amps.of(20))
+                  .withSupplyCurrentLowerLimit(Amps.of(15))
                   .withSupplyCurrentLowerTime(Seconds.of(0.1)));
 
   private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
