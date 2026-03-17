@@ -81,7 +81,7 @@ public class TunerConstants {
                   .withStatorCurrentLimitEnable(true)
                   .withSupplyCurrentLimit(Amps.of(30))
                   .withSupplyCurrentLimitEnable(true)
-                  .withSupplyCurrentLowerLimit(Amps.of(20))
+                  .withSupplyCurrentLowerLimit(Amps.of(15))
                   .withSupplyCurrentLowerTime(Seconds.of(0.1)));
 
   private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
