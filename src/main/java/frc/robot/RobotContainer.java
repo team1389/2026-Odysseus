@@ -310,7 +310,8 @@ public class RobotContainer {
     /* Run the path selected from the auto chooser */
     return autoChooser.getSelected();
   }
-   public Pose2d getHubPose() {
+
+  public Pose2d getHubPose() {
     return AllianceFlipUtil.flip(
         new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero));
   }
