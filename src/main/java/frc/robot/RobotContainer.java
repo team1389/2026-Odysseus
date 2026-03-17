@@ -39,7 +39,7 @@ public class RobotContainer {
   private double MaxAngularRate =
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-  private double slowModeScale = 0.6; // scaling factor of drive speed in slow mode
+  private double slowModeScale = 0.45; // scaling factor of drive speed in slow mode
 
   /* Setting up bindings for necessary control of the swer
   ve drive platform */
