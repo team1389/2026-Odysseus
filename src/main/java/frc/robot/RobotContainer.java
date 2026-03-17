@@ -81,7 +81,8 @@ public class RobotContainer {
     // Pathplanner Auto commands
     NamedCommands.registerCommand("moveIntake", intakeSubsystem.runRollers(70));
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    NamedCommands.registerCommand("MoveIntakeArm", intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle)));
+    NamedCommands.registerCommand(
+        "MoveIntakeArm", intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle)));
 
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));
