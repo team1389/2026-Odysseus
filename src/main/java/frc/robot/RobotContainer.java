@@ -211,7 +211,9 @@ public class RobotContainer {
                 () -> drivetrain.getState().Speeds,
                 () -> getHubPose()));
     // IntakeArm
-    intakeSubsystem.setDefaultCommand(new TestIntakeArm(intakeSubsystem, ()-> manipController.getLeftY()));
+    intakeSubsystem.setDefaultCommand(
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
     manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
