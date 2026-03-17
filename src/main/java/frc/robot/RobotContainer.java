@@ -32,6 +32,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SerializerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.AllianceFlipUtil;
 
 public class RobotContainer {
 
@@ -251,7 +252,7 @@ public class RobotContainer {
                         -driverController.getLeftX()
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -driverController.getRawAxis(3)
+                        -driverController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
@@ -311,6 +312,7 @@ public class RobotContainer {
   }
 
   public Pose2d getHubPose() {
-    return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
+    return AllianceFlipUtil.flip(
+        new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero));
   }
 }
