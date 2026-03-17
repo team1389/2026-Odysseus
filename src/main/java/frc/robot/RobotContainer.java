@@ -185,12 +185,12 @@ public class RobotContainer {
     // Flywheel
     manipController
         .a()
-        .onTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
-        .onFalse(flywheelSubsystem.setDutyCycle(0));
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
     manipController
         .b()
-        .onTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
-        .onFalse(flywheelSubsystem.setDutyCycle(0));
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
     manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 32));
