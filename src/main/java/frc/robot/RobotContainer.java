@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.PassingModeCmd;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
@@ -61,6 +62,7 @@ public class RobotContainer {
   // Define controller ports | DO NOT TOUCH |
   final CommandXboxController manipController = new CommandXboxController(1);
   private final CommandXboxController driverController = new CommandXboxController(0);
+
   public TurretSubsystem turretSubsystem;
   public FlywheelSubsystem flywheelSubsystem;
   public IntakeSubsystem intakeSubsystem;
@@ -217,6 +219,17 @@ public class RobotContainer {
     // Serializer
     manipController.start().whileTrue(new TestSerializer(serializerSubsystem, -32));
     manipController.back().whileTrue(new TestSerializer(serializerSubsystem, 32));
+
+    // Passing Mode
+    manipController
+        .y()
+        .whileTrue(
+            new PassingModeCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds));
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,

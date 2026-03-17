@@ -51,8 +51,7 @@ public class PassingModeCmd extends Command {
       FlywheelSubsystem flywheelSubsystem,
       HoodSubsystem hoodSubsystem,
       Supplier<Pose2d> robotPoseSupplier,
-      Supplier<ChassisSpeeds> robotOrientedChassisSpeeds,
-      Supplier<Pose2d> goalPoseSupplier) {
+      Supplier<ChassisSpeeds> robotOrientedChassisSpeeds) {
     this.turretSubsystem = turretSubsystem;
     this.flywheelSubsystem = flywheelSubsystem;
     this.hoodSubsystem = hoodSubsystem;
