@@ -33,6 +33,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SerializerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.AllianceFlipUtil;
+import frc.robot.util.FieldConstants;
 
 public class RobotContainer {
 
@@ -131,7 +133,7 @@ public class RobotContainer {
                 hoodSubsystem,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> getHubPose()));
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
@@ -248,7 +250,7 @@ public class RobotContainer {
                 hoodSubsystem,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> getHubPose()));
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
