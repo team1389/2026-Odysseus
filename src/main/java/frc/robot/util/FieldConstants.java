@@ -18,8 +18,8 @@ import edu.wpi.first.math.util.Units;
  */
 public class FieldConstants {
 
-  public static final double fieldLength = Units.inchesToMeters(690.876);
-  public static final double fieldWidth = Units.inchesToMeters(317);
+  public static final double fieldLength = Units.inchesToMeters(651.22);
+  public static final double fieldWidth = Units.inchesToMeters(317.69);
 
   public static final Pose2d blueHub =
       new Pose2d(
