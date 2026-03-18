@@ -194,11 +194,11 @@ public class RobotContainer {
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
-    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 32));
-    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -32));
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
     // Hood
-    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(-1)));
-    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(1)));
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(-45)));
 
     // Shoot on the move
     manipController
@@ -302,7 +302,7 @@ public class RobotContainer {
   public Pose2d getHubPose() {
     return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
   }
-  
+
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
     return inputValue * Math.abs(inputValue) * scaleFactor;
   }
