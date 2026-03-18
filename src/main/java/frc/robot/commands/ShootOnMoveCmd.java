@@ -30,7 +30,7 @@ public class ShootOnMoveCmd extends Command {
   private final Supplier<Pose2d> goalPoseSupplier;
   private final double latency = 0.15; //      <---------------NEED TO TUNE
   private final double offset =
-      0.25; //      <---------------NEED TO TUNE (in feet, added to distance to target for
+      1.95833; //      <---------------NEED TO TUNE (in feet, added to distance to target for
   // interpolation tables to account for the fact that the robot is moving towards the target
   // while shooting)
   private final InterpolatingDoubleTreeMap shooterTable =
@@ -145,7 +145,7 @@ public class ShootOnMoveCmd extends Command {
     // 2. GET TARGET VECTOR
     Translation2d goalLocation = goalPoseSupplier.get().getTranslation();
     Translation2d targetVec = goalLocation.minus(futurePos);
-    double dist = targetVec.getNorm();
+    double dist = targetVec.getNorm() + 1.95833;
 
     // 3. CALCULATE IDEAL SHOT (Stationary)
     // Note: This returns HORIZONTAL velocity component
