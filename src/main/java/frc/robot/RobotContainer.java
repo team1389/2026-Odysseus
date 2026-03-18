@@ -133,7 +133,7 @@ public class RobotContainer {
                 hoodSubsystem,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> getHubPose()));
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
