@@ -100,7 +100,45 @@ public class RobotContainer {
   }
 
   public void configureBindings() {
+    // Turret
+    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 5));
+    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -5));
 
+    // Flywheel
+    manipController
+        .a()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+    manipController
+        .b()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+
+    // Intake
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
+    // Hood
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
+
+    // Shoot on the move
+    manipController
+        .x()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getHubPose()));
+    // IntakeArm
+    intakeSubsystem.setDefaultCommand(
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+
+    // Serializer
+    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
