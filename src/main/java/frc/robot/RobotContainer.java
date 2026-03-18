@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootOnMoveCmd;
+import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
@@ -101,7 +102,45 @@ public class RobotContainer {
   }
 
   public void configureBindings() {
+    // Turret
+    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 5));
+    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -5));
 
+    // Flywheel
+    manipController
+        .a()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+    manipController
+        .b()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+
+    // Intake
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
+    // Hood
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
+
+    // Shoot on the move
+    manipController
+        .x()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getHubPose()));
+    // IntakeArm
+    intakeSubsystem.setDefaultCommand(
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+
+    // Serializer
+    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
@@ -181,53 +220,27 @@ public class RobotContainer {
     // Testing subsytem commands
 
     // Turret
+    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 5));
+    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -5));
 
-    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 2));
-    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -2));
-    /*
-    manipController.povLeft().onTrue(turretSubsystem.setAngle(Degrees.of(45)));
-    manipController.povRight().onTrue(turretSubsystem.setAngle(Degrees.of(-90)));
-     */
     // Flywheel
-    /*
-       manipController
-           .rightBumper()
-           .onTrue(
-               flywheelSubsystem.setVelocity(() -> RPM.of(SmartDashboard.getNumber("targetSpeed", 0))))
-           .onFalse(flywheelSubsystem.setDutyCycle(0));
-       // .onTrue(flywheelSubsystem.setVelocity(RPM.of(1500)))
-       // .onFalse(flywheelSubsystem.setVelocity(RPM.of(0)));
+    manipController
+        .a()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+    manipController
+        .b()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
-       manipController
-           .rightTrigger()
-           .onTrue(flywheelSubsystem.setVelocity(RPM.of(3000)))
-           .onFalse(flywheelSubsystem.setDutyCycle(0));
-    */
     // Intake
-    manipController.a().whileTrue(new TestIntake(intakeSubsystem, 32));
-    manipController.b().whileTrue(new TestIntake(intakeSubsystem, -32));
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
     // Hood
+    manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
+    manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
 
-    // manipController.povUp().whileTrue(new TestHood(hoodSubsystem, 1));
-    // manipController.povDown().whileTrue(new TestHood(hoodSubsystem, -1));
-    // manipController.leftBumper().onTrue(hoodSubsystem.setAngle(Degrees.of(15)));
-    // manipController.leftTrigger().onTrue(hoodSubsystem.setAngle(Degrees.of(25)));
-    /*
-       manipController
-           .x()
-           .onTrue(
-               hoodSubsystem.setAngle(() -> Degrees.of(SmartDashboard.getNumber("setHoodAngle", 0))))
-           .onFalse(hoodSubsystem.setDutyCycle(0));
-    */
-    // IntakeArm
-    manipController.leftBumper().whileTrue(new TestIntakeArm(intakeSubsystem, 2));
-    manipController.leftTrigger().whileTrue(new TestIntakeArm(intakeSubsystem, -2));
-    // Serializer
-    // manipController.start().whileTrue(new TestSerializer(serializerSubsystem, -32));
-    // manipController.back().whileTrue(new TestSerializer(serializerSubsystem, 32));
-    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
-    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
-
+    // Shoot on the move
     manipController
         .x()
         .whileTrue(
@@ -240,11 +253,11 @@ public class RobotContainer {
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
-    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
@@ -324,6 +337,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     /* Run the path selected from the auto chooser */
     return autoChooser.getSelected();
+  }
+
+  public Pose2d getHubPose() {
+    return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
   }
 
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
