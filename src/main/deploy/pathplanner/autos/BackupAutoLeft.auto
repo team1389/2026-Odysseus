@@ -1,0 +1,50 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BackupPathLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collecting"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftToCenter"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntake"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BackupCompAutos",
+  "choreoAuto": false
+}
