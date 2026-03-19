@@ -28,9 +28,9 @@ public class ShootOnMoveCmd extends Command {
   private final Supplier<Pose2d> robotPoseSupplier;
   private final Supplier<ChassisSpeeds> robotOrientedChassisSpeeds;
   private final Supplier<Pose2d> goalPoseSupplier;
-  private final double latency = 0.15; //      <---------------NEED TO TUNE
+  private final double latency = 0.4; //      <---------------NEED TO TUNE
   private final double offset =
-      0.25; //      <---------------NEED TO TUNE (in feet, added to distance to target for
+      1.3; //      <---------------NEED TO TUNE (in feet, added to distance to target for
   // interpolation tables to account for the fact that the robot is moving towards the target
   // while shooting)
   private final InterpolatingDoubleTreeMap shooterTable =
@@ -80,23 +80,23 @@ public class ShootOnMoveCmd extends Command {
     }
     for (Pair<Distance, Double> entry :
         List.of(
-            Pair.of(Meters.of((4 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((5 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((6 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((7 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((8 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((9 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((10 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((11 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((12 + offset) * 0.3048), 0.0),
-            Pair.of(Meters.of((13 + offset) * 0.3048), 5.0),
-            Pair.of(Meters.of((14 + offset) * 0.3048), 5.0),
-            Pair.of(Meters.of((15 + offset) * 0.3048), 5.5),
-            Pair.of(Meters.of((16 + offset) * 0.3048), 5.5),
-            Pair.of(Meters.of((17 + offset) * 0.3048), 6.0),
-            Pair.of(Meters.of((18 + offset) * 0.3048), 6.0),
-            Pair.of(Meters.of((19 + offset) * 0.3048), 8.0),
-            Pair.of(Meters.of((20 + offset) * 0.3048), 10.0))) {
+            Pair.of(Meters.of((4 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((5 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((6 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((7 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((8 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((9 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((10 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((11 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((12 + offset) * 0.3048), 25.0),
+            Pair.of(Meters.of((13 + offset) * 0.3048), 30.0),
+            Pair.of(Meters.of((14 + offset) * 0.3048), 30.0),
+            Pair.of(Meters.of((15 + offset) * 0.3048), 30.5),
+            Pair.of(Meters.of((16 + offset) * 0.3048), 30.5),
+            Pair.of(Meters.of((17 + offset) * 0.3048), 31.0),
+            Pair.of(Meters.of((18 + offset) * 0.3048), 31.0),
+            Pair.of(Meters.of((19 + offset) * 0.3048), 33.0),
+            Pair.of(Meters.of((20 + offset) * 0.3048), 35.0))) {
       hoodTable.put(entry.getFirst().in(Meters), entry.getSecond());
     }
     for (Pair<Distance, Double> entry :
