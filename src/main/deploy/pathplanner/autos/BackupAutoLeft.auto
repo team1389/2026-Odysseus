@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BackupPathLeft"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Collecting"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftToCenter"
+            "pathName": "LeftToCollect"
           }
         },
         {
@@ -31,7 +19,20 @@
                 "data": {
                   "name": "MoveIntakeArm"
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collecting"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
               {
                 "type": "named",
                 "data": {
@@ -39,6 +40,18 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DepotToCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
           }
         }
       ]

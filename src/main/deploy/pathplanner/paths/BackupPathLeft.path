@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.320771055753263,
-        "y": 5.890960854092527
+        "x": 3.3411150234741784,
+        "y": 5.7915140845070425
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.320771055753259,
-        "y": 5.890960854092527
+        "x": 4.341115023474172,
+        "y": 5.7915140845070425
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.169,
-        "y": 5.890960854092527
+        "x": 1.3078169014084515,
+        "y": 5.929906103286385
       },
       "prevControl": {
-        "x": 0.16900000000000004,
-        "y": 5.890960854092527
+        "x": 0.3078169014084515,
+        "y": 5.929906103286385
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot End"
     }
   ],
   "rotationTargets": [],
@@ -41,8 +41,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "BackupCompPaths",

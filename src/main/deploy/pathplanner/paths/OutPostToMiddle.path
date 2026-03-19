@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3417919075144504,
-        "y": 2.530323699421965
+        "x": 0.690375586854461,
+        "y": 0.6390727699530521
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.658763268262647,
-        "y": 2.5868021515478374
+        "x": 1.399515770225745,
+        "y": 1.7878036853312274
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.7010211267605642,
-        "y": 0.6497183098591552
+        "x": 1.8613849765258221,
+        "y": 2.4062323943661976
       },
       "prevControl": {
-        "x": 0.4823000224533257,
-        "y": 0.5286353691506387
+        "x": 1.6655604704910294,
+        "y": 2.018351032126496
+      },
+      "nextControl": {
+        "x": 1.9740546373494468,
+        "y": 2.6294039596022047
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.0,
+        "y": 4.1
+      },
+      "prevControl": {
+        "x": 1.9297278956314867,
+        "y": 3.8600795312033154
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterOfAlliance"
     }
   ],
   "rotationTargets": [],
@@ -41,14 +57,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "BackupCompPaths",
+  "folder": "CompPaths",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
