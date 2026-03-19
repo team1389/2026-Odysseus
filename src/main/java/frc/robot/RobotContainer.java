@@ -103,17 +103,17 @@ public class RobotContainer {
 
   public void configureBindings() {
     // Turret
-    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, 5));
-    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, -5));
+    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, -5));
+    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, 5));
 
     // Flywheel
     manipController
         .a()
-        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1600)))
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1900)))
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
     manipController
         .b()
-        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1600)))
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1900)))
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
@@ -139,8 +139,8 @@ public class RobotContainer {
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
-    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, 32));
-    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, -32));
+    manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
+    manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
