@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.ShootOnMoveCmd;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
@@ -79,10 +80,17 @@ public class RobotContainer {
     visionSubsystem = new VisionSubsystem();
 
     // Pathplanner Auto commands
-    NamedCommands.registerCommand("moveIntake", intakeSubsystem.runRollers(70));
+    NamedCommands.registerCommand(
+        "moveIntake",
+        Commands.deferredProxy(
+            () -> intakeSubsystem.runRollers(8.0).withTimeout(2.0) // Runs for 2 seconds
+            ));
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    NamedCommands.registerCommand("MoveIntakeArm", intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle)));
-
+    NamedCommands.registerCommand(
+        "MoveIntakeArm",
+        Commands.deferredProxy(
+            () -> intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle))));
+    
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));
 

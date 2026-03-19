@@ -1,5 +1,5 @@
 {
-  "version": "2026.0",
+  "version": "2025.0",
   "waypoints": [
     {
       "anchor": {
@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.5614222913687588,
-        "y": 4.08787298380737
+        "x": 3.730021215354655,
+        "y": 4.152673274452656
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 4.1
       },
       "prevControl": {
-        "x": 1.7502011511364668,
-        "y": 4.110026719625765
+        "x": 1.5938028093797594,
+        "y": 4.105815598163144
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "CompPaths",

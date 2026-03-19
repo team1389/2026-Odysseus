@@ -119,7 +119,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command retract(Angle retractAngle) {
     return runOnce(this::stopRoller).andThen(intakeArm.setAngle(retractAngle));
   }
-  public Command runRollers(double targetRPM){
+
+  public Command runRollers(double targetRPM) {
     return run(() -> setRollerVoltage(targetRPM));
   }
 
