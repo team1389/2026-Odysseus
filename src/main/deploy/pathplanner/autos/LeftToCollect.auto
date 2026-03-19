@@ -21,25 +21,12 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "shootOnTheMove"
-                      }
-                    }
-                  ]
+                  "name": "shootOnTheMove"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Collecting"
           }
         },
         {
@@ -51,20 +38,26 @@
                 "data": {
                   "name": "MoveIntake"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Collecting"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DepotToCenter"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToCenter"
+                }
+              },
               {
                 "type": "named",
                 "data": {

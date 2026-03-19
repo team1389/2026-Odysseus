@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.IntakeRollers;
 import frc.robot.commands.ShootOnMoveCmd;
 import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
@@ -88,25 +88,19 @@ public class RobotContainer {
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand(
-        "moveIntake",
-        Commands.deferredProxy(
-            () -> intakeSubsystem.runRollers(8.0).withTimeout(2.0) // Runs for 2 seconds
-            ));
-    NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
+        "moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm",
-        Commands.deferredProxy(
-            () -> intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle))));
-    NamedCommands.registerCommand("shootOnTheMove", new ShootOnMoveCmd(
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
+    NamedCommands.registerCommand(
+        "shootOnTheMove",
+        new ShootOnMoveCmd(
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
-    
-    // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
-    // did a test shot.");}));
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
+            .alongWith(new TestSerializer(serializerSubsystem, 32)));
 
     autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
     SmartDashboard.putData("Auto Mode", autoChooser);

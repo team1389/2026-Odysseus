@@ -55,7 +55,7 @@ public class ShootOnMoveCmd extends Command {
     this.robotPoseSupplier = robotPoseSupplier;
     this.robotOrientedChassisSpeeds = robotOrientedChassisSpeeds;
     this.goalPoseSupplier = goalPoseSupplier;
-
+    addRequirements(turretSubsystem, hoodSubsystem, flywheelSubsystem);
     for (Pair<Distance, AngularVelocity> entry :
         List.of(
             Pair.of(Meters.of(0.0), RPM.of((0))),

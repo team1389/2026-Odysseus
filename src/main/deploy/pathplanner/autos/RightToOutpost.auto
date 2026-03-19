@@ -21,16 +21,9 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "shootOnTheMove"
-                      }
-                    }
-                  ]
+                  "name": "shootOnTheMove"
                 }
               }
             ]
@@ -43,15 +36,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "OutPostToMiddle"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutPostToMiddle"
+                }
+              },
               {
                 "type": "named",
                 "data": {
