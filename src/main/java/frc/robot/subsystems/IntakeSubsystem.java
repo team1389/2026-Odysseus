@@ -95,6 +95,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmMotor.setVoltage(volts);
   }
 
+  public void setArmVoltage(Supplier<Double> volts) {
+    intakeArmMotor.setVoltage(volts.get());
+  }
+
   public void stopArm() {
     intakeArmMotor.setVoltage(0);
   }

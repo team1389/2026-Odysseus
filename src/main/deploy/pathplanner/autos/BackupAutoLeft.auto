@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "LeftToCenter"
@@ -42,18 +36,6 @@
                 "type": "named",
                 "data": {
                   "name": "MoveIntake"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 3.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "shootOnTheMove"
                 }
               }
             ]
