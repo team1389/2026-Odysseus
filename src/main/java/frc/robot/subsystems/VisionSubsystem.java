@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -51,11 +52,14 @@ public class VisionSubsystem extends SubsystemBase {
   // Field2d for pose visualization
   private List<Field2d> field2ds = new ArrayList<>();
 
+  Supplier<Pose2d> currentRobotPose;
+
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
 
-  public VisionSubsystem() {
+  public VisionSubsystem(Supplier<Pose2d> currentRobotPose) {
+    this.currentRobotPose = currentRobotPose;
     if (RobotBase.isSimulation()) {
       visionSim = new VisionSystemSim("main");
       visionSim.addAprilTags(tagLayout);
@@ -101,7 +105,7 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     if (RobotBase.isSimulation()) {
       // In a real project, you'd pass your actual Drive Pose here
-      visionSim.update(new Pose2d());
+      visionSim.update(currentRobotPose.get());
     }
     visionEstimates.clear();
     visionPose3ds.clear();

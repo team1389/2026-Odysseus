@@ -77,7 +77,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     hoodSubsystem = new HoodSubsystem();
-    visionSubsystem = new VisionSubsystem();
+    visionSubsystem = new VisionSubsystem(() -> drivetrain.getState().Pose);
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
