@@ -41,7 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
-  // Pose3ds for atvantageScope
+  // Pose3ds for advantageScope
   List<Pose3d> visionPose3ds = new ArrayList<>();
 
   StructArrayPublisher<Pose3d> arrayPublisher =
