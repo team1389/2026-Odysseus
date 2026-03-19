@@ -112,6 +112,11 @@ public class RobotContainer {
         .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(1900)))
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
+    manipController
+        .b()
+        .whileTrue(flywheelSubsystem.setVelocity(() -> RPM.of(-1900)))
+        .whileFalse(flywheelSubsystem.setDutyCycle(0));
+
     // Intake
     manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
     manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
@@ -132,7 +137,7 @@ public class RobotContainer {
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
