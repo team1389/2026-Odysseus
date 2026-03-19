@@ -97,6 +97,13 @@ public class RobotContainer {
         "MoveIntakeArm",
         Commands.deferredProxy(
             () -> intakeSubsystem.setAngle(Degrees.of(RobotMap.IntakeArmAngle))));
+    NamedCommands.registerCommand("shootOnTheMove", new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
     
     // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
     // did a test shot.");}));

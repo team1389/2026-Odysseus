@@ -65,7 +65,7 @@ public class ShootOnMoveCmd extends Command {
             Pair.of(Meters.of((7 + offset) * 0.3048), RPM.of(1850)),
             Pair.of(Meters.of((8 + offset) * 0.3048), RPM.of(1890)),
             Pair.of(Meters.of((9 + offset) * 0.3048), RPM.of(2000)),
-            Pair.of(Meters.of((10 + offset) * 0.3048), RPM.of(2025)),
+            Pair.of(Meters.of((10 + offset) * 0.3048), RPM.of(2026)),
             Pair.of(Meters.of((11 + offset) * 0.3048), RPM.of(2100)),
             Pair.of(Meters.of((12 + offset) * 0.3048), RPM.of(2050)),
             Pair.of(Meters.of((13 + offset) * 0.3048), RPM.of(2100)),
