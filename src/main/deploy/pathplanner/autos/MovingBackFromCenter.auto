@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterMovingBack"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "MoveIntakeArm"
-                }
-              }
-            ]
+            "pathName": "CenterMovingBack"
           }
         },
         {

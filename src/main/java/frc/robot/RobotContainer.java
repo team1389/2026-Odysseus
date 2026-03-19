@@ -100,7 +100,7 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
-            .alongWith(new TestSerializer(serializerSubsystem, 32)));
+            .alongWith(new TestSerializer(serializerSubsystem, 32)).withTimeout(4));
 
     autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
     SmartDashboard.putData("Auto Mode", autoChooser);
