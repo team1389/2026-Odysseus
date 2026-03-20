@@ -103,7 +103,7 @@ public class RobotContainer {
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
             .alongWith(
                 new WaitCommand(3)
-                    .andThen(new TestSerializer(serializerSubsystem, 32))
+                    .andThen(new TestSerializer(serializerSubsystem, -32))
                     .withTimeout(9)));
 
     autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
