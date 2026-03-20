@@ -11,7 +11,7 @@ import frc.robot.RobotMap;
 
 public class IntakeSubsystem extends SubsystemBase{
     private TalonFX IntakeMotor = new TalonFX(RobotMap.IntakeCanID);
-     public IntakeSubsystem() {
+    public IntakeSubsystem() {
         IntakeMotor = new TalonFX(RobotMap.IntakePort);
         
     }
