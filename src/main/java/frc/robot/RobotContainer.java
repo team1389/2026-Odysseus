@@ -90,10 +90,10 @@ public class RobotContainer {
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    NamedCommands.registerCommand(
-        "moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
-    NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
+    //NamedCommands.registerCommand(
+        //"moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
+    // NamedCommands.registerCommand(
+    //     "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
