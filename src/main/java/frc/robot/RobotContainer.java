@@ -89,8 +89,8 @@ public class RobotContainer {
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    //NamedCommands.registerCommand(
-        //"moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
+    // NamedCommands.registerCommand(
+    // "moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
     // NamedCommands.registerCommand(
     //     "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
     NamedCommands.registerCommand(
@@ -107,7 +107,7 @@ public class RobotContainer {
                     .andThen(new TestSerializer(serializerSubsystem, -32))
                     .withTimeout(9)));
 
-    autoChooser = AutoBuilder.buildAutoChooser("MovingBackFromCenter");
+    autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     SmartDashboard.putNumber("targetSpeed", 0);
