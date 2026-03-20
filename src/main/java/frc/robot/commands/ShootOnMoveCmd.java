@@ -181,6 +181,12 @@ public class ShootOnMoveCmd extends Command {
     hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
     flywheelSubsystem.setRPM(RPM.of(exitRPM));
 
+    if (flywheelSubsystem.getSpeedRPM()
+        < 0.9 * exitRPM) { // Can't shoot while flywheel speed is below target.
+      SmartDashboard.putBoolean("Target/canShoot", false);
+      return;
+    }
+
     SmartDashboard.putBoolean("Target/canShoot", true);
     SmartDashboard.putNumber("Target/Turret Angle", robotRelativeAngle.getDegrees());
     SmartDashboard.putNumber("Target/Hood Angle", hoodAngle);
