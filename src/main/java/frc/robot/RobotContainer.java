@@ -134,8 +134,8 @@ public class RobotContainer {
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
-    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
-    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 12));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -12));
     // Hood
     manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
