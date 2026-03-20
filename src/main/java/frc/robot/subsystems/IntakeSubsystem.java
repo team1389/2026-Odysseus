@@ -124,9 +124,9 @@ public class IntakeSubsystem extends SubsystemBase {
     return runOnce(this::stopRoller).andThen(intakeArm.setAngle(retractAngle));
   }
 
-  public Command runRollers(double targetRPM) {
-    return run(() -> setRollerVoltage(targetRPM));
-  }
+  // public Command runRollers(double targetRPM) {
+  //   return run(() -> setRollerVoltage(targetRPM));
+  // }
 
   // SysId
 
