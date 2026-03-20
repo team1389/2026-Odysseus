@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -88,10 +89,25 @@ public class RobotContainer {
 
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
-    // NamedCommands.registerCommand("testShoot", Commands.runOnce(() -> {System.out.println("Robot
-    // did a test shot.");}));
+    //NamedCommands.registerCommand(
+        //"moveIntake", new IntakeRollers(intakeSubsystem).withTimeout(2.0)); // Runs for 2 seconds);
+    // NamedCommands.registerCommand(
+    //     "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
+    NamedCommands.registerCommand(
+        "shootOnTheMove",
+        new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
+            .alongWith(
+                new WaitCommand(3)
+                    .andThen(new TestSerializer(serializerSubsystem, -32))
+                    .withTimeout(9)));
 
-    autoChooser = AutoBuilder.buildAutoChooser("MoveFwd5mAuto");
+    autoChooser = AutoBuilder.buildAutoChooser("MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     SmartDashboard.putNumber("targetSpeed", 0);
