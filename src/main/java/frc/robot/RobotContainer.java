@@ -107,7 +107,7 @@ public class RobotContainer {
                     .andThen(new TestSerializer(serializerSubsystem, -32))
                     .withTimeout(9)));
 
-    autoChooser = AutoBuilder.buildAutoChooser("MovingBackFromCenter");
+    autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     SmartDashboard.putNumber("targetSpeed", 0);
