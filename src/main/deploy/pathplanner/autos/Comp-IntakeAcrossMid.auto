@@ -1,0 +1,56 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OverBump"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "moveIntakeArm"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftAcrossMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "moveIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OverBumpFromMidLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "CompAutos",
+  "choreoAuto": false
+}
