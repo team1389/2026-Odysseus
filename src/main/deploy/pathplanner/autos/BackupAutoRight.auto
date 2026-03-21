@@ -1,0 +1,50 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BackupPathRight"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveIntakeArm"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightToCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "BackupCompAutos",
+  "choreoAuto": false
+}
