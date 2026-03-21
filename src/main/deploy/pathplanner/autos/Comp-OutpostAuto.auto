@@ -38,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "BackupCompAutos",
+  "folder": "CompAutos",
   "choreoAuto": false
 }
