@@ -55,7 +55,7 @@ public class ShootOnMoveCmd extends Command {
     this.robotPoseSupplier = robotPoseSupplier;
     this.robotOrientedChassisSpeeds = robotOrientedChassisSpeeds;
     this.goalPoseSupplier = goalPoseSupplier;
-
+    addRequirements(turretSubsystem, hoodSubsystem, flywheelSubsystem);
     for (Pair<Distance, AngularVelocity> entry :
         List.of(
             Pair.of(Meters.of(0.0), RPM.of((0))),
@@ -180,6 +180,12 @@ public class ShootOnMoveCmd extends Command {
     turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
     hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
     flywheelSubsystem.setRPM(RPM.of(exitRPM));
+
+    if (flywheelSubsystem.getSpeedRPM()
+        < 0.9 * exitRPM) { // Can't shoot while flywheel speed is below target.
+      SmartDashboard.putBoolean("Target/canShoot", false);
+      return;
+    }
 
     SmartDashboard.putBoolean("Target/canShoot", true);
     SmartDashboard.putNumber("Target/Turret Angle", robotRelativeAngle.getDegrees());

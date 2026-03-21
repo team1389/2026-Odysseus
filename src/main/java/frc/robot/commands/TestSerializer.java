@@ -10,6 +10,7 @@ public class TestSerializer extends Command {
   public TestSerializer(SerializerSubsystem serializerSubsystem, double targetDutyCycle) {
     this.serializerSubsystem = serializerSubsystem;
     this.targetDutyCycle = targetDutyCycle;
+    addRequirements(serializerSubsystem);
   }
 
   public void initialize() {

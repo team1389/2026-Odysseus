@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveFwd5m"
+            "pathName": "RightToOutpost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveIntakeArm"
           }
         },
         {
@@ -19,37 +25,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveLeft3m"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MoveBack5m"
+            "pathName": "OutPostToMiddle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "testShoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MoveRight3m"
+            "name": "shootOnTheMove"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "TestAutos",
+  "folder": "CompAutos",
   "choreoAuto": false
 }
