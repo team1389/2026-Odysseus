@@ -43,7 +43,8 @@ public class IntakeSubsystem extends SubsystemBase {
           .withGearing(new MechanismGearing(GearBox.fromTeeth(75, 1)))
           .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
           .withTelemetry("IntakeArmMotor", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
-          .withStatorCurrentLimit(Amps.of(40))
+          .withStatorCurrentLimit(Amps.of(60))
+          .withSupplyCurrentLimit(Amps.of(50))
           .withMotorInverted(false)
           .withClosedLoopRampRate(Seconds.of(0.25))
           .withClosedLoopController(
