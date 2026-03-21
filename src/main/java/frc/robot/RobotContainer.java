@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.ShootOnMoveCmd;
 import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
@@ -90,7 +91,8 @@ public class RobotContainer {
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
     NamedCommands.registerCommand(
-        "moveIntake", new TestIntake(intakeSubsystem, 3).withTimeout(2)); // Runs for 2 seconds);
+        "moveIntake",
+        new AutoIntake(intakeSubsystem, () -> 2.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
         "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
     NamedCommands.registerCommand(
