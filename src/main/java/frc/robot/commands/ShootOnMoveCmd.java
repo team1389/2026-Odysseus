@@ -30,7 +30,7 @@ public class ShootOnMoveCmd extends Command {
   private final Supplier<Pose2d> goalPoseSupplier;
   private final double latency = 0.4; //      <---------------NEED TO TUNE
   private final double offset =
-      1.3; //      <---------------NEED TO TUNE (in feet, added to distance to target for
+      1.7; //      <---------------NEED TO TUNE (in feet, added to distance to target for
   // interpolation tables to account for the fact that the robot is moving towards the target
   // while shooting)
   private final InterpolatingDoubleTreeMap shooterTable =
