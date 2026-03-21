@@ -45,7 +45,7 @@ public class TurretSubsystem extends SubsystemBase {
           // Setup Telemetry
           .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
           // Power Optimization
-          .withStatorCurrentLimit(Amps.of(40))
+          .withStatorCurrentLimit(Amps.of(30))
           .withClosedLoopRampRate(Seconds.of(0.25))
           .withOpenLoopRampRate(Seconds.of(0.25));
   private final SmartMotorController turretSMC =
