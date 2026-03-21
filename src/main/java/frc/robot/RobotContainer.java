@@ -103,7 +103,7 @@ public class RobotContainer {
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
             .alongWith(
-                new WaitCommand(3)
+                new WaitCommand(4)
                     .andThen(new TestSerializer(serializerSubsystem, -32))
                     .withTimeout(9)));
 
