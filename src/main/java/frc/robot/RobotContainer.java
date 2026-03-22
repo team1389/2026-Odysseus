@@ -167,13 +167,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
@@ -281,13 +281,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
