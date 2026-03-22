@@ -104,10 +104,8 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
-            .alongWith(
-                new WaitCommand(4)
-                    .andThen(new TestSerializer(serializerSubsystem, -32))
-                    .withTimeout(10)));
+            .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
+            .withTimeout(10));
 
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
@@ -169,13 +167,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
@@ -283,13 +281,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
