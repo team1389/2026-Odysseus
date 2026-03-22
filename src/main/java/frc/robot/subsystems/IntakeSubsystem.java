@@ -30,7 +30,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 3.0;
-
   private final DCMotorSim intakeMotorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
@@ -71,6 +70,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRollerVoltage(double volts) {
     intakeMotor.setVoltage(volts);
+  }
+
+  public void setRollerVoltage(Supplier<Double> volts) {
+    intakeMotor.setVoltage(volts.get());
   }
 
   public void stopRoller() {
