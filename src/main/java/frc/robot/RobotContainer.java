@@ -92,9 +92,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
     NamedCommands.registerCommand(
         "moveIntake",
-        new AutoIntake(intakeSubsystem, () -> 2.0).withTimeout(3)); // Runs for 2 seconds);
+        new AutoIntake(intakeSubsystem, () -> -12.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -1.0).withTimeout(0.3));
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -1.0).withTimeout(0.5));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
