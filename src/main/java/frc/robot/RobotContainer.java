@@ -94,7 +94,7 @@ public class RobotContainer {
         "moveIntake",
         new AutoIntake(intakeSubsystem, () -> 2.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(0.5));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
