@@ -38,6 +38,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 3.0;
+  @SuppressWarnings("unused")
   private final FlywheelSim intakeWheelSim =
       new FlywheelSim(
           LinearSystemId.identifyVelocitySystem(0.01, 0.001),
