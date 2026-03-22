@@ -11,16 +11,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import java.util.function.Supplier;
 import yams.gearing.GearBox;
@@ -38,14 +30,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 3.0;
-
-  @SuppressWarnings("unused")
-  private final FlywheelSim intakeWheelSim =
-      new FlywheelSim(
-          LinearSystemId.identifyVelocitySystem(0.01, 0.001),
-          DCMotor.getKrakenX60Foc(1),
-          intakeMotorSimGearRatio);
-
   private final DCMotorSim intakeMotorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
@@ -74,37 +58,13 @@ public class IntakeSubsystem extends SubsystemBase {
       new Arm(
           new ArmConfig(intakeArmSMC)
               .withMass(Pounds.of(6.3857643))
-              .withStartingPosition(Degrees.of(90))
+              .withStartingPosition(Degrees.of(-137.6))
               .withTelemetry("IntakeArmMech", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
-              .withMOI(0.081916)
+              .withMOI(210.270616)
               .withLength(Inches.of(22.938))
-              .withHardLimit(Degrees.of(-20), Degrees.of(100)));
+              .withHardLimit(Degrees.of(-137.6), Degrees.of(0)));
 
-  // Arm Simulation
-  private final Mechanism2d mech = new Mechanism2d(60, 60); // A 60x60 inch canvas
-  private final MechanismRoot2d armRoot = mech.getRoot("ArmRoot", 30, 30); // Center of canvas
-  private final MechanismLigament2d armVisual =
-      armRoot.append(
-          new MechanismLigament2d("IntakeArm", 22.9, 90)); // Name, length, starting angle
-  private final SingleJointedArmSim armSim =
-      new SingleJointedArmSim(
-          DCMotor.getKrakenX60(1),
-          75.0, // Gearing
-          0.0078, // MOI
-          0.58, // Length (meters)
-          Math.toRadians(-20), // Min Angle
-          Math.toRadians(100), // Max Angle
-          true, // Simulate Gravity
-          Math.toRadians(90) // Starting Angle
-          );
-  private final MechanismLigament2d rollerVisual =
-      armVisual.append(new MechanismLigament2d("Rollers", 4, 0, 6, new Color8Bit(0, 255, 0)));
-
-  public IntakeSubsystem() {
-    if (Robot.isSimulation()) {
-      SmartDashboard.putData("Intake Mech", mech);
-    }
-  }
+  public IntakeSubsystem() {}
 
   // Private Roller Control
 
@@ -184,23 +144,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    // 1. Get the voltage the Talon is applying
-    var simState = intakeArmMotor.getSimState();
-    simState.setSupplyVoltage(RobotController.getBatteryVoltage());
-    double armMotorVoltage = simState.getMotorVoltageMeasure().in(Volts);
 
-    // 2. Update the Physics Model
-    armSim.setInput(armMotorVoltage);
-    armSim.update(0.020); // 20ms loop
-
-    // 3. Update the Hardware Sensors
-    double sensorPos = armSim.getAngleRads() * (75.0 / (2 * Math.PI));
-    simState.setRawRotorPosition(sensorPos);
-
-    // Set velocity so PID/Feedforward works correctly
-    double sensorVel = armSim.getVelocityRadPerSec() * (75.0 / (2 * Math.PI));
-    simState.setRotorVelocity(sensorVel);
-    armVisual.setAngle(Math.toDegrees(armSim.getAngleRads()));
+    intakeArm.simIterate();
 
     var talonFXSim = intakeMotor.getSimState();
     talonFXSim.setSupplyVoltage(RobotController.getBatteryVoltage());
@@ -214,6 +159,5 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotorSim.getAngularPosition().times(intakeMotorSimGearRatio));
 
     talonFXSim.setRotorVelocity(intakeMotorSim.getAngularVelocity().times(intakeMotorSimGearRatio));
-    rollerVisual.setAngle(intakeMotor.getPosition().getValueAsDouble() * 360.0);
   }
 }
