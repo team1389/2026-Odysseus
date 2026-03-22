@@ -17,7 +17,7 @@ public class TestIntakeArm extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    intakeSubsystem.setArmVoltage(() -> volts.get()*5);
+    intakeSubsystem.setArmVoltage(() -> volts.get() * 5);
   }
 
   @Override
