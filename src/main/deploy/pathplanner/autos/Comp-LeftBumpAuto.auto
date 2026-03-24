@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightToOutpost"
+            "pathName": "LeftMovingBack"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "MoveIntakeArm"
+            "name": "shootOnTheMove"
           }
         },
         {
@@ -25,13 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OutPostToMiddle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootOnTheMove"
+            "pathName": "LeftForward5m"
           }
         }
       ]
