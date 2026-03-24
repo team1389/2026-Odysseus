@@ -1,16 +1,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.SerializerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import java.util.function.Supplier;
 
-public class TestSerializer extends Command {
-  public SerializerSubsystem serializerSubsystem;
-  public double targetDutyCycle;
+public class AutoIntake extends Command {
+  public IntakeSubsystem intakeSubsystem;
+  public Supplier<Double> volt;
 
-  public TestSerializer(SerializerSubsystem serializerSubsystem, double targetDutyCycle) {
-    this.serializerSubsystem = serializerSubsystem;
-    this.targetDutyCycle = targetDutyCycle;
-    addRequirements(serializerSubsystem);
+  public AutoIntake(IntakeSubsystem intakeSubsystem, Supplier<Double> volts) {
+    this.intakeSubsystem = intakeSubsystem;
+    this.volt = volts;
+    addRequirements(intakeSubsystem);
   }
 
   public void initialize() {
@@ -20,13 +21,13 @@ public class TestSerializer extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    serializerSubsystem.setSpeed(targetDutyCycle);
+    intakeSubsystem.setRollerVoltage(volt);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    serializerSubsystem.setSpeed(0);
+    intakeSubsystem.stopRoller();
   }
 
   @Override

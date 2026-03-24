@@ -39,6 +39,7 @@ public class RobotMap {
   // Other CAN id's
   public static final int IntakeCanID = 21;
   public static final int IntakeArmCanID = 20;
+  public static final double IntakeArmAngle = 0;
 
   // Other CAN id's
 

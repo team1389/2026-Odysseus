@@ -80,7 +80,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putNumber("Hood Angle", m_robotContainer.hoodSubsystem.getAngleDegrees());
+    SmartDashboard.putNumber("Turret Angle", m_robotContainer.turretSubsystem.getAngleDegrees());
+    SmartDashboard.putNumber("Flywheel Speed", m_robotContainer.flywheelSubsystem.getSpeedRPM());
+  }
 
   @Override
   public void teleopExit() {}

@@ -1,7 +1,7 @@
 Implement all subsystems by extending SubsystemBase
 Simple subsystem code example below
 
-package frc.subsystems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;

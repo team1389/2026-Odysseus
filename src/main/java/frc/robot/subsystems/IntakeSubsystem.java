@@ -30,7 +30,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 3.0;
-
   private final DCMotorSim intakeMotorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
@@ -73,6 +72,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.setVoltage(volts);
   }
 
+  public void setRollerVoltage(Supplier<Double> volts) {
+    intakeMotor.setVoltage(volts.get());
+  }
+
   public void stopRoller() {
     intakeMotor.setControl(new NeutralOut());
   }
@@ -93,6 +96,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setArmVoltage(double volts) {
     intakeArmMotor.setVoltage(volts);
+  }
+
+  public void setArmVoltage(Supplier<Double> volts) {
+    intakeArmMotor.setVoltage(volts.get());
   }
 
   public void stopArm() {
@@ -119,6 +126,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command retract(Angle retractAngle) {
     return runOnce(this::stopRoller).andThen(intakeArm.setAngle(retractAngle));
   }
+
+  // public Command runRollers(double targetRPM) {
+  //   return run(() -> setRollerVoltage(targetRPM));
+  // }
 
   // SysId
 

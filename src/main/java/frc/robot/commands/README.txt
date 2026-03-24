@@ -1,7 +1,7 @@
 Implement all commands for this robot by extending Command
 An example:
 
-package frc.command;
+package frc.robot.commands;
 
 import frc.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
