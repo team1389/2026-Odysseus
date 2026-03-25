@@ -97,6 +97,7 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
     for (int i = 0; i < cameraNames.length; i++) {
+      field2ds.add(new Field2d());
       SmartDashboard.putData("VisionField" + i, field2ds.get(i));
     }
   }
@@ -116,13 +117,15 @@ public class VisionSubsystem extends SubsystemBase {
       for (PhotonPipelineResult result : results) {
         if (result.hasTargets()) {
           visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
-          visionPose3ds.add(visionEstimates.get(i).get().estimatedPose);
+          if (visionEstimates.size() > i && visionEstimates.get(i).isPresent()) {
+            visionPose3ds.add(visionEstimates.get(i).get().estimatedPose);
+          }
         }
       }
     }
     if (!visionPose3ds.isEmpty()) {
-      arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
-      for (int i = 0; i < cameraNames.length; i++) {
+      // arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
+      for (int i = 0; i < visionPose3ds.size(); i++) {
         field2ds.get(i).setRobotPose(visionPose3ds.get(i).toPose2d());
       }
     }
