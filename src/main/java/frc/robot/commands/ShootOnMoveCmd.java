@@ -182,7 +182,7 @@ public class ShootOnMoveCmd extends Command {
     // SET OUTPUTS
     turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
     if (isPassing) {
-      hoodSubsystem.setAngleDirect(Degrees.of(35));
+      hoodSubsystem.setAngleDirect(Degrees.of(30));
     } else {
       hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
     }

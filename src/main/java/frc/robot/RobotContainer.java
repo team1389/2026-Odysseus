@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -280,6 +281,19 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
+
+    manipController
+        .y()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                true,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getPassingTarget()));
+
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
@@ -376,11 +390,13 @@ public class RobotContainer {
 
   public Pose2d getPassingTarget() {
     boolean isRed = AllianceFlipUtil.shouldFlip();
+    double xPosM =
+        isRed ? FieldConstants.fieldLength - Units.inchesToMeters(130) : Units.inchesToMeters(130);
     if (drivetrain.getState().Pose.getY() < 4) {
-      return new Pose2d(Inches.of(130), Inches.of(30), Rotation2d.kZero);
+      return new Pose2d(Meters.of(xPosM), Inches.of(30), Rotation2d.kZero);
     }
 
-    return new Pose2d(Inches.of(130), Inches.of(290), Rotation2d.kZero);
+    return new Pose2d(Meters.of(xPosM), Inches.of(290), Rotation2d.kZero);
   }
 
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
