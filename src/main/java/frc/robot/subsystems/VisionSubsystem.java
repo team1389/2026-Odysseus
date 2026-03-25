@@ -36,9 +36,11 @@ public class VisionSubsystem extends SubsystemBase {
   // Photon pose estimators
   private final List<PhotonPoseEstimator> photonPoseEstimators = new ArrayList<>();
 
+  // April tag layout on field for vision
   public static final AprilTagFieldLayout tagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
+  // List of vision estimated robot positions
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
   // Pose3ds for advantageScope
@@ -52,6 +54,7 @@ public class VisionSubsystem extends SubsystemBase {
   // Field2d for pose visualization
   private List<Field2d> field2ds = new ArrayList<>();
 
+  // Current robot position for simulation
   Supplier<Pose2d> currentRobotPose;
 
   // Simulation objects
@@ -83,19 +86,21 @@ public class VisionSubsystem extends SubsystemBase {
           new Translation3d(-0.2259, 0.26194, 0.1797), new Rotation3d(0, -0.436332, 3.14159))
     };
 
+    // Creates cameras and photon pose estimators
     for (int i = 0; i < cameraNames.length; i++) {
       PhotonCamera cam = new PhotonCamera(cameraNames[i]);
       cameras.add(cam);
       PhotonPoseEstimator poseEstimator =
           new PhotonPoseEstimator(tagLayout, robotToCamTransforms[i]);
       photonPoseEstimators.add(poseEstimator);
-
+      // Adds cameras to simulated environment in case of simulation
       if (RobotBase.isSimulation()) {
         PhotonCameraSim camSim = new PhotonCameraSim(cam, cameraProp);
         visionSim.addCamera(camSim, robotToCamTransforms[i]);
         cameraSims.add(camSim);
       }
     }
+    // Publishes calculated pose 2ds
     for (int i = 0; i < cameraNames.length; i++) {
       field2ds.add(new Field2d());
       SmartDashboard.putData("VisionField" + i, field2ds.get(i));
@@ -104,8 +109,8 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // Updates vision simulation with simulated robot position (Not the position we estimate, but where the simulation knows that we are)
     if (RobotBase.isSimulation()) {
-      // In a real project, you'd pass your actual Drive Pose here
       visionSim.update(currentRobotPose.get());
     }
     visionEstimates.clear();
@@ -125,12 +130,14 @@ public class VisionSubsystem extends SubsystemBase {
     }
     if (!visionPose3ds.isEmpty()) {
       // arrayPublisher.set(new Pose3d[] {visionPose3ds.get(0), visionPose3ds.get(1)});
+      // Updates field2ds with new estimated locations
       for (int i = 0; i < visionPose3ds.size(); i++) {
         field2ds.get(i).setRobotPose(visionPose3ds.get(i).toPose2d());
       }
     }
   }
 
+  // Used to pass vision's estimated position to drivetrain
   public List<Optional<EstimatedRobotPose>> getPoseEstimates() {
     return visionEstimates;
   }
