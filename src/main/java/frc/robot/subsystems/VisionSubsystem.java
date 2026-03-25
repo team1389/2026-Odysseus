@@ -137,7 +137,11 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  // Used to pass vision's estimated position to drivetrain
+  /**
+   * Used to pass vision's estimated position to drivetrain
+   *
+   * @return Both camera's estimated position in an optional list
+   */
   public List<Optional<EstimatedRobotPose>> getPoseEstimates() {
     return visionEstimates;
   }
