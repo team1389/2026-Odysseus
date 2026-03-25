@@ -164,8 +164,7 @@ public class RobotContainer {
                 true,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
-                () -> AllianceFlipUtil.flip(getPassingTarget())));
-
+                () -> getPassingTarget()));
 
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
@@ -291,7 +290,6 @@ public class RobotContainer {
 
     // Passing Mode
 
-
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
@@ -377,12 +375,14 @@ public class RobotContainer {
   }
 
   public Pose2d getPassingTarget() {
-    if (drivetrain.getState().Pose.getX() > 4) {
-        return new Pose2d(Inches.of(30), Inches.of(130), Rotation2d.kZero);
+    boolean isRed = AllianceFlipUtil.shouldFlip();
+    if (drivetrain.getState().Pose.getY() < 4) {
+      return new Pose2d(Inches.of(130), Inches.of(30), Rotation2d.kZero);
     }
-    return new Pose2d(Inches.of(290), Inches.of(130), Rotation2d.kZero);
+
+    return new Pose2d(Inches.of(130), Inches.of(290), Rotation2d.kZero);
   }
-  
+
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
     return inputValue * Math.abs(inputValue) * scaleFactor;
   }
