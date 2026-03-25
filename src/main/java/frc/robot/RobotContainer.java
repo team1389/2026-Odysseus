@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.ShootOnMoveCmd;
 import frc.robot.commands.TestHood;
-import frc.robot.commands.PassingModeCmd;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
@@ -102,6 +101,7 @@ public class RobotContainer {
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
@@ -149,9 +149,24 @@ public class RobotContainer {
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
+
+    manipController
+        .y()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                true,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> AllianceFlipUtil.flip(getPassingTarget())));
+
+
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY() * 0.625));
@@ -262,6 +277,7 @@ public class RobotContainer {
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
@@ -274,15 +290,7 @@ public class RobotContainer {
     manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
 
     // Passing Mode
-    manipController
-        .y()
-        .whileTrue(
-            new PassingModeCmd(
-                turretSubsystem,
-                flywheelSubsystem,
-                hoodSubsystem,
-                () -> drivetrain.getState().Pose,
-                () -> drivetrain.getState().Speeds));
+
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
@@ -368,6 +376,13 @@ public class RobotContainer {
     return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
   }
 
+  public Pose2d getPassingTarget() {
+    if (drivetrain.getState().Pose.getX() > 4) {
+        return new Pose2d(Inches.of(30), Inches.of(130), Rotation2d.kZero);
+    }
+    return new Pose2d(Inches.of(290), Inches.of(130), Rotation2d.kZero);
+  }
+  
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
     return inputValue * Math.abs(inputValue) * scaleFactor;
   }
