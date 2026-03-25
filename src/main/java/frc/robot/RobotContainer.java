@@ -26,6 +26,7 @@ import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
 import frc.robot.commands.TestIntakeArm;
 import frc.robot.commands.TestSerializer;
+import frc.robot.commands.TestShooter;
 import frc.robot.commands.TestTurret;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -104,8 +105,9 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
-            .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
+            .alongWith(new TestSerializer(serializerSubsystem, -32))
             .withTimeout(10));
+    NamedCommands.registerCommand("moveFlywheel", new TestShooter(flywheelSubsystem, 1900));
 
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
