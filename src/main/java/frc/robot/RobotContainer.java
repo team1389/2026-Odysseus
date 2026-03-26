@@ -393,10 +393,10 @@ public class RobotContainer {
     double xPosM =
         isRed ? FieldConstants.fieldLength - Units.inchesToMeters(130) : Units.inchesToMeters(130);
     if (drivetrain.getState().Pose.getY() < 4) {
-      return new Pose2d(Meters.of(xPosM), Inches.of(30), Rotation2d.kZero);
+      return new Pose2d(Meters.of(xPosM), Inches.of(60), Rotation2d.kZero);
     }
 
-    return new Pose2d(Meters.of(xPosM), Inches.of(290), Rotation2d.kZero);
+    return new Pose2d(Meters.of(xPosM), Inches.of(260), Rotation2d.kZero);
   }
 
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
