@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.5426995305164324,
-        "y": 5.376338028169013
+        "x": 2.2611250000000003,
+        "y": 5.508875000000001
       },
       "prevControl": {
-        "x": 2.5850586854460107,
-        "y": 5.779741784037558
+        "x": 1.701808333333334,
+        "y": 5.599575
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterOfAlliance"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "CompPaths",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": 180.0
