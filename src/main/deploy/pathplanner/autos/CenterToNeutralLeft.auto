@@ -21,6 +21,12 @@
           "data": {
             "pathName": "CenterOverLeftBump"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReadTags"
+          }
         }
       ]
     }

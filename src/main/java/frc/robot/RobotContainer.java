@@ -109,8 +109,6 @@ public class RobotContainer {
             .alongWith(
                 new WaitCommand(4)
                     .andThen(new TestSerializer(serializerSubsystem, -32)))
-                    // .alongWith(new TestIntakeArm(intakeSubsystem, () -> 0.5))
-                    // .withTimeout(0.5))
             .withTimeout(10));
 
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
