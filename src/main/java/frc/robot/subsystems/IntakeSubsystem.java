@@ -6,14 +6,18 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -31,6 +35,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
   private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
+
+  // Roller Simulation
+  private static final double intakeMotorSimGearRatio = 3.0;
+  private final FlywheelSim intakeWheelSim =
+      new FlywheelSim(
+          LinearSystemId.identifyVelocitySystem(0.01, 0.001),
+          DCMotor.getKrakenX60Foc(1),
+          intakeMotorSimGearRatio);
+
+  private final DCMotorSim intakeMotorSim =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(
+              DCMotor.getKrakenX60Foc(1), 0.001, intakeMotorSimGearRatio),
+          DCMotor.getKrakenX60Foc(1));
 
   // Arm Configuration (YAMS)
   private final SmartMotorControllerConfig intakeArmMotorConfig =
@@ -77,6 +95,9 @@ public class IntakeSubsystem extends SubsystemBase {
           true, // Simulate Gravity
           Math.toRadians(90) // Starting Angle
           );
+  private final MechanismLigament2d rollerVisual =
+      armVisual.append(new MechanismLigament2d("Rollers", 4, 0, 6, new Color8Bit(0, 255, 0)));
+
   public IntakeSubsystem() {
     if (Robot.isSimulation()) {
       SmartDashboard.putData("Intake Mech", mech);
@@ -181,5 +202,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
     var talonFXSim = intakeMotor.getSimState();
     talonFXSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+
+    var motorVoltage = talonFXSim.getMotorVoltageMeasure();
+
+    intakeMotorSim.setInputVoltage(motorVoltage.in(Volts));
+    intakeMotorSim.update(0.020);
+
+    talonFXSim.setRawRotorPosition(
+        intakeMotorSim.getAngularPosition().times(intakeMotorSimGearRatio));
+
+    talonFXSim.setRotorVelocity(intakeMotorSim.getAngularVelocity().times(intakeMotorSimGearRatio));
+    rollerVisual.setAngle(intakeMotor.getPosition().getValueAsDouble() * 360.0);
   }
 }
