@@ -3,29 +3,47 @@
   "waypoints": [
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/LeftForward5m.path
         "x": 1.7,
+========
+        "x": 3.25,
+>>>>>>>> origin/master:src/main/deploy/pathplanner/paths/LeftMovingBack.path
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/LeftForward5m.path
         "x": 2.7,
         "y": 5.5
+========
+        "x": 3.730021286677139,
+        "y": 5.552672624473711
+>>>>>>>> origin/master:src/main/deploy/pathplanner/paths/LeftMovingBack.path
       },
       "isLocked": false,
       "linkedName": "LeftBack"
     },
     {
       "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/LeftForward5m.path
         "x": 7.2,
         "y": 5.5
       },
       "prevControl": {
         "x": 6.2,
         "y": 5.5
+========
+        "x": 1.7,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.2938028093797593,
+        "y": 5.505815598163144
+>>>>>>>> origin/master:src/main/deploy/pathplanner/paths/LeftMovingBack.path
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftBack"
     }
   ],
   "rotationTargets": [],
