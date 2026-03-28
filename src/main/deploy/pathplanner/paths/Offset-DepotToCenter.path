@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.515808333333333,
-        "y": 4.095359361135758
+        "x": 0.65,
+        "y": 5.929906103286385
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.032808333333333,
-        "y": 4.095359361135758
+        "x": 1.3313145539906097,
+        "y": 5.802159624413146
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CollectEnd"
     },
     {
       "anchor": {
-        "x": 2.153584738243123,
-        "y": 4.095359361135758
+        "x": 2.2611250000000003,
+        "y": 5.508875000000001
       },
       "prevControl": {
-        "x": 2.5598235582120807,
-        "y": 4.095359361135758
+        "x": 1.701808333333334,
+        "y": 5.599575
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterOfAlliance"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -47,7 +47,7 @@
   "reversed": false,
   "folder": "CompPaths",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

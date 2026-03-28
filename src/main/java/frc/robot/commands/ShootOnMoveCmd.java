@@ -24,13 +24,14 @@ public class ShootOnMoveCmd extends Command {
   private final TurretSubsystem turretSubsystem;
   private final HoodSubsystem hoodSubsystem;
   private final FlywheelSubsystem flywheelSubsystem;
+  private boolean isPassing;
 
   private final Supplier<Pose2d> robotPoseSupplier;
   private final Supplier<ChassisSpeeds> robotOrientedChassisSpeeds;
   private final Supplier<Pose2d> goalPoseSupplier;
   private final double latency = 0.4; //      <---------------NEED TO TUNE
   private final double offset =
-      1.3; //      <---------------NEED TO TUNE (in feet, added to distance to target for
+      1.7; //      <---------------NEED TO TUNE (in feet, added to distance to target for
   // interpolation tables to account for the fact that the robot is moving towards the target
   // while shooting)
   private final InterpolatingDoubleTreeMap shooterTable =
@@ -46,12 +47,14 @@ public class ShootOnMoveCmd extends Command {
       TurretSubsystem turretSubsystem,
       FlywheelSubsystem flywheelSubsystem,
       HoodSubsystem hoodSubsystem,
+      Boolean isPassing,
       Supplier<Pose2d> robotPoseSupplier,
       Supplier<ChassisSpeeds> robotOrientedChassisSpeeds,
       Supplier<Pose2d> goalPoseSupplier) {
     this.turretSubsystem = turretSubsystem;
     this.flywheelSubsystem = flywheelSubsystem;
     this.hoodSubsystem = hoodSubsystem;
+    this.isPassing = isPassing;
     this.robotPoseSupplier = robotPoseSupplier;
     this.robotOrientedChassisSpeeds = robotOrientedChassisSpeeds;
     this.goalPoseSupplier = goalPoseSupplier;
@@ -178,7 +181,11 @@ public class ShootOnMoveCmd extends Command {
 
     // SET OUTPUTS
     turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
-    hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
+    if (isPassing) {
+      hoodSubsystem.setAngleDirect(Degrees.of(30));
+    } else {
+      hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
+    }
     flywheelSubsystem.setRPM(RPM.of(exitRPM));
 
     if (flywheelSubsystem.getSpeedRPM()

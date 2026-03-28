@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.ShootOnMoveCmd;
 import frc.robot.commands.TestHood;
 import frc.robot.commands.TestIntake;
@@ -90,15 +92,17 @@ public class RobotContainer {
     // Pathplanner Auto commands
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
     NamedCommands.registerCommand(
-        "moveIntake", new TestIntake(intakeSubsystem, 3).withTimeout(2)); // Runs for 2 seconds);
+        "moveIntake",
+        new AutoIntake(intakeSubsystem, () -> 12.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -2.0).withTimeout(2.0));
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -1.0).withTimeout(0.5));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
@@ -150,9 +154,23 @@ public class RobotContainer {
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
+
+    manipController
+        .y()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                true,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getPassingTarget()));
+
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY() * 0.625));
@@ -169,13 +187,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
@@ -263,9 +281,23 @@ public class RobotContainer {
                 turretSubsystem,
                 flywheelSubsystem,
                 hoodSubsystem,
+                false,
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub)));
+
+    manipController
+        .y()
+        .whileTrue(
+            new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                true,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> getPassingTarget()));
+
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
@@ -273,6 +305,8 @@ public class RobotContainer {
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
     manipController.rightTrigger().whileTrue(new TestSerializer(serializerSubsystem, 32));
+
+    // Passing Mode
 
     // Drivetrain commands
     // Note that X is defined as forward according to WPILib convention,
@@ -283,13 +317,13 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftY())
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -(driverController.rightBumper().getAsBoolean() // slow mode
+                        -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
                                 : driverController.getLeftX())
@@ -356,6 +390,17 @@ public class RobotContainer {
 
   public Pose2d getHubPose() {
     return new Pose2d(Inches.of(469.11), Inches.of(158.84), Rotation2d.kZero);
+  }
+
+  public Pose2d getPassingTarget() {
+    boolean isRed = AllianceFlipUtil.shouldFlip();
+    double xPosM =
+        isRed ? FieldConstants.fieldLength - Units.inchesToMeters(130) : Units.inchesToMeters(130);
+    if (drivetrain.getState().Pose.getY() < 4) {
+      return new Pose2d(Meters.of(xPosM), Inches.of(60), Rotation2d.kZero);
+    }
+
+    return new Pose2d(Meters.of(xPosM), Inches.of(260), Rotation2d.kZero);
   }
 
   private double scaleAndSmooth(double inputValue, double scaleFactor) {
