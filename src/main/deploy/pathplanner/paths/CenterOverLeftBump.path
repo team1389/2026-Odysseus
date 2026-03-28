@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7,
-        "y": 5.5
+        "x": 2.153584738243123,
+        "y": 4.095359361135758
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7,
-        "y": 5.5
+        "x": 2.4291861090552453,
+        "y": 4.2931893581479
       },
       "isLocked": false,
-      "linkedName": "LeftBack"
+      "linkedName": "CenterOfAlliance"
+    },
+    {
+      "anchor": {
+        "x": 3.5327347417840373,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 3.157623569771755,
+        "y": 5.3589773143802795
+      },
+      "nextControl": {
+        "x": 4.079731691389927,
+        "y": 5.705642978974487
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,8 +36,8 @@
         "y": 5.5
       },
       "prevControl": {
-        "x": 6.2,
-        "y": 5.5
+        "x": 6.400299547614544,
+        "y": 5.50525332225454
       },
       "nextControl": null,
       "isLocked": false,
