@@ -102,10 +102,12 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
+            .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
             .alongWith(
-                new WaitCommand(4)
-                    .andThen(new TestSerializer(serializerSubsystem, -32))
-                    .withTimeout(10)));
+                new WaitCommand(5)
+                    .andThen(new TestIntakeArm(intakeSubsystem, () -> 0.5))
+                    .withTimeout(2))
+            .withTimeout(10));
 
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
