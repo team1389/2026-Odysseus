@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5,
-        "y": 5.5
+        "x": 8.27,
+        "y": 7.237318116975749
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.5,
-        "y": 5.5
+        "x": 8.27,
+        "y": 6.237318116975749
       },
       "isLocked": false,
       "linkedName": "LeftReadyToEat"
     },
     {
       "anchor": {
-        "x": 10.0,
-        "y": 5.5
+        "x": 8.2,
+        "y": 4.5
       },
       "prevControl": {
-        "x": 9.0,
-        "y": 5.5
+        "x": 8.2,
+        "y": 5.280103487990734
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.90938044919905
   },
   "reversed": false,
   "folder": "CompPaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -89.98063138629477
   },
   "useDefaultConstraints": false
 }
