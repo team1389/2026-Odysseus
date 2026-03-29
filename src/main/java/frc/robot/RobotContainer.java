@@ -106,9 +106,7 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
-            .alongWith(
-                new WaitCommand(4)
-                    .andThen(new TestSerializer(serializerSubsystem, -32)))
+            .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
             .withTimeout(10));
 
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");

@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.1713699055351245,
-        "y": 5.986136895266012
+        "x": 6.153889484363082,
+        "y": 6.257138558046997
       },
       "isLocked": false,
       "linkedName": "LeftNeutralPoint"
     },
     {
       "anchor": {
-        "x": 6.537769869513642,
-        "y": 4.029620403321471
+        "x": 7.828873072368069,
+        "y": 7.2681376037916205
       },
       "prevControl": {
-        "x": 6.152234053359541,
-        "y": 4.059303682457045
+        "x": 7.842443073719547,
+        "y": 7.52683490925392
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "prepare"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "CompPaths",
