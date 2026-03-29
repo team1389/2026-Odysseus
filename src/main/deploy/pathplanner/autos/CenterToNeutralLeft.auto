@@ -27,6 +27,12 @@
           "data": {
             "pathName": "ReadTags"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveIntakeArm"
+          }
         }
       ]
     }

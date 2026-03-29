@@ -23,6 +23,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "MoveIntakeArm"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
