@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -22,8 +24,6 @@ import yams.mechanisms.positional.Arm;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.remote.TalonFXWrapper;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-import com.ctre.phoenix6.controls.Follower;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -56,7 +56,7 @@ public class IntakeSubsystem extends SubsystemBase {
           .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController intakeArmSMC =
-      new TalonFXWrapper(intakeArmMotor, DCMotor.getKrakenX60(1), intakeArmMotorConfig);
+      new TalonFXWrapper(intakeArmMotor, DCMotor.getKrakenX60(2), intakeArmMotorConfig);
 
   private final Arm intakeArm =
       new Arm(
