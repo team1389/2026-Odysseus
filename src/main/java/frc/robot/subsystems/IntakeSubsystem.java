@@ -22,19 +22,23 @@ import yams.mechanisms.positional.Arm;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.remote.TalonFXWrapper;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.controls.Follower;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
+  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID1);
+  private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
   private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
+  private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 3.0;
   private final DCMotorSim intakeMotorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
-              DCMotor.getKrakenX60Foc(1), 0.001, intakeMotorSimGearRatio),
-          DCMotor.getKrakenX60Foc(1));
+              DCMotor.getKrakenX60Foc(2), 0.001, intakeMotorSimGearRatio),
+          DCMotor.getKrakenX60Foc(2));
 
   // Arm Configuration (YAMS)
   private final SmartMotorControllerConfig intakeArmMotorConfig =
@@ -64,7 +68,10 @@ public class IntakeSubsystem extends SubsystemBase {
               .withLength(Inches.of(22.938))
               .withHardLimit(Degrees.of(-137.6), Degrees.of(0)));
 
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+    intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID1, MotorAlignmentValue.Aligned));
+    intakeArmMotor2.setControl(new Follower(RobotMap.IntakeArmCanID, MotorAlignmentValue.Aligned));
+  }
 
   // Private Roller Control
 
