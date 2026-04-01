@@ -69,8 +69,8 @@ public class IntakeSubsystem extends SubsystemBase {
               .withHardLimit(Degrees.of(-137.6), Degrees.of(0)));
 
   public IntakeSubsystem() {
-    intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID1, MotorAlignmentValue.Aligned));
-    intakeArmMotor2.setControl(new Follower(RobotMap.IntakeArmCanID, MotorAlignmentValue.Aligned));
+    intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID1, MotorAlignmentValue.Opposed));
+    intakeArmMotor2.setControl(new Follower(RobotMap.IntakeArmCanID, MotorAlignmentValue.Opposed));
   }
 
   // Private Roller Control
