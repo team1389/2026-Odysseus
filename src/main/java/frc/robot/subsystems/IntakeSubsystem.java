@@ -11,8 +11,16 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import java.util.function.Supplier;
 import yams.gearing.GearBox;
@@ -58,13 +66,14 @@ public class IntakeSubsystem extends SubsystemBase {
       new Arm(
           new ArmConfig(intakeArmSMC)
               .withMass(Pounds.of(6.3857643))
-              .withStartingPosition(Degrees.of(-137.6))
+              .withStartingPosition(Degrees.of(90))
               .withTelemetry("IntakeArmMech", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
-              .withMOI(210.270616)
+              .withMOI(0.081916)
               .withLength(Inches.of(22.938))
-              .withHardLimit(Degrees.of(-137.6), Degrees.of(0)));
+              .withHardLimit(Degrees.of(-20), Degrees.of(100)));
 
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+  }
 
   // Private Roller Control
 
@@ -144,9 +153,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-
-    intakeArm.simIterate();
-
+    // 1. Get the voltage the Talon is applying
     var talonFXSim = intakeMotor.getSimState();
     talonFXSim.setSupplyVoltage(RobotController.getBatteryVoltage());
 

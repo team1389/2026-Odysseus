@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterMovingBack"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterOverLeftBump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReadTags"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveIntakeArm"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "CompAutos",
+  "choreoAuto": false
+}

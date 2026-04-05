@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftToCollect"
+            "pathName": "CenterMovingBack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterOverLeftBump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shiftprepare"
           }
         },
         {
@@ -21,15 +33,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "moveIntake"
+                  "pathName": "NeutralCollect"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Collecting"
+                  "name": "moveIntake"
                 }
               }
             ]
@@ -38,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Offset-DepotToCenter"
+            "pathName": "endpointToshoot"
           }
         },
         {
