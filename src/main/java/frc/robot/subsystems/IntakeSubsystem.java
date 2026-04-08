@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -27,18 +29,18 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
-  private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
+  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID, "Drive Train");
+  private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2, "Drive Train");
   private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
   private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
 
   // Roller Simulation
-  private static final double intakeMotorSimGearRatio = 3.0;
+  private static final double intakeMotorSimGearRatio = 1.2;
   private final DCMotorSim intakeMotorSim =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
-              DCMotor.getKrakenX60Foc(2), 0.001, intakeMotorSimGearRatio),
-          DCMotor.getKrakenX60Foc(2));
+              DCMotor.getKrakenX44Foc(2), 0.001, intakeMotorSimGearRatio),
+          DCMotor.getKrakenX44Foc(2));
 
   // Arm Configuration (YAMS)
   private final SmartMotorControllerConfig intakeArmMotorConfig =
@@ -76,11 +78,15 @@ public class IntakeSubsystem extends SubsystemBase {
   // Private Roller Control
 
   public void setRollerVoltage(double volts) {
-    intakeMotor.setVoltage(volts);
+    intakeMotor.setControl(new VoltageOut(volts));
   }
 
   public void setRollerVoltage(Supplier<Double> volts) {
     intakeMotor.setVoltage(volts.get());
+  }
+
+  public void setSpeed(double dutyCycleSpeed) {
+    intakeMotor.setControl(new DutyCycleOut(dutyCycleSpeed));
   }
 
   public void stopRoller() {
