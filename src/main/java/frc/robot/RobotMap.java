@@ -35,10 +35,14 @@ public class RobotMap {
 
   // Intake Motor ports
   public static final int IntakeMotorPort = 15;
+  public static final int IntakeMotorPort2 = 14;
   public static final int IntakeArmMotorPort = 16;
+  public static final int IntakeArmMotorPort2 = 19;
   // Other CAN id's
-  public static final int IntakeCanID = 21;
+  public static final int IntakeCanID = 30;
+  public static final int IntakeCanID2 = 29;
   public static final int IntakeArmCanID = 20;
+  public static final int IntakeArmCanID2 = 21;
   public static final double IntakeArmAngle = 0;
 
   // Other CAN id's

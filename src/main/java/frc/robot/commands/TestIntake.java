@@ -10,6 +10,7 @@ public class TestIntake extends Command {
   public TestIntake(IntakeSubsystem intakeSubsystem, double targetRPM) {
     this.intakeSubsystem = intakeSubsystem;
     this.targetRPM = targetRPM;
+    addRequirements(intakeSubsystem);
   }
 
   public void initialize() {
@@ -19,6 +20,7 @@ public class TestIntake extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
+    System.out.println("Working Intake rollers");
     intakeSubsystem.setRollerVoltage(targetRPM);
   }
 
