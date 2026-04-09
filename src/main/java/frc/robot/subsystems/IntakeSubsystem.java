@@ -27,7 +27,7 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID1);
+  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
   private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
   private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
   private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
@@ -69,7 +69,7 @@ public class IntakeSubsystem extends SubsystemBase {
               .withHardLimit(Degrees.of(-137.6), Degrees.of(0)));
 
   public IntakeSubsystem() {
-    intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID1, MotorAlignmentValue.Opposed));
+    intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID, MotorAlignmentValue.Opposed));
     intakeArmMotor2.setControl(new Follower(RobotMap.IntakeArmCanID, MotorAlignmentValue.Opposed));
   }
 
