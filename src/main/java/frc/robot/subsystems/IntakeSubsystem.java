@@ -29,8 +29,8 @@ import yams.motorcontrollers.remote.TalonFXWrapper;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID, "Drive Train");
-  private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2, "Drive Train");
+  private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
+  private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
   private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
   private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
 
