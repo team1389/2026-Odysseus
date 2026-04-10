@@ -109,6 +109,19 @@ public class RobotContainer {
             .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
             .withTimeout(10));
 
+    NamedCommands.registerCommand(
+        "shootOnTheMove2",
+        new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                false,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
+            .alongWith(new WaitCommand(2).andThen(new TestSerializer(serializerSubsystem, -32)))
+            .withTimeout(7));
+
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
