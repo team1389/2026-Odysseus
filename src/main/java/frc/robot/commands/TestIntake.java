@@ -20,7 +20,6 @@ public class TestIntake extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    //System.out.println("Working Intake rollers");
     intakeSubsystem.setRollerVoltage(targetRPM);
   }
 
