@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 3.5,
-        "y": 5.5
+        "y": 5.3
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.0,
-        "y": 5.5
+        "y": 5.3
       },
       "isLocked": false,
       "linkedName": "LeftBump"
     },
     {
       "anchor": {
-        "x": 2.1,
-        "y": 5.5
+        "x": 1.8,
+        "y": 5.3
       },
       "prevControl": {
-        "x": 2.6,
-        "y": 5.5
+        "x": 2.3000000000000003,
+        "y": 5.3
       },
       "nextControl": null,
       "isLocked": false,
