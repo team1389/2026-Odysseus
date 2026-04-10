@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7,
+        "x": 2.1,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7,
+        "x": 3.1,
         "y": 5.5
       },
       "isLocked": false,
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftAfterBump"
     }
   ],
   "rotationTargets": [],

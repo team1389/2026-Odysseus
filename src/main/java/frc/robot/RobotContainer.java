@@ -109,6 +109,19 @@ public class RobotContainer {
             .alongWith(new WaitCommand(4).andThen(new TestSerializer(serializerSubsystem, -32)))
             .withTimeout(10));
 
+    NamedCommands.registerCommand(
+        "shootOnTheMove2",
+        new ShootOnMoveCmd(
+                turretSubsystem,
+                flywheelSubsystem,
+                hoodSubsystem,
+                false,
+                () -> drivetrain.getState().Pose,
+                () -> drivetrain.getState().Speeds,
+                () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
+            .alongWith(new WaitCommand(2).andThen(new TestSerializer(serializerSubsystem, -32)))
+            .withTimeout(7));
+
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
@@ -136,8 +149,8 @@ public class RobotContainer {
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
-    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 12));
-    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -12));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, 12));
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, -12));
     // Hood
     manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
@@ -263,8 +276,8 @@ public class RobotContainer {
         .whileFalse(flywheelSubsystem.setDutyCycle(0));
 
     // Intake
-    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, 10));
-    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, -10));
+    manipController.leftBumper().whileTrue(new TestIntake(intakeSubsystem, -12));
+    manipController.leftTrigger().whileTrue(new TestIntake(intakeSubsystem, 12));
     // Hood
     manipController.povUp().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(45)));
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));

@@ -1,0 +1,74 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftMovingBack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftForward5m"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftFuelTurn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveIntakeArm"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "moveIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftFuelEat"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftFuelTurnBack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftBackward5m"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove2"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "CompAutos",
+  "choreoAuto": false
+}

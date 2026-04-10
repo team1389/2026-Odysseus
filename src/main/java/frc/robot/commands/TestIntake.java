@@ -10,6 +10,7 @@ public class TestIntake extends Command {
   public TestIntake(IntakeSubsystem intakeSubsystem, double targetRPM) {
     this.intakeSubsystem = intakeSubsystem;
     this.targetRPM = targetRPM;
+    addRequirements(intakeSubsystem);
   }
 
   public void initialize() {

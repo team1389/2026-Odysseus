@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 8.3,
-        "y": 1.0
+        "y": 4.5
       },
       "prevControl": null,
       "nextControl": {
         "x": 8.3,
-        "y": 1.8383880171184037
+        "y": 5.0
       },
       "isLocked": false,
-      "linkedName": "RightReadyToEat"
+      "linkedName": "LeftEndEat"
     },
     {
       "anchor": {
-        "x": 8.3,
-        "y": 3.6
+        "x": 7.2,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 8.3,
-        "y": 2.819896512009266
+        "x": 8.2,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RightEndEat"
+      "linkedName": "LeftAfterBump"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.6,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 91.16913932790759
+    "rotation": 179.768450347704
   },
   "reversed": false,
   "folder": "CompPaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.90938044919905
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
