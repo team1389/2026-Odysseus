@@ -12,7 +12,7 @@
         "y": 5.3
       },
       "isLocked": false,
-      "linkedName": "LeftAfterBump"
+      "linkedName": "LeftAfterBumpTurned"
     },
     {
       "anchor": {
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 150.0
   },
   "reversed": false,
   "folder": "CompPaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.768450347704
+    "rotation": 150.0
   },
   "useDefaultConstraints": false
 }

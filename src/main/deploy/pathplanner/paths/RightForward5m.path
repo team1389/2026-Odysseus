@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.768450347704
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "CompPaths",
