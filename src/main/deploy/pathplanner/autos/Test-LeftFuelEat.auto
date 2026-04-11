@@ -28,6 +28,18 @@
               }
             ]
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "enableVision"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootOnTheMove2"
+          }
         }
       ]
     }
