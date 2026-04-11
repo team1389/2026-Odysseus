@@ -31,8 +31,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
   private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
-  private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
-  private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
+  private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID);
+  private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID2);
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 1.2;
