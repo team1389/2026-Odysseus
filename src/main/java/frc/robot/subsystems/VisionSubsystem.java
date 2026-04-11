@@ -2,11 +2,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
@@ -111,5 +115,34 @@ public class VisionSubsystem extends SubsystemBase {
         .flatMap(result -> result.getTargets().stream())
         .filter(t -> t.getFiducialId() > 0)
         .min(Comparator.comparingDouble(t -> t.getBestCameraToTarget().getTranslation().getNorm()));
+  }
+
+  public Matrix<N3, N1> getEstimationStdDevs(EstimatedRobotPose estimate) {
+    double estStdDevX = 0.5;
+    double estStdDevY = 0.5;
+    double estStdDevTheta = 999; // Apparently PV is bad at rotation
+    // Gyro is almost always better than vision for rotation
+
+    final int numTags = estimate.targetsUsed.size();
+    double avgDistance = 0;
+
+    for (PhotonTrackedTarget target : estimate.targetsUsed) {
+      avgDistance += target.getBestCameraToTarget().getTranslation().getNorm();
+    }
+    avgDistance /= numTags;
+
+    if (numTags > 1) { // Multiple tags, trust more
+      estStdDevX = 0.1;
+      estStdDevY = 0.1;
+    } else if (avgDistance > 4.0) { // If far, trust less
+      estStdDevX = 1.0;
+      estStdDevY = 1.0;
+    }
+
+    // Scale standard deviation by distance squared (common FRC practice)
+    final double distanceMultiplier = Math.max(1, Math.pow(avgDistance, 2) / 16.0);
+
+    return VecBuilder.fill(
+        estStdDevX * distanceMultiplier, estStdDevY * distanceMultiplier, estStdDevTheta);
   }
 }

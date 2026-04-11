@@ -39,8 +39,16 @@ public class Robot extends TimedRobot {
     for (Optional<EstimatedRobotPose> poseEstimate :
         m_robotContainer.visionSubsystem.getPoseEstimates()) {
       if (!poseEstimate.isEmpty()) {
-        m_robotContainer.drivetrain.addVisionMeasurement(
-            poseEstimate.get().estimatedPose.toPose2d(), poseEstimate.get().timestampSeconds);
+        if (isAutonomous()) {
+          m_robotContainer.drivetrain.addVisionMeasurement(
+              poseEstimate.get().estimatedPose.toPose2d(),
+              poseEstimate.get().timestampSeconds,
+              m_robotContainer.visionSubsystem.getEstimationStdDevs(poseEstimate.get()));
+
+        } else {
+          m_robotContainer.drivetrain.addVisionMeasurement(
+              poseEstimate.get().estimatedPose.toPose2d(), poseEstimate.get().timestampSeconds);
+        }
       }
     }
   }

@@ -130,6 +130,8 @@ public class RobotContainer {
 
     // Warmup PathPlanner to avoid Java pauses
     CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+
+    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void configureBindings() {
@@ -258,8 +260,6 @@ public class RobotContainer {
         .start()
         .and(driverController.x())
         .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void configureTestBindings() {
@@ -388,8 +388,6 @@ public class RobotContainer {
         .start()
         .and(driverController.x())
         .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public Command getAutonomousCommand() {
