@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,6 +25,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSubsystem extends SubsystemBase {
   // Define camera names as they appear in the PhotonVision dashboard
+  private Boolean isEnabled = false;
   private final String[] cameraNames = {"Limelight3-BackLeftSwerve", "Limelight4-BackRightSwerve"};
   private final List<PhotonCamera> cameras = new ArrayList<>();
   // Photon pose estimators
@@ -84,15 +86,25 @@ public class VisionSubsystem extends SubsystemBase {
     }
     visionEstimates.clear();
     // Process results from all cameras
-    for (int i = 0; i < photonPoseEstimators.size(); i++) {
-      PhotonCamera cam = cameras.get(i);
-      List<PhotonPipelineResult> results = cam.getAllUnreadResults();
-      for (PhotonPipelineResult result : results) {
-        if (result.hasTargets()) {
-          visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+    if (isEnabled) {
+      for (int i = 0; i < photonPoseEstimators.size(); i++) {
+        PhotonCamera cam = cameras.get(i);
+        List<PhotonPipelineResult> results = cam.getAllUnreadResults();
+        for (PhotonPipelineResult result : results) {
+          if (result.hasTargets()) {
+            visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+          }
         }
       }
     }
+  }
+
+  public void enable() {
+    isEnabled = true;
+  }
+
+  public Command enableVision() {
+    return runOnce(() -> enable());
   }
 
   public List<Optional<EstimatedRobotPose>> getPoseEstimates() {

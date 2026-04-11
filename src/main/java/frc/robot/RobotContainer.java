@@ -121,7 +121,7 @@ public class RobotContainer {
                 () -> AllianceFlipUtil.flip(FieldConstants.blueHub))
             .alongWith(new WaitCommand(2).andThen(new TestSerializer(serializerSubsystem, -32)))
             .withTimeout(7));
-
+    NamedCommands.registerCommand("enableVision", visionSubsystem.enableVision());
     autoChooser = AutoBuilder.buildAutoChooser("Comp-MovingBackFromCenter");
     SmartDashboard.putData("Auto Mode", autoChooser);
 
