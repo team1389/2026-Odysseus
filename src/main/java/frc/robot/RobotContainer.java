@@ -95,7 +95,7 @@ public class RobotContainer {
         "moveIntake",
         new AutoIntake(intakeSubsystem, () -> -12.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -1.0).withTimeout(0.5));
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> 1.0).withTimeout(0.3));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
@@ -182,7 +182,7 @@ public class RobotContainer {
 
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY() * 0.625));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
@@ -309,7 +309,7 @@ public class RobotContainer {
 
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
