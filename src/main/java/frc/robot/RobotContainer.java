@@ -182,7 +182,7 @@ public class RobotContainer {
 
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY() * 0.625));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
@@ -309,7 +309,7 @@ public class RobotContainer {
 
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
