@@ -31,8 +31,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final TalonFX intakeMotor = new TalonFX(RobotMap.IntakeCanID);
   private final TalonFX intakeMotor2 = new TalonFX(RobotMap.IntakeCanID2);
-  private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID);
-  private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID2);
+  private final TalonFX intakeArmMotor = new TalonFX(RobotMap.IntakeArmCanID);
+  private final TalonFX intakeArmMotor2 = new TalonFX(RobotMap.IntakeArmCanID2);
 
   // Roller Simulation
   private static final double intakeMotorSimGearRatio = 1.2;
@@ -47,7 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
       new SmartMotorControllerConfig(this)
           .withGearing(new MechanismGearing(GearBox.fromTeeth(75, 1)))
           .withIdleMode(SmartMotorControllerConfig.MotorMode.BRAKE)
-          .withTelemetry("IntakeArmMotor", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
+          .withTelemetry("IntakeArmMotor2", SmartMotorControllerConfig.TelemetryVerbosity.HIGH)
           .withStatorCurrentLimit(Amps.of(40))
           .withMotorInverted(false)
           .withClosedLoopRampRate(Seconds.of(0.25))
@@ -58,7 +58,7 @@ public class IntakeSubsystem extends SubsystemBase {
           .withControlMode(SmartMotorControllerConfig.ControlMode.CLOSED_LOOP);
 
   private final SmartMotorController intakeArmSMC =
-      new TalonFXWrapper(intakeArmMotor, DCMotor.getKrakenX60(2), intakeArmMotorConfig);
+      new TalonFXWrapper(intakeArmMotor2, DCMotor.getKrakenX60(2), intakeArmMotorConfig);
 
   private final Arm intakeArm =
       new Arm(
@@ -72,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     intakeMotor2.setControl(new Follower(RobotMap.IntakeCanID, MotorAlignmentValue.Opposed));
-    intakeArmMotor2.setControl(new Follower(RobotMap.IntakeArmCanID, MotorAlignmentValue.Opposed));
+    intakeArmMotor.setControl(new Follower(RobotMap.IntakeArmCanID2, MotorAlignmentValue.Opposed));
   }
 
   // Private Roller Control
@@ -108,15 +108,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setArmVoltage(double volts) {
-    intakeArmMotor.setVoltage(volts);
+    intakeArmMotor2.setVoltage(volts);
   }
 
   public void setArmVoltage(Supplier<Double> volts) {
-    intakeArmMotor.setVoltage(volts.get());
+    intakeArmMotor2.setVoltage(volts.get());
   }
 
   public void stopArm() {
-    intakeArmMotor.setVoltage(0);
+    intakeArmMotor2.setVoltage(0);
   }
 
   // Combined Intake Commands
