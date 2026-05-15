@@ -18,7 +18,7 @@ public class RobotMap {
   public static final int HoodCanID = 27;
   public static final double HoodIntegralCorr =
       0.00016541; // How aggressivly hood fixes position error
-  public static final int HoodMaxAmp = 40; // Max motor current allowed (avoid brown out)
+  public static final int HoodMaxAmp = 20; // Max motor current allowed (avoid brown out)
   public static final double HoodRampRatePID =
       .25; // In seconds time to ramp from 0 to full output in PID mode
   public static final double HoodRampRateMan =
