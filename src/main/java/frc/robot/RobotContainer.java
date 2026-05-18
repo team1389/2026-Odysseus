@@ -310,8 +310,8 @@ public class RobotContainer {
     */
 
     // IntakeArm
-    intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+    //intakeSubsystem.setDefaultCommand(
+        //new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
