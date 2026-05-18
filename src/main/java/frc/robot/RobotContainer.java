@@ -48,6 +48,7 @@ public class RobotContainer {
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
   private double slowModeScale = 0.45; // scaling factor of drive speed in slow mode
+  private double demoModeScale = 0.2; // scaling factor of drive speed in slow mode
 
   /* Setting up bindings for necessary control of the swer
   ve drive platform */
@@ -329,13 +330,13 @@ public class RobotContainer {
                         -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
-                                : driverController.getLeftY())
+                                : scaleAndSmooth(driverController.getLeftY(), demoModeScale))
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
-                                : driverController.getLeftX())
+                                : scaleAndSmooth(driverController.getLeftX(), demoModeScale))
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -driverController.getRightX()
