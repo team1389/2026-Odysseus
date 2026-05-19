@@ -180,7 +180,7 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> getPassingTarget()));
-
+    
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
@@ -284,6 +284,7 @@ public class RobotContainer {
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
 
     // Shoot on the move
+    /* 
     manipController
         .x()
         .whileTrue(
@@ -307,10 +308,11 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> getPassingTarget()));
+    */
 
     // IntakeArm
-    intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+    //intakeSubsystem.setDefaultCommand(
+        //new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
