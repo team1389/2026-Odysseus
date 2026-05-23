@@ -351,7 +351,7 @@ public class RobotContainer {
     RobotModeTriggers.disabled()
         .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    // driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     // driverController
     //     .b()
     //     .whileTrue(
