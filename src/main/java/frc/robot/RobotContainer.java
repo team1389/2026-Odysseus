@@ -370,8 +370,8 @@ public class RobotContainer {
     //     .whileTrue(
     //         drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-    // // Reset the field-centric heading on left bumper press.
-    // driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    // Reset the field-centric heading on left bumper press.
+    driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
