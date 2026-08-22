@@ -48,6 +48,7 @@ public class RobotContainer {
       RotationsPerSecond.of(0.75)
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
   private double slowModeScale = 0.45; // scaling factor of drive speed in slow mode
+  private double demoModeScale = 0.2; // scaling factor of drive speed in demo mode
 
   /* Setting up bindings for necessary control of the swer
   ve drive platform */
@@ -93,9 +94,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("testShoot", Commands.print("Odysseus shoots a test shot."));
     NamedCommands.registerCommand(
         "moveIntake",
-        new AutoIntake(intakeSubsystem, () -> 12.0).withTimeout(3)); // Runs for 2 seconds);
+        new AutoIntake(intakeSubsystem, () -> -12.0).withTimeout(3)); // Runs for 2 seconds);
     NamedCommands.registerCommand(
-        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> -1.0).withTimeout(0.5));
+        "MoveIntakeArm", new TestIntakeArm(intakeSubsystem, () -> 1.0).withTimeout(0.3));
     NamedCommands.registerCommand(
         "shootOnTheMove",
         new ShootOnMoveCmd(
@@ -179,10 +180,10 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> getPassingTarget()));
-
+    
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY() * 0.625));
+        new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
@@ -283,6 +284,7 @@ public class RobotContainer {
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
 
     // Shoot on the move
+    /* 
     manipController
         .x()
         .whileTrue(
@@ -306,10 +308,11 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> getPassingTarget()));
+    */
 
     // IntakeArm
-    intakeSubsystem.setDefaultCommand(
-        new TestIntakeArm(intakeSubsystem, () -> -manipController.getLeftY()));
+    //intakeSubsystem.setDefaultCommand(
+        //new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
@@ -329,13 +332,13 @@ public class RobotContainer {
                         -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftY(), slowModeScale)
                                 // scaling and square smoothing in slow mode
-                                : driverController.getLeftY())
+                                : scaleAndSmooth(driverController.getLeftY(), demoModeScale))
                             * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -(driverController.rightTrigger().getAsBoolean() // slow mode
                                 ? scaleAndSmooth(driverController.getLeftX(), slowModeScale)
                                 // scaling and square smoothing in slow mode
-                                : driverController.getLeftX())
+                                : scaleAndSmooth(driverController.getLeftX(), demoModeScale))
                             * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -driverController.getRightX()
@@ -348,46 +351,46 @@ public class RobotContainer {
     RobotModeTriggers.disabled()
         .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    driverController
-        .b()
-        .whileTrue(
-            drivetrain.applyRequest(
-                () ->
-                    point.withModuleDirection(
-                        new Rotation2d(
-                            -driverController.getLeftY(), -driverController.getLeftX()))));
+    //driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // driverController
+    //     .b()
+    //     .whileTrue(
+    //         drivetrain.applyRequest(
+    //             () ->
+    //                 point.withModuleDirection(
+    //                     new Rotation2d(
+    //                         -driverController.getLeftY(), -driverController.getLeftX()))));
 
-    driverController
-        .povUp()
-        .whileTrue(
-            drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
-    driverController
-        .povDown()
-        .whileTrue(
-            drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
+    // driverController
+    //     .povUp()
+    //     .whileTrue(
+    //         drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+    // driverController
+    //     .povDown()
+    //     .whileTrue(
+    //         drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
     // Reset the field-centric heading on left bumper press.
     driverController.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    driverController
-        .back()
-        .and(driverController.y())
-        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    driverController
-        .back()
-        .and(driverController.x())
-        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    driverController
-        .start()
-        .and(driverController.y())
-        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    driverController
-        .start()
-        .and(driverController.x())
-        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    // driverController
+    //     .back()
+    //     .and(driverController.y())
+    //     .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    // driverController
+    //     .back()
+    //     .and(driverController.x())
+    //     .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    // driverController
+    //     .start()
+    //     .and(driverController.y())
+    //     .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    // driverController
+    //     .start()
+    //     .and(driverController.x())
+    //     .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
