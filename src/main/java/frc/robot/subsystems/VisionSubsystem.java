@@ -1,12 +1,17 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
@@ -32,13 +37,52 @@ public class VisionSubsystem extends SubsystemBase {
   public static final AprilTagFieldLayout tagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
+  private boolean isTrusted(EstimatedRobotPose estimate) {
+    int tagCount = estimate.targetsUsed.size();
+
+    if (tagCount == 0) {
+      return false;
+    }
+    // single tag measurement
+    if (tagCount == 1) {
+      double ambiguity = estimate.targetsUsed.get(0).getPoseAmbiguity();
+      if (ambiguity > 0.2 || ambiguity < 0) {
+        return false;
+      }
+    }
+    // measurements for when tags are too far
+    double averageDistance =
+        estimate.targetsUsed.stream()
+            .mapToDouble(target -> target.getBestCameraToTarget().getTranslation().getNorm())
+            .average()
+            .orElse(Double.POSITIVE_INFINITY);
+    if (averageDistance > 6.0) {
+      return false;
+    }
+    return true;
+  }
+
+  private Matrix<N3, N1> computeSTDevs(EstimatedRobotPose estimate) {
+    int tagCount = estimate.targetsUsed.size();
+    double averageDistance =
+        estimate.targetsUsed.stream()
+            .mapToDouble(target -> target.getBestCameraToTarget().getTranslation().getNorm())
+            .average()
+            .orElse(Double.POSITIVE_INFINITY);
+    double baseXYStdDev = tagCount >= 2 ? 0.05 : 0.15;
+    double distanceScale = 1.0 + (averageDistance * averageDistance * 0.05);
+    return VecBuilder.fill(baseXYStdDev * distanceScale, baseXYStdDev * distanceScale, 4.0);
+  }
+
   List<Optional<EstimatedRobotPose>> visionEstimates = new ArrayList<>();
 
   // Simulation objects
   private VisionSystemSim visionSim;
   private final List<PhotonCameraSim> cameraSims = new ArrayList<>();
+  private final CommandSwerveDrivetrain drivetrain;
 
-  public VisionSubsystem() {
+  public VisionSubsystem(CommandSwerveDrivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     if (RobotBase.isSimulation()) {
       visionSim = new VisionSystemSim("main");
     }
@@ -88,9 +132,32 @@ public class VisionSubsystem extends SubsystemBase {
       PhotonCamera cam = cameras.get(i);
       List<PhotonPipelineResult> results = cam.getAllUnreadResults();
       for (PhotonPipelineResult result : results) {
-        if (result.hasTargets()) {
-          visionEstimates.add(photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result));
+        if (!result.hasTargets()) continue;
+
+        Optional<EstimatedRobotPose> estimate =
+            photonPoseEstimators.get(i).estimateCoprocMultiTagPose(result);
+        if (estimate.isEmpty()) continue;
+
+        EstimatedRobotPose poseEstimate = estimate.get();
+        if (!isTrusted(poseEstimate)) {
+          SignalLogger.writeBoolean("Vision/Accepted", false);
+          continue;
         }
+
+        Matrix<N3, N1> stdDevs = computeSTDevs(poseEstimate);
+
+        SignalLogger.writeBoolean("Vision/Accepted", true);
+        SignalLogger.writeDouble("Vision/TagCount", poseEstimate.targetsUsed.size());
+        SignalLogger.writeDouble("Vision/StdDevX", stdDevs.get(0, 0));
+        SignalLogger.writeDouble("Vision/stdDevY", stdDevs.get(1, 0));
+        SignalLogger.writeDouble("Vision/StdDevTheta", stdDevs.get(2, 0));
+        SignalLogger.writeDouble("Vision/PoseX", poseEstimate.estimatedPose.getX());
+        SignalLogger.writeDouble("Vision/PoseY", poseEstimate.estimatedPose.getY());
+
+        drivetrain.addVisionMeasurement(
+            poseEstimate.estimatedPose.toPose2d(), poseEstimate.timestampSeconds, stdDevs);
+
+        visionEstimates.add(Optional.of(poseEstimate));
       }
     }
   }
