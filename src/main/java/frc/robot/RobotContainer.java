@@ -180,7 +180,7 @@ public class RobotContainer {
                 () -> drivetrain.getState().Pose,
                 () -> drivetrain.getState().Speeds,
                 () -> getPassingTarget()));
-    
+
     // IntakeArm
     intakeSubsystem.setDefaultCommand(
         new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY() * 0.625));
@@ -267,8 +267,8 @@ public class RobotContainer {
     // Testing subsytem commands
 
     // Turret
-    manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, -5));
-    manipController.povRight().whileTrue(new TestTurret(turretSubsystem, 5));
+    // manipController.povLeft().whileTrue(new TestTurret(turretSubsystem, -5));
+    // manipController.povRight().whileTrue(new TestTurret(turretSubsystem, 5));
 
     // Flywheel
     manipController
@@ -284,7 +284,7 @@ public class RobotContainer {
     manipController.povDown().whileTrue(new TestHood(hoodSubsystem, () -> Degrees.of(22)));
 
     // Shoot on the move
-    /* 
+    /*
     manipController
         .x()
         .whileTrue(
@@ -311,8 +311,8 @@ public class RobotContainer {
     */
 
     // IntakeArm
-    //intakeSubsystem.setDefaultCommand(
-        //new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
+    // intakeSubsystem.setDefaultCommand(
+    // new TestIntakeArm(intakeSubsystem, () -> manipController.getLeftY()));
 
     // Serializer
     manipController.rightBumper().whileTrue(new TestSerializer(serializerSubsystem, -32));
@@ -351,7 +351,7 @@ public class RobotContainer {
     RobotModeTriggers.disabled()
         .whileTrue(drivetrain.applyRequest(() -> idle).ignoringDisable(true));
 
-    //driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
     // driverController
     //     .b()
     //     .whileTrue(
