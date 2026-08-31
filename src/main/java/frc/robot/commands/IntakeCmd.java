@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCmd extends Command {
   public IntakeSubsystem intakeSubsystem;
-  public double targetVolts;
+  public Supplier<Double> targetVolts;
 
-  public IntakeCmd(IntakeSubsystem intakeSubsystem, double targetVolts) {
+  public IntakeCmd(IntakeSubsystem intakeSubsystem, Supplier<Double> targetVolts) {
     this.intakeSubsystem = intakeSubsystem;
     this.targetVolts = targetVolts;
     addRequirements(intakeSubsystem);
