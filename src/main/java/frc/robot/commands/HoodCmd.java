@@ -1,16 +1,17 @@
 package frc.robot.commands;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
+import java.util.function.Supplier;
 
-public class TestIntake extends Command {
-  public IntakeSubsystem intakeSubsystem;
-  public double targetRPM;
+public class HoodCmd extends Command {
+  public HoodSubsystem hoodSubsystem;
+  public Supplier<Angle> angle;
 
-  public TestIntake(IntakeSubsystem intakeSubsystem, double targetRPM) {
-    this.intakeSubsystem = intakeSubsystem;
-    this.targetRPM = targetRPM;
-    addRequirements(intakeSubsystem);
+  public HoodCmd(HoodSubsystem hoodSubsystem, Supplier<Angle> angle) {
+    this.hoodSubsystem = hoodSubsystem;
+    this.angle = angle;
   }
 
   public void initialize() {
@@ -20,13 +21,13 @@ public class TestIntake extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    intakeSubsystem.setRollerVoltage(targetRPM);
+    hoodSubsystem.setAngleDirect(angle);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    intakeSubsystem.stopRoller();
+    hoodSubsystem.stop();
   }
 
   @Override

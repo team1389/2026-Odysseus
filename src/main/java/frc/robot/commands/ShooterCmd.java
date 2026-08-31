@@ -1,14 +1,20 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TurretSubsystem;
+import static edu.wpi.first.units.Units.InchesPerSecond;
+import static edu.wpi.first.units.Units.RPM;
 
-public class TestTurret extends Command {
-  public TurretSubsystem turretSubsystem;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.FlywheelSubsystem;
+
+public class ShooterCmd extends Command {
+
+  public FlywheelSubsystem flywheelSubsystem;
   public double targetRPM;
 
-  public TestTurret(TurretSubsystem turretSubsystem, double targetRPM) {
-    this.turretSubsystem = turretSubsystem;
+  public ShooterCmd(FlywheelSubsystem flywheelSubsystem, double targetRPM) {
+    this.flywheelSubsystem = flywheelSubsystem;
     this.targetRPM = targetRPM;
   }
 
@@ -19,13 +25,13 @@ public class TestTurret extends Command {
   @Override
   public void execute() {
     // This gets called when the command does.
-    turretSubsystem.setSpeed(-targetRPM);
+    flywheelSubsystem.setRPM(AngularVelocity.ofBaseUnits(targetRPM, RPM));
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    turretSubsystem.stop();
+    flywheelSubsystem.setRPMDirect(LinearVelocity.ofBaseUnits(0, InchesPerSecond));
   }
 
   @Override
