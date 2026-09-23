@@ -40,11 +40,15 @@ public class VisionSubsystem extends SubsystemBase {
   private boolean isTrusted(EstimatedRobotPose estimate) {
     int tagCount = estimate.targetsUsed.size();
 
-    if (tagCount == 0) return false;
+    if (tagCount == 0) {
+      return false;
+    }
     // single tag measurement
     if (tagCount == 1) {
       double ambiguity = estimate.targetsUsed.get(0).getPoseAmbiguity();
-      if (ambiguity > 0.2 || ambiguity < 0) return false;
+      if (ambiguity > 0.2 || ambiguity < 0) {
+        return false;
+      }
     }
     // measurements for when tags are too far
     double averageDistance =
@@ -52,7 +56,11 @@ public class VisionSubsystem extends SubsystemBase {
             .mapToDouble(target -> target.getBestCameraToTarget().getTranslation().getNorm())
             .average()
             .orElse(Double.POSITIVE_INFINITY);
-    return (averageDistance > 6.0)
+    if (averageDistance > 6.0) {
+      return false;
+    }
+    return true;
+  }
 
   private Matrix<N3, N1> computeSTDevs(EstimatedRobotPose estimate) {
     int tagCount = estimate.targetsUsed.size();
