@@ -86,7 +86,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     hoodSubsystem = new HoodSubsystem();
-    visionSubsystem = new VisionSubsystem();
+    visionSubsystem = new VisionSubsystem(drivetrain);
     serializerSubsystem = new SerializerSubsystem();
 
     // Pathplanner Auto commands
