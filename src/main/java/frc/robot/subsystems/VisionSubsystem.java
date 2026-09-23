@@ -52,7 +52,7 @@ public class VisionSubsystem extends SubsystemBase {
             .mapToDouble(target -> target.getBestCameraToTarget().getTranslation().getNorm())
             .average()
             .orElse(Double.POSITIVE_INFINITY);
-    return (averageDistance > 6.0)
+    return (averageDistance > 6.0);
 
   private Matrix<N3, N1> computeSTDevs(EstimatedRobotPose estimate) {
     int tagCount = estimate.targetsUsed.size();
