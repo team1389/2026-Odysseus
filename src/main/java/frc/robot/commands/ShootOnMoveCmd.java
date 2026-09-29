@@ -1,9 +1,7 @@
 package frc.robot.commands;
-
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.RPM;
-
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,13 +17,11 @@ import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import java.util.List;
 import java.util.function.Supplier;
-
 public class ShootOnMoveCmd extends Command {
-  private final TurretSubsystem turretSubsystem;
+ private final TurretSubsystem turretSubsystem;
   private final HoodSubsystem hoodSubsystem;
   private final FlywheelSubsystem flywheelSubsystem;
   private boolean isPassing;
-
   private final Supplier<Pose2d> robotPoseSupplier;
   private final Supplier<ChassisSpeeds> robotOrientedChassisSpeeds;
   private final Supplier<Pose2d> goalPoseSupplier;
@@ -42,7 +38,9 @@ public class ShootOnMoveCmd extends Command {
       new InterpolatingDoubleTreeMap(); // Meters: m/s
   private final InterpolatingDoubleTreeMap invHorizontalVelTable =
       new InterpolatingDoubleTreeMap(); // m/s: Meters
-
+  private final double gravity = 9.80665;
+  private final double targetHeight = 1.8288;
+  private final double shooterHeight = 0.50;
   public ShootOnMoveCmd(
       TurretSubsystem turretSubsystem,
       FlywheelSubsystem flywheelSubsystem,
@@ -126,17 +124,14 @@ public class ShootOnMoveCmd extends Command {
       invHorizontalVelTable.put(entry.getSecond(), entry.getFirst().in(Meters));
     }
   }
-
   public void initialize() {
     // put things that need to be initialized here (such as a timer). No need to @Override.
   }
-
   @Override
   public void execute() {
     var robotRelative = robotOrientedChassisSpeeds.get();
     var robotSpeed =
         ChassisSpeeds.fromRobotRelativeSpeeds(robotRelative, robotPoseSupplier.get().getRotation());
-
     Translation2d futurePos =
         robotPoseSupplier
             .get()
@@ -144,41 +139,50 @@ public class ShootOnMoveCmd extends Command {
             .plus(
                 new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond)
                     .times(latency));
-
     // 2. GET TARGET VECTOR
     Translation2d goalLocation = goalPoseSupplier.get().getTranslation();
     Translation2d targetVec = goalLocation.minus(futurePos);
     double dist = targetVec.getNorm();
-
     // 3. CALCULATE IDEAL SHOT (Stationary)
     // Note: This returns HORIZONTAL velocity component
     double idealHorizontalSpeed = horizontalVelTable.get(dist);
-
+    double flightTime =
+        calculateFlightTime(
+            targetVec,
+            new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond),
+            idealHorizontalSpeed);
+    if (!Double.isFinite(flightTime) || flightTime <= 0.0) {
+      SmartDashboard.putBoolean("Target/canShoot", false);
+      return;
+    }
     // 4. VECTOR SUBTRACTION
     Translation2d robotVelVec =
         new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond);
-    Translation2d shotVec = targetVec.div(dist).times(idealHorizontalSpeed).minus(robotVelVec);
-
+    Translation2d shotVec =
+        targetVec.div(flightTime).minus(robotVelVec);
     // 5. CONVERT TO CONTROLS
     double turretAngleDeg = shotVec.getAngle().getDegrees();
     Rotation2d turretAngle =
         Rotation2d.fromDegrees(turretAngleDeg); // New Rotation2d object using clamped angle
     double newHorizontalSpeed = shotVec.getNorm();
-
     double shotDist = invHorizontalVelTable.get(newHorizontalSpeed);
     if (shotDist < (4 + offset) * 0.3048) { // Can't shoot <4ft
       SmartDashboard.putBoolean("Target/canShoot", false);
       return;
     }
-
     double exitRPM = shooterTable.get(shotDist);
-
     // Correct field relative turret angle to robot relative (WITH 180 OFFSET)
     Rotation2d robotRelativeAngle =
         turretAngle.minus(robotPoseSupplier.get().getRotation()).minus(Rotation2d.fromDegrees(180));
-
-    double hoodAngle = hoodTable.get(shotDist);
-
+    double verticalSpeed =
+        (targetHeight - shooterHeight + 0.5 * gravity * flightTime * flightTime)
+            / flightTime;
+    double hoodAngle =
+        Math.toDegrees(Math.atan2(verticalSpeed, newHorizontalSpeed));
+    if (hoodAngle < 2.0 || hoodAngle > 66.0) {
+      SmartDashboard.putBoolean("Target/canShoot", false);
+      return;
+    }
     // SET OUTPUTS
     turretSubsystem.setAngleDirect(Degrees.of(robotRelativeAngle.getDegrees()));
     if (isPassing) {
@@ -187,19 +191,52 @@ public class ShootOnMoveCmd extends Command {
       hoodSubsystem.setAngleDirect(Degrees.of(hoodAngle));
     }
     flywheelSubsystem.setRPM(RPM.of(exitRPM));
-
     if (flywheelSubsystem.getSpeedRPM()
         < 0.9 * exitRPM) { // Can't shoot while flywheel speed is below target.
       SmartDashboard.putBoolean("Target/canShoot", false);
       return;
     }
-
     SmartDashboard.putBoolean("Target/canShoot", true);
     SmartDashboard.putNumber("Target/Turret Angle", robotRelativeAngle.getDegrees());
     SmartDashboard.putNumber("Target/Hood Angle", hoodAngle);
     SmartDashboard.putNumber("Target/RPM", exitRPM);
   }
-
+  private double calculateFlightTime(
+      Translation2d targetVec,
+      Translation2d robotVelocity,
+      double projectileSpeed) {
+    double targetSquared = targetVec.getNorm() * targetVec.getNorm();
+    double robotSpeedSquared = robotVelocity.getNorm() * robotVelocity.getNorm();
+    double targetDotRobot = targetVec.dot(robotVelocity);
+    double a = robotSpeedSquared - projectileSpeed * projectileSpeed;
+    double b = -2.0 * targetDotRobot;
+    double c = targetSquared;
+    if (Math.abs(a) < 1e-9) {
+      if (Math.abs(b) < 1e-9) {
+        return -1.0;
+      }
+      double t = -c / b;
+      return t > 0.0 ? t : -1.0;
+    }
+    double discriminant = b * b - 4.0 * a * c;
+    if (discriminant < 0.0) {
+      return -1.0;
+    }
+    double sqrtDiscriminant = Math.sqrt(discriminant);
+    double t1 = (-b + sqrtDiscriminant) / (2.0 * a);
+    double t2 = (-b - sqrtDiscriminant) / (2.0 * a);
+    double bestTime = Double.POSITIVE_INFINITY;
+    if (t1 > 0.0 && t1 < bestTime) {
+      bestTime = t1;
+    }
+    if (t2 > 0.0 && t2 < bestTime) {
+      bestTime = t2;
+    }
+    if (!Double.isFinite(bestTime)) {
+      return -1.0;
+    }
+    return bestTime;
+  }
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
@@ -207,7 +244,6 @@ public class ShootOnMoveCmd extends Command {
     hoodSubsystem.stop();
     flywheelSubsystem.setSpeed(0);
   }
-
   @Override
   public boolean isFinished() {
     // If true is returned, the command will stop being run. Can be used to check if a encoder is at
