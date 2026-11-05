@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 7.2,
-        "y": 5.5
+        "y": 5.3
       },
       "prevControl": {
         "x": 8.2,
-        "y": 5.5
+        "y": 5.3
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftAfterBump"
+      "linkedName": "LeftAfterBumpTurned"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.768450347704
+    "rotation": 150.0
   },
   "reversed": false,
   "folder": "CompPaths",
