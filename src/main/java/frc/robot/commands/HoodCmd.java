@@ -5,17 +5,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HoodSubsystem;
 import java.util.function.Supplier;
 
-public class TestHood extends Command {
+public class HoodCmd extends Command {
   public HoodSubsystem hoodSubsystem;
   public Supplier<Angle> angle;
 
-  public TestHood(HoodSubsystem hoodSubsystem, Supplier<Angle> angle) {
+  public HoodCmd(HoodSubsystem hoodSubsystem, Supplier<Angle> angle) {
     this.hoodSubsystem = hoodSubsystem;
     this.angle = angle;
-  }
-
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
   }
 
   @Override

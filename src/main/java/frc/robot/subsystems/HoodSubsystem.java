@@ -66,20 +66,12 @@ public class HoodSubsystem extends SubsystemBase {
 
   public HoodSubsystem() {}
 
-  public Command setAngle(Angle angle) {
-    return hood.setAngle(angle);
-  }
-
   public void setAngleDirect(Supplier<Angle> angle) {
     hoodSMC.setPosition(angle.get());
   }
 
   public void setAngleDirect(Angle angle) {
     hoodSMC.setPosition(angle);
-  }
-
-  public Command setAngle(Supplier<Angle> angleSupplier) {
-    return hood.setAngle(angleSupplier);
   }
 
   public Angle getAngle() {
@@ -92,18 +84,6 @@ public class HoodSubsystem extends SubsystemBase {
         Volts.per(Second).of(0.5), // step
         Seconds.of(8.0) // duration
         );
-  }
-
-  public Command setDutyCycle(Supplier<Double> dutyCycleSupplier) {
-    return hood.set(dutyCycleSupplier);
-  }
-
-  public Command setDutyCycle(double dutyCycle) {
-    return hood.set(dutyCycle);
-  }
-
-  public void setHoodVoltage(double volts) {
-    hoodMotor.setVoltage(volts);
   }
 
   public void stop() {
