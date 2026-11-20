@@ -3,18 +3,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SerializerSubsystem;
 
-public class TestSerializer extends Command {
+public class SerializerCmd extends Command {
   public SerializerSubsystem serializerSubsystem;
   public double targetDutyCycle;
 
-  public TestSerializer(SerializerSubsystem serializerSubsystem, double targetDutyCycle) {
+  public SerializerCmd(SerializerSubsystem serializerSubsystem, double targetDutyCycle) {
     this.serializerSubsystem = serializerSubsystem;
     this.targetDutyCycle = targetDutyCycle;
     addRequirements(serializerSubsystem);
-  }
-
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
   }
 
   @Override

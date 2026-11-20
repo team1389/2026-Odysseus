@@ -1,31 +1,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TestTurret extends Command {
-  public TurretSubsystem turretSubsystem;
-  public double targetRPM;
+public class IntakeCmd extends Command {
+  public IntakeSubsystem intakeSubsystem;
+  public double targetVoltage;
 
-  public TestTurret(TurretSubsystem turretSubsystem, double targetRPM) {
-    this.turretSubsystem = turretSubsystem;
-    this.targetRPM = targetRPM;
-  }
-
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
+  public IntakeCmd(IntakeSubsystem intakeSubsystem, double targetVoltage) {
+    this.intakeSubsystem = intakeSubsystem;
+    this.targetVoltage = targetVoltage;
+    addRequirements(intakeSubsystem);
   }
 
   @Override
   public void execute() {
     // This gets called when the command does.
-    turretSubsystem.setSpeed(-targetRPM);
+    intakeSubsystem.setRollerVoltage(targetVoltage);
   }
 
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    turretSubsystem.stop();
+    intakeSubsystem.stopRoller();
   }
 
   @Override

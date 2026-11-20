@@ -1,29 +1,21 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class RunTurret extends Command {
+public class TurretCmd extends Command {
   public TurretSubsystem turretSubsystem;
-  private double targetAngle; // Sets angle to a variable so it can be used in execute and end.
+  public double targetVoltage;
 
-  public RunTurret(TurretSubsystem turretSubsystem, double targetAngle) {
+  public TurretCmd(TurretSubsystem turretSubsystem, double targetVoltage) {
     this.turretSubsystem = turretSubsystem;
-    this.targetAngle = targetAngle;
-  }
-
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
+    this.targetVoltage = targetVoltage;
   }
 
   @Override
   public void execute() {
     // This gets called when the command does.
-    turretSubsystem.setSpeed(RobotMap.MaxTurretSpeed);
-    turretSubsystem.setAngle(Degrees.of(targetAngle)); // Set turret to starting angle
+    turretSubsystem.setVoltage(-targetVoltage);
   }
 
   @Override

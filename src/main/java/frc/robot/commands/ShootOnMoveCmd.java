@@ -127,10 +127,6 @@ public class ShootOnMoveCmd extends Command {
     }
   }
 
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
-  }
-
   @Override
   public void execute() {
     var robotRelative = robotOrientedChassisSpeeds.get();

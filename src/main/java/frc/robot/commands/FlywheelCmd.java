@@ -1,25 +1,19 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.InchesPerSecond;
 import static edu.wpi.first.units.Units.RPM;
 
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlywheelSubsystem;
 
-public class TestShooter extends Command {
+public class FlywheelCmd extends Command {
 
   public FlywheelSubsystem flywheelSubsystem;
   public double targetRPM;
 
-  public TestShooter(FlywheelSubsystem flywheelSubsystem, double targetRPM) {
+  public FlywheelCmd(FlywheelSubsystem flywheelSubsystem, double targetRPM) {
     this.flywheelSubsystem = flywheelSubsystem;
     this.targetRPM = targetRPM;
-  }
-
-  public void initialize() {
-    // put things that need to be initialized here (such as a timer). No need to @Override.
   }
 
   @Override
@@ -31,7 +25,7 @@ public class TestShooter extends Command {
   @Override
   public void end(boolean interrupted) {
     // this gets called when the input stops being given.
-    flywheelSubsystem.setRPMDirect(LinearVelocity.ofBaseUnits(0, InchesPerSecond));
+    flywheelSubsystem.setRPM(AngularVelocity.ofBaseUnits(0, RPM));
   }
 
   @Override

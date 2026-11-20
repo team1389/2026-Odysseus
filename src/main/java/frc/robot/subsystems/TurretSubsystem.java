@@ -19,7 +19,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-import java.util.function.Supplier;
 import yams.gearing.GearBox;
 import yams.gearing.MechanismGearing;
 import yams.mechanisms.config.PivotConfig;
@@ -91,17 +90,9 @@ public class TurretSubsystem extends SubsystemBase {
     }
   }
 
-  public Command setAngle(Angle angle) {
-    return turret.setAngle(angle);
-  }
-
   public void setAngleDirect(Angle angle) {
     Angle clamped = Degrees.of(MathUtil.clamp(angle.in(Degrees), -95, 95));
     turretSMC.setPosition(clamped);
-  }
-
-  public Command setAngle(Supplier<Angle> angleSupplier) {
-    return turret.setAngle(angleSupplier);
   }
 
   public Angle getAngle() {
@@ -120,14 +111,6 @@ public class TurretSubsystem extends SubsystemBase {
     return turret.getAngle().in(Degrees);
   }
 
-  public Command setDutyCycle(Supplier<Double> dutyCycleSupplier) {
-    return turret.set(dutyCycleSupplier);
-  }
-
-  public Command setDutyCycle(double dutyCycle) {
-    return turret.set(dutyCycle);
-  }
-
   @Override
   public void periodic() {
     turret.updateTelemetry();
@@ -142,8 +125,8 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor.setControl(new VoltageOut(0));
   }
 
-  public void setSpeed(double i) {
-    turretMotor.setControl(new VoltageOut(i));
+  public void setVoltage(double voltage) {
+    turretMotor.setControl(new VoltageOut(voltage));
   }
 
   public double calculateAbsoluteRotations() {

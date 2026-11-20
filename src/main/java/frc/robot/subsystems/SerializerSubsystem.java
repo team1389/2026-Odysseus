@@ -8,7 +8,6 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
-
 public class SerializerSubsystem extends SubsystemBase {
 
   private final TalonFX indexerMotor = new TalonFX(RobotMap.IndexerCanID);

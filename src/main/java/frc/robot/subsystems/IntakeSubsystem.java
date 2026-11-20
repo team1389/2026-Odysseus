@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -12,7 +11,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -85,27 +83,11 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.setVoltage(volts.get());
   }
 
-  public void setSpeed(double dutyCycleSpeed) {
-    intakeMotor.setControl(new DutyCycleOut(dutyCycleSpeed));
-  }
-
   public void stopRoller() {
     intakeMotor.setControl(new NeutralOut());
   }
 
   // Arm Commands
-
-  public Command setAngle(Angle angle) {
-    return intakeArm.setAngle(angle);
-  }
-
-  public Command setAngle(Supplier<Angle> angleSupplier) {
-    return intakeArm.setAngle(angleSupplier);
-  }
-
-  public Angle getAngle() {
-    return intakeArm.getAngle();
-  }
 
   public void setArmVoltage(double volts) {
     intakeArmMotor2.setVoltage(volts);
@@ -119,33 +101,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmMotor2.setVoltage(0);
   }
 
-  // Combined Intake Commands
-  public Command intake(Angle angle) {
-    return run(() -> setRollerVoltage(1.0)).alongWith(intakeArm.setAngle(angle));
-  }
-
-  public Command intake(Supplier<Angle> angleSupplier) {
-    return run(() -> setRollerVoltage(1.0)).alongWith(intakeArm.setAngle(angleSupplier));
-  }
-
-  public Command outtake(Angle angle) {
-    return run(() -> setRollerVoltage(-1.0)).alongWith(intakeArm.setAngle(angle));
-  }
-
-  public Command outtake(Supplier<Angle> angleSupplier) {
-    return run(() -> setRollerVoltage(-1.0)).alongWith(intakeArm.setAngle(angleSupplier));
-  }
-
-  public Command retract(Angle retractAngle) {
-    return runOnce(this::stopRoller).andThen(intakeArm.setAngle(retractAngle));
-  }
-
-  // public Command runRollers(double targetRPM) {
-  //   return run(() -> setRollerVoltage(targetRPM));
-  // }
-
-  // SysId
-
   public Command sysId() {
     return intakeArm.sysId(Volts.of(4.0), Volts.per(Second).of(0.5), Seconds.of(8.0));
   }
@@ -154,6 +109,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     intakeArm.updateTelemetry();
   }
+
+  // Simulation
 
   @Override
   public void simulationPeriodic() {
